@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Beatify</string>
+    <string name="categories">Kategoriler</string>
+    <string name="likes">Beğeniler</string>
+    <string name="likes2">Begeniler</string>
+    <string name="back">Geri</string>
+    <string name="enter_category">Kategori giriniz...</string>
+    <string name="search">Ara</string>
+    <string name="delete">Sil</string>
+    <string name="music_image">Müzik Resim</string>
+    <string name="close">KAPAT</string>
+    <string name="like">Beğen</string>
+    <string name="no_likes">Beğendiğiniz herhangi bir şarkı bulunmamaktadır.</string>
+</resources>
