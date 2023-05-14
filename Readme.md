@@ -9,4 +9,6 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 - Navigation Component
 - Kotlin Coroutines
 
+App Introduction on YouTube: https://youtu.be/bhWHMcukmXI
+
 14 May 2023 - FURKAN AYAZ :)
