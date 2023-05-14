@@ -1,4 +1,6 @@
-I made this project, which I made using Deezer API, for Apptern Case Study prepared by Appcent company.
+I made this project with Jetpack Compose, which I made using Deezer API, for Apptern Case Study prepared by Appcent company.
+
+💙 JETPACK COMPOSE 💙
 
 **Popular Used Libraries**
 - MVVM
