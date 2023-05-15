@@ -7,10 +7,13 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 
 **Popular Used Libraries**
 - MVVM
+- Live Data
+- Repository
 - Retrofit
 - Room
 - Navigation Component
 - Kotlin Coroutines
+- Coil Image Library
 
 App Introduction on YouTube: https://youtu.be/AeIloqi5Oic
 
