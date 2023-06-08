@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -71,17 +72,25 @@ import com.fa.beatify.ui.theme.White
 import com.fa.beatify.pages.*
 import com.fa.beatify.rooms.RoomDB
 import com.fa.beatify.ui.theme.BeatifyTheme
+import com.fa.beatify.viewmodels.MainVM
 
 class MainActivity : ComponentActivity() {
+    private val mainVM: MainVM by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        installSplashScreen().setKeepOnScreenCondition(condition = { mainVM.getCondition() })
         setContent {
-            BeatifyTheme {
-                NavActivity()
-            }
+            BeatifyTheme(
+                packageManager = packageManager,
+                context = LocalContext.current,
+                content = {
+                    NavActivity()
+                }
+            )
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

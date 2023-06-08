@@ -1,6 +1,5 @@
 package com.fa.beatify.repositories
 
-import android.media.MediaPlayer
 import androidx.lifecycle.MutableLiveData
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.rooms.RoomDB
@@ -16,7 +15,7 @@ class LikesRepo {
         getLikes()
     }
 
-    fun getLikes() {
+    private fun getLikes() {
         CoroutineScope(context = Dispatchers.Main).launch {
             likesData.postValue(RoomDB.INSTANCE?.getDao()?.getLikes())
 
@@ -33,5 +32,6 @@ class LikesRepo {
     }
 
     fun getLikesData(): MutableLiveData<List<LikeEntities>> = likesData
+
 
 }

@@ -1,15 +1,30 @@
 package com.fa.beatify.ui.theme
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import com.fa.beatify.alias.LtMode
+import com.fa.beatify.alias.NtMode
 import com.fa.beatify.schemes.AppColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun BeatifyTheme(
+    packageManager: PackageManager,
+    context: Context,
     content: @Composable () -> Unit
 ) {
+    if (isSystemInDarkTheme()) {
+        packageManager.setComponentEnabledSetting(ComponentName(context, NtMode::class.java), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        packageManager.setComponentEnabledSetting(ComponentName(context, LtMode::class.java), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+    }else {
+        packageManager.setComponentEnabledSetting(ComponentName(context, LtMode::class.java), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        packageManager.setComponentEnabledSetting(ComponentName(context, NtMode::class.java), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+    }
+
     val systemUiController = rememberSystemUiController()
     systemUiController.apply {
         setSystemBarsColor(color = currentColor().sysBars)
