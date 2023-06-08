@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.TrackModel
 import com.fa.beatify.repositories.AlbumDetailRepo
+import com.fa.beatify.repositories.MusicPlayerRepo
 
 class AlbumDetailVM: ViewModel() {
     private val albumDetailRepo = AlbumDetailRepo()
+    private val musicPlayerRepo = MusicPlayerRepo()
 
     fun getTracks(albumId: Int) = albumDetailRepo.getTracks(albumId = albumId)
 
@@ -17,9 +19,9 @@ class AlbumDetailVM: ViewModel() {
 
     fun deleteLike(like: LikeEntities) = albumDetailRepo.deleteLike(like = like)
 
-    fun playMusic(url: String) = albumDetailRepo.playMusic(url = url)
+    fun playMusic(url: String) = musicPlayerRepo.playMusic(url = url)
 
-    fun stopMusic() = albumDetailRepo.stopMusic()
+    fun stopMusic() = musicPlayerRepo.stopMusic()
 
     fun getTrackList(): MutableLiveData<List<TrackModel>> = albumDetailRepo.getTrackList()
 }

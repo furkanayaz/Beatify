@@ -1,6 +1,7 @@
 package com.fa.beatify.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -34,10 +36,14 @@ import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.controllers.ImageController
 import com.fa.beatify.models.ArtistModel
-import com.fa.beatify.ui.theme.GridCategoryBg
-import com.fa.beatify.ui.theme.ScreenBackground
+import com.fa.beatify.ui.theme.GridStrokeColor
+import com.fa.beatify.ui.theme.GridStrokeColor2
+import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.LtGridCategoryBg
+import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
+import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.ArtistsVM
 
 @Composable
@@ -51,13 +57,20 @@ fun Artist(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, 
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(color = ScreenBackground)
+        .background(color = currentColor().screenBg)
         .padding(
             top = topPadding,
             bottom = bottomPadding
         )
     ) {
         artistList.value?.let {
+            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val gradientColors: Brush = Brush.horizontalGradient(
+                colors = listOf(
+                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
+                )
+            )
+
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Fixed(count = 2)
@@ -71,7 +84,8 @@ fun Artist(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, 
                         .aspectRatio(ratio = 1.0f)
                         .padding(if (pos % 2 == 0) oddPaddingValues else evenPaddingValues)
                         .background(color = Transparent)
-                        .clip(shape = RoundedCornerShape(size = 10.0.dp))
+                        .clip(shape = rowShape)
+                        .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
                             ImageController.ARTIST_IMAGE = model.pictureMedium
                             navController.navigate(route = "artist_detail/${model.id}/${model.name}")
@@ -86,7 +100,7 @@ fun Artist(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, 
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(color = GridCategoryBg)
+                                    .background(color = currentColor().gridCategoryBg)
                                     .padding(bottom = 30.0.dp),
                                 textAlign = TextAlign.Center,
                                 text = model.name!!,

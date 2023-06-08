@@ -19,11 +19,6 @@ import java.lang.Exception
 
 class AlbumDetailRepo {
     private val trackList = MutableLiveData<List<TrackModel>>()
-    private var mediaPlayer: MediaPlayer? = null
-
-    init {
-        mediaPlayer = MediaPlayer()
-    }
 
     fun getTracks(albumId: Int) {
         CoroutineScope(context = Dispatchers.Main).launch {
@@ -68,17 +63,6 @@ class AlbumDetailRepo {
 
             cancel()
         }
-    }
-
-    fun playMusic(url: String) {
-        mediaPlayer!!.setDataSource(url)
-        mediaPlayer!!.prepare()
-        mediaPlayer!!.start()
-    }
-
-    fun stopMusic() {
-        mediaPlayer!!.stop()
-        mediaPlayer!!.reset()
     }
 
     fun getTrackList(): MutableLiveData<List<TrackModel>> = trackList

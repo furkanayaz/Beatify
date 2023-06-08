@@ -3,6 +3,7 @@ package com.fa.beatify.pages
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -39,10 +41,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.models.GenreModel
-import com.fa.beatify.ui.theme.GridCategoryBg
-import com.fa.beatify.ui.theme.ScreenBackground
+import com.fa.beatify.ui.theme.GridStrokeColor
+import com.fa.beatify.ui.theme.GridStrokeColor2
+import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.LtGridCategoryBg
+import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
+import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.MusicCategoriesVM
 
 @Composable
@@ -65,13 +71,20 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(color = ScreenBackground)
+        .background(color = currentColor().screenBg)
         .padding(
             top = topPadding,
             bottom = bottomPadding
         )
     ) {
         genreList.value?.let { genreModels ->
+            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val gradientColors: Brush = Brush.horizontalGradient(
+                colors = listOf(
+                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
+                )
+            )
+
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Fixed(count = 2)
@@ -84,10 +97,18 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
                         .aspectRatio(ratio = 1.0f)
                         .padding(if (pos % 2 == 0) oddPaddingValues else evenPaddingValues)
                         .background(color = Transparent)
-                        .clip(shape = RoundedCornerShape(size = 10.0.dp))
+                        .clip(shape = rowShape)
                         .alpha(alpha = itemAnimAlpha.value)
+                        .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
-                            navController.navigate(route = "artists/${model.id!!}/${model.name!!.replace("/", " ")}")
+                            navController.navigate(
+                                route = "artists/${model.id!!}/${
+                                    model.name!!.replace(
+                                        "/",
+                                        " "
+                                    )
+                                }"
+                            )
                         },
                         contentAlignment = Alignment.BottomCenter, content = {
                             AsyncImage(
@@ -99,7 +120,7 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(color = GridCategoryBg)
+                                    .background(color = currentColor().gridCategoryBg)
                                     .padding(top = 10.0.dp, bottom = 20.0.dp),
                                 textAlign = TextAlign.Center,
                                 text = model.name!!,

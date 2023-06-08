@@ -11,11 +11,9 @@ import kotlinx.coroutines.launch
 
 class LikesRepo {
     private val likesData = MutableLiveData<List<LikeEntities>>()
-    private var mediaPlayer: MediaPlayer? = null
 
     init {
         getLikes()
-        mediaPlayer = MediaPlayer()
     }
 
     fun getLikes() {
@@ -32,17 +30,6 @@ class LikesRepo {
             getLikes()
             cancel()
         }
-    }
-
-    fun playMusic(url: String) {
-        mediaPlayer!!.setDataSource(url)
-        mediaPlayer!!.prepare()
-        mediaPlayer!!.start()
-    }
-
-    fun stopMusic() {
-        mediaPlayer!!.stop()
-        mediaPlayer!!.reset()
     }
 
     fun getLikesData(): MutableLiveData<List<LikeEntities>> = likesData

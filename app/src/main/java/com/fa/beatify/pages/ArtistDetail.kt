@@ -1,6 +1,7 @@
 package com.fa.beatify.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -38,10 +40,14 @@ import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.controllers.ImageController
 import com.fa.beatify.models.AlbumModel
-import com.fa.beatify.ui.theme.GridArtistBg
-import com.fa.beatify.ui.theme.ScreenBackground
+import com.fa.beatify.ui.theme.GridStrokeColor
+import com.fa.beatify.ui.theme.GridStrokeColor2
+import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.LtGridArtistBg
+import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
+import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.ArtistDetailVM
 
 @Composable
@@ -56,9 +62,16 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(top = topPadding, bottom = bottomPadding)
-        .background(color = ScreenBackground), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
+        .background(color = currentColor().screenBg), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
 
         tempModel.value?.let { albumModelList ->
+            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val gradientColors: Brush = Brush.horizontalGradient(
+                colors = listOf(
+                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
+                )
+            )
+
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,8 +95,9 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
                         .fillMaxWidth()
                         .height(height = 100.0.dp)
                         .padding(bottom = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
-                        .clip(shape = RoundedCornerShape(size = 10.0.dp))
-                        .background(color = GridArtistBg)
+                        .clip(shape = rowShape)
+                        .background(color = currentColor().gridArtistBg)
+                        .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
                             navController.navigate(route = "album_detail/${album.id}/${album.title}") {
                                 popUpTo(route = "artist_detail") {

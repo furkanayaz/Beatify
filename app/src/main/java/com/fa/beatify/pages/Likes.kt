@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -48,18 +50,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.ui.theme.GridArtistBg
-import com.fa.beatify.ui.theme.Primary
-import com.fa.beatify.ui.theme.ScreenBackground
+import com.fa.beatify.ui.theme.GridStrokeColor
+import com.fa.beatify.ui.theme.GridStrokeColor2
+import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.LtGridArtistBg
+import com.fa.beatify.ui.theme.LtPrimary
+import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
+import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.LikesVM
 
 @Composable
-fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
+fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
     val viewModel: LikesVM = viewModel()
     val likesData = viewModel.getLikesData().observeAsState()
     val tempLikeList = likesData.value
@@ -74,20 +79,31 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
         mutableStateOf(value = "")
     }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(color = ScreenBackground)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = currentColor().screenBg)
+    ) {
 
         tempLikeList?.let {
+            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val gradientColors: Brush = Brush.horizontalGradient(
+                colors = listOf(
+                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
+                )
+            )
 
             if (tempLikeList.isNotEmpty()) {
 
-                LazyColumn(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = topPadding, bottom = bottomPadding)
-                    .background(color = ScreenBackground)
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = topPadding, bottom = bottomPadding)
+                        .background(color = currentColor().screenBg)
                 ) {
-                    val likeList = tempLikeList.filter { likeEntities -> likeEntities.musicName.lowercase().contains(tfSearch.value.lowercase()) }
+                    val likeList = tempLikeList.filter { likeEntities ->
+                        likeEntities.musicName.lowercase().contains(tfSearch.value.lowercase())
+                    }
 
                     item {
                         Spacer(
@@ -103,15 +119,24 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                         if (alertController.value) {
                             AlertDialog(
                                 modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
-                                containerColor = ScreenBackground,
+                                containerColor = currentColor().screenBg,
                                 text = {
                                     val progressValue = remember {
                                         mutableStateOf(value = IntSize.Zero)
                                     }
 
-                                    val progressAnim = animateFloatAsState(targetValue = if (alertController.value) progressValue.value.width.toFloat() else 0.0f, animationSpec = tween(delayMillis = 0, durationMillis = 30000) )
+                                    val progressAnim = animateFloatAsState(
+                                        targetValue = if (alertController.value) progressValue.value.width.toFloat() else 0.0f,
+                                        animationSpec = tween(
+                                            delayMillis = 0, durationMillis = 30000
+                                        )
+                                    )
 
-                                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalArrangement = Arrangement.SpaceBetween,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
                                         AsyncImage(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -122,9 +147,14 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                                         )
                                         Canvas(modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(top = 24.0.dp, start = 12.0.dp, end = 12.0.dp), onDraw = {
+                                            .padding(
+                                                top = 24.0.dp, start = 12.0.dp, end = 12.0.dp
+                                            ), onDraw = {
                                             val componentSize = size
-                                            progressValue.value = IntSize(width = componentSize.width.toInt(), height = componentSize.height.toInt())
+                                            progressValue.value = IntSize(
+                                                width = componentSize.width.toInt(),
+                                                height = componentSize.height.toInt()
+                                            )
 
                                             drawLine(
                                                 color = White,
@@ -132,45 +162,67 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                                                 strokeWidth = 50.0f,
                                                 cap = StrokeCap.Round,
                                                 start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(x = componentSize.width, y = center.y)
+                                                end = Offset(
+                                                    x = componentSize.width, y = center.y
+                                                )
                                             )
                                             drawLine(
-                                                color = Primary,
+                                                color = LtPrimary,
                                                 alpha = 1.0f,
                                                 strokeWidth = 50.0f,
                                                 cap = StrokeCap.Round,
                                                 start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(x = progressAnim.value, y = center.y)
+                                                end = Offset(
+                                                    x = progressAnim.value, y = center.y
+                                                )
                                             )
                                         })
                                     }
                                 },
                                 onDismissRequest = { alertController.value = false },
-                                confirmButton = { Text(modifier = Modifier
-                                    .background(color = Transparent)
-                                    .padding(
-                                        top = 24.0.dp,
-                                        start = 10.0.dp,
-                                        end = 10.0.dp,
-                                        bottom = 10.0.dp
+                                confirmButton = {
+                                    Text(
+                                        modifier = Modifier
+                                            .background(color = Transparent)
+                                            .padding(
+                                                top = 24.0.dp,
+                                                start = 10.0.dp,
+                                                end = 10.0.dp,
+                                                bottom = 10.0.dp
+                                            )
+                                            .clickable {
+                                                viewModel.stopMusic(); alertController.value = false
+                                            },
+                                        text = stringResource(id = R.string.close),
+                                        style = TextStyle(
+                                            fontSize = 16.0.sp, fontFamily = FontFamily(
+                                                Font(
+                                                    resId = R.font.sofiaprosemibold,
+                                                    weight = FontWeight.Medium
+                                                )
+                                            ), color = LtPrimary
+                                        )
                                     )
-                                    .clickable {
-                                        viewModel.stopMusic(); alertController.value = false
-                                    }, text = stringResource(id = R.string.close), style = TextStyle(fontSize = 16.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaprosemibold, weight = FontWeight.Medium)), color = Primary)) },
-                                properties = DialogProperties(decorFitsSystemWindows = true, dismissOnBackPress = false, dismissOnClickOutside = false)
+                                },
+                                properties = DialogProperties(
+                                    decorFitsSystemWindows = true,
+                                    dismissOnBackPress = false,
+                                    dismissOnClickOutside = false
+                                )
                             )
                         }
 
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
-                            .clip(shape = RoundedCornerShape(size = 10.0.dp))
-                            .background(color = GridArtistBg)
-                            .clickable {
-                                viewModel.playMusic(url = likeModel.musicPreview); musicImage.value =
-                                likeModel.musicImage; alertController.value =
-                                true
-                            },
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
+                                .clip(shape = rowShape)
+                                .background(color = currentColor().gridArtistBg)
+                                .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
+                                .clickable {
+                                    viewModel.playMusic(url = likeModel.musicPreview); musicImage.value =
+                                    likeModel.musicImage; alertController.value = true
+                                },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -179,16 +231,18 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                                 model = likeModel.musicImage,
                                 contentDescription = stringResource(id = R.string.music_image)
                             )
-                            Column(modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(start = 16.0.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(start = 16.0.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.Start
+                            ) {
                                 Text(
                                     modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                     text = likeModel.musicName,
                                     style = TextStyle(
-                                        color = White,
-                                        fontSize = 14.0.sp,
-                                        fontFamily = FontFamily(
+                                        color = White, fontSize = 14.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -199,11 +253,8 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                                     maxLines = 1
                                 )
                                 Text(
-                                    text = likeModel.musicDuration,
-                                    style = TextStyle(
-                                        color = White,
-                                        fontSize = 12.0.sp,
-                                        fontFamily = FontFamily(
+                                    text = likeModel.musicDuration, style = TextStyle(
+                                        color = White, fontSize = 12.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -212,25 +263,46 @@ fun Likes(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, t
                                     )
                                 )
                             }
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 16.0.dp), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(end = 16.0.dp),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 IconButton(onClick = { viewModel.deleteLike(like = likeModel) }) {
-                                    Icon(painter = painterResource(id = R.drawable.heart_f), tint = Primary, contentDescription = stringResource(id = R.string.like))
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.heart_f),
+                                        tint = LtPrimary,
+                                        contentDescription = stringResource(id = R.string.like)
+                                    )
                                 }
                             }
                         }
                     }
                 }
 
-            }else {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = ScreenBackground), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 15.0.dp, end = 15.0.dp),
-                        text = stringResource(id = R.string.no_likes), textAlign = TextAlign.Center, style = TextStyle(fontSize = 18.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaproregular, weight = FontWeight.Medium)), color = White)
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = currentColor().screenBg),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 15.0.dp, end = 15.0.dp),
+                        text = stringResource(id = R.string.no_likes),
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            fontSize = 18.0.sp, fontFamily = FontFamily(
+                                Font(
+                                    resId = R.font.sofiaproregular, weight = FontWeight.Medium
+                                )
+                            ), color = White
+                        )
                     )
                 }
             }
