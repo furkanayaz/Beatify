@@ -1,7 +1,5 @@
 package com.fa.beatify.pages
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,14 +15,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
@@ -44,8 +38,6 @@ import com.fa.beatify.models.GenreModel
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
-import com.fa.beatify.ui.theme.LtGridCategoryBg
-import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
@@ -56,18 +48,8 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
     val viewModel: MusicCategoriesVM = viewModel()
     val genreList = viewModel.getGenres().observeAsState()
 
-    val itemAnimEnabled = remember {
-        mutableStateOf(value = false)
-    }
-
-    val itemAnimAlpha = animateFloatAsState(targetValue = if (itemAnimEnabled.value) 1.0f else 0.0f, tween(delayMillis = 0, durationMillis = 1000))
-
     val oddPaddingValues = PaddingValues(top = 7.5.dp, bottom = 7.5.dp, start = 15.0.dp, end = 7.5.dp)
     val evenPaddingValues = PaddingValues(top = 7.5.dp, bottom = 7.5.dp, end = 15.0.dp, start = 7.5.dp)
-
-    LaunchedEffect(key1 = true) {
-        itemAnimEnabled.value = true
-    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -78,7 +60,7 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
         )
     ) {
         genreList.value?.let { genreModels ->
-            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
                     GridStrokeColor, GridStrokeColor2, GridStrokeColor3
@@ -98,7 +80,6 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
                         .padding(if (pos % 2 == 0) oddPaddingValues else evenPaddingValues)
                         .background(color = Transparent)
                         .clip(shape = rowShape)
-                        .alpha(alpha = itemAnimAlpha.value)
                         .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
                             navController.navigate(
