@@ -12,9 +12,11 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 - Retrofit
 - Room
 - Navigation Component
+- Safe Args
 - Kotlin Coroutines
+- Accompanist
 - Coil Image Library
 
 App Introduction on YouTube: https://youtu.be/AeIloqi5Oic
 
-14 May 2023 - FURKAN AYAZ :)
+08 June 2023 - FURKAN AYAZ :)
