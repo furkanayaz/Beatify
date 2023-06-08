@@ -55,9 +55,7 @@ import com.fa.beatify.R
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
-import com.fa.beatify.ui.theme.LtGridArtistBg
 import com.fa.beatify.ui.theme.LtPrimary
-import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
@@ -86,7 +84,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
     ) {
 
         tempLikeList?.let {
-            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
                     GridStrokeColor, GridStrokeColor2, GridStrokeColor3
@@ -242,7 +240,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                     modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                     text = likeModel.musicName,
                                     style = TextStyle(
-                                        color = White, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -254,7 +252,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 )
                                 Text(
                                     text = likeModel.musicDuration, style = TextStyle(
-                                        color = White, fontSize = 12.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -301,7 +299,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 Font(
                                     resId = R.font.sofiaproregular, weight = FontWeight.Medium
                                 )
-                            ), color = White
+                            ), color = currentColor().textColor
                         )
                     )
                 }

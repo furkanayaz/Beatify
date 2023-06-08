@@ -43,10 +43,7 @@ import com.fa.beatify.models.AlbumModel
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
-import com.fa.beatify.ui.theme.LtGridArtistBg
-import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
-import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.ArtistDetailVM
 
@@ -65,7 +62,7 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
         .background(color = currentColor().screenBg), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
 
         tempModel.value?.let { albumModelList ->
-            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
                     GridStrokeColor, GridStrokeColor2, GridStrokeColor3
@@ -111,13 +108,13 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
                             .weight(weight = 0.7f), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start) {
                             Text(modifier = Modifier
                                 .width(width = (configuration.screenWidthDp / 2).dp)
-                                .padding(start = 16.0.dp), textAlign = TextAlign.Start, maxLines = 1, text = album.title!!, style = TextStyle(color = White, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                .padding(start = 16.0.dp), textAlign = TextAlign.Start, maxLines = 1, text = album.title!!, style = TextStyle(color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
                                 Font(resId = R.font.sofiaprosemibold, weight = FontWeight.SemiBold)
                             )), overflow = TextOverflow.Ellipsis
                             )
                             Text(modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 8.0.dp, start = 16.0.dp), textAlign = TextAlign.Start, text = viewModel.getReleaseDate(releaseDate = album.releaseDate!!), style = TextStyle(color = White, fontSize = 12.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal))))
+                                .padding(top = 8.0.dp, start = 16.0.dp), textAlign = TextAlign.Start, text = viewModel.getReleaseDate(releaseDate = album.releaseDate!!), style = TextStyle(color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal))))
                         }
                     }
                 })

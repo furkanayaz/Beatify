@@ -14,5 +14,8 @@ data class AppColor(
     val textColor: Color,
     val searchContainer: Color,
     val gridCategoryBg: Color,
-    val gridArtistBg: Color
+    val gridArtistBg: Color,
+    val navIcon: Color,
+    val navIconFill: Color,
+    val icon: Color
 )

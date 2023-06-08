@@ -1,8 +1,25 @@
 package com.fa.beatify.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.fa.beatify.schemes.AppColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+
+@Composable
+fun BeatifyTheme(
+    content: @Composable () -> Unit
+) {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.apply {
+        setSystemBarsColor(color = currentColor().sysBars)
+        statusBarDarkContentEnabled = !isSystemInDarkTheme()
+    }
+
+    MaterialTheme(
+        content = content
+    )
+}
 
 private val LtColors = AppColor(
     primary = LtPrimary,
@@ -17,6 +34,9 @@ private val LtColors = AppColor(
     searchContainer = LtSearchContainer,
     gridCategoryBg = LtGridCategoryBg,
     gridArtistBg = LtGridArtistBg,
+    navIcon = LtNavIcon,
+    navIconFill = LtNavIconFill,
+    icon = LtIcon
 )
 
 private val NtColors = AppColor(
@@ -32,6 +52,9 @@ private val NtColors = AppColor(
     searchContainer = NtSearchContainer,
     gridCategoryBg = NtGridCategoryBg,
     gridArtistBg = NtGridArtistBg,
+    navIcon = NtNavIcon,
+    navIconFill = NtNavIconFill,
+    icon = NtIcon
 )
 
 @Composable

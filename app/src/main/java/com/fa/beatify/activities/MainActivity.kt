@@ -68,21 +68,18 @@ import com.fa.beatify.R
 import com.fa.beatify.controllers.BottomBarController
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.fa.beatify.pages.*
 import com.fa.beatify.rooms.RoomDB
+import com.fa.beatify.ui.theme.BeatifyTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            val systemUiController = rememberSystemUiController()
-            systemUiController.apply {
-                setSystemBarsColor(color = currentColor().sysBars)
-                statusBarDarkContentEnabled = false
+            BeatifyTheme {
+                NavActivity()
             }
-            NavActivity()
         }
     }
 }
@@ -248,11 +245,13 @@ fun NavActivity() {
                             if (selectedBottomItem == BottomBarController.SELECT_CATEGORIES) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.headset_f),
+                                    tint = currentColor().navIconFill,
                                     contentDescription = stringResource(id = R.string.categories)
                                 )
                             }; if (selectedBottomItem != BottomBarController.SELECT_CATEGORIES) {
                             Icon(
                                 painter = painterResource(id = R.drawable.headset),
+                                tint = currentColor().navIcon,
                                 contentDescription = stringResource(id = R.string.categories)
                             )
                         }
@@ -283,11 +282,13 @@ fun NavActivity() {
                             if (selectedBottomItem == BottomBarController.SELECT_LIKES) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.heart_f),
+                                    tint = currentColor().navIconFill,
                                     contentDescription = stringResource(id = R.string.likes)
                                 )
                             }; if (selectedBottomItem != BottomBarController.SELECT_LIKES) {
                             Icon(
                                 painter = painterResource(id = R.drawable.heart),
+                                tint = currentColor().navIcon,
                                 contentDescription = stringResource(id = R.string.likes)
                             )
                         }
@@ -348,7 +349,7 @@ private fun CustomTopBar(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back),
-                    tint = White,
+                    tint = currentColor().icon,
                     contentDescription = stringResource(id = R.string.back)
                 )
             }
@@ -396,6 +397,7 @@ private fun CustomTopBar(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.search),
+                        tint = currentColor().icon,
                         contentDescription = stringResource(id = R.string.search)
                     )
                 },
@@ -437,7 +439,7 @@ private fun CustomTopBar(
                 IconButton(onClick = { searchController.value = !searchController.value }) {
                     Icon(
                         painter = painterResource(id = R.drawable.search),
-                        tint = White,
+                        tint = currentColor().icon,
                         contentDescription = stringResource(id = R.string.search)
                     )
                 }

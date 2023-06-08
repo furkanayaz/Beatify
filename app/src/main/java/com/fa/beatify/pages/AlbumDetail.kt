@@ -57,9 +57,7 @@ import com.fa.beatify.models.TrackModel
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
-import com.fa.beatify.ui.theme.LtGridArtistBg
 import com.fa.beatify.ui.theme.LtPrimary
-import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
@@ -90,7 +88,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
             .background(color = currentColor().screenBg)
     ) {
         trackList?.let { modelList ->
-            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
                     GridStrokeColor, GridStrokeColor2, GridStrokeColor3
@@ -239,7 +237,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                 modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                 text = trackModel.title!!,
                                 style = TextStyle(
-                                    color = White, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                    color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
                                         Font(
                                             resId = R.font.sofiaprosemibold,
                                             weight = FontWeight.SemiBold
@@ -251,7 +249,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             )
                             Text(
                                 text = musicDuration, style = TextStyle(
-                                    color = White, fontSize = 12.0.sp, fontFamily = FontFamily(
+                                    color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(
                                         Font(
                                             resId = R.font.sofiaprosemibold,
                                             weight = FontWeight.SemiBold
