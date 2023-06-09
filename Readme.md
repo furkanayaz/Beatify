@@ -19,4 +19,4 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 
 App Introduction on YouTube: https://youtu.be/AeIloqi5Oic
 
-08 June 2023 - FURKAN AYAZ :)
+09 June 2023 - FURKAN AYAZ :)
