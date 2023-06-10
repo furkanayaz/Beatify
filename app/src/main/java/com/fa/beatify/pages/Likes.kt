@@ -1,5 +1,6 @@
 package com.fa.beatify.pages
 
+import android.content.Intent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -54,6 +56,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
+import com.fa.beatify.controllers.MusicController
+import com.fa.beatify.services.MusicPlayer
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
@@ -65,17 +69,15 @@ import com.fa.beatify.viewmodels.LikesVM
 
 @Composable
 fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val musicPlayerService = Intent(context, MusicPlayer::class.java)
+
     val viewModel: LikesVM = viewModel()
     val likesData = viewModel.getLikesData().observeAsState()
     val tempLikeList = likesData.value
 
-    val playingController: State<Boolean> = viewModel.getPlayingController().collectAsState(initial = false)
-
-    val configuration = LocalConfiguration.current
-
-    val musicImage = remember {
-        mutableStateOf(value = "")
-    }
+    val playingController: State<Boolean> = MusicController.playingController.collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -114,6 +116,9 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                     items(count = likeList.count()) { pos: Int ->
                         val likeModel = likeList[pos]
 
+                        val musicName = likeModel.musicName
+                        val musicDuration = likeModel.musicDuration
+
                         if (playingController.value) {
                             AlertDialog(
                                 modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
@@ -139,7 +144,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clip(shape = RoundedCornerShape(size = 15.0.dp)),
-                                            model = musicImage.value,
+                                            model = likeModel.musicImage,
                                             contentScale = ContentScale.FillBounds,
                                             contentDescription = stringResource(id = R.string.music_image)
                                         )
@@ -189,7 +194,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                                 bottom = 10.0.dp
                                             )
                                             .clickable {
-                                                viewModel.stopMusic()
+                                                context.stopService(musicPlayerService)
                                             },
                                         text = stringResource(id = R.string.close),
                                         style = TextStyle(
@@ -218,8 +223,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 .background(color = currentColor().gridArtistBg)
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
-                                    viewModel.playMusic(url = likeModel.musicPreview); musicImage.value =
-                                    likeModel.musicImage
+                                    context.startService(musicPlayerService.putExtra("url", likeModel.musicPreview))
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
@@ -238,7 +242,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                             ) {
                                 Text(
                                     modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
-                                    text = likeModel.musicName,
+                                    text = musicName,
                                     style = TextStyle(
                                         color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
                                             Font(
@@ -251,7 +255,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                     maxLines = 1
                                 )
                                 Text(
-                                    text = likeModel.musicDuration, style = TextStyle(
+                                    text = musicDuration, style = TextStyle(
                                         color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,

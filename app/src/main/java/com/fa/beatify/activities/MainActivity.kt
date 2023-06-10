@@ -67,6 +67,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.fa.beatify.R
 import com.fa.beatify.controllers.BottomBarController
+import com.fa.beatify.controllers.MusicController
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.pages.*
@@ -92,14 +93,14 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStart() {
-        if (mainVM.getPlayingController().value) {
+        if (MusicController.playingController.value) {
             // Bildirimi sil.
         }
         super.onStart()
     }
 
     override fun onStop() {
-        if (mainVM.getPlayingController().value) {
+        if (MusicController.playingController.value) {
             // Bildirimi başlat.
         }
         super.onStop()

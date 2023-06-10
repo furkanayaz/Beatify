@@ -21,6 +21,11 @@
             android:theme="@style/Theme.Beatify.Splash">
         </activity>
 
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:name=".services.MusicPlayer" />
+
         <activity-alias
             android:name=".alias.LtMode"
             android:enabled="true"

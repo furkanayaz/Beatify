@@ -1,5 +1,6 @@
 package com.fa.beatify.pages
 
+import android.content.Intent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -54,8 +56,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
+import com.fa.beatify.controllers.MusicController
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.TrackModel
+import com.fa.beatify.services.MusicPlayer
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
@@ -67,17 +71,19 @@ import com.fa.beatify.viewmodels.AlbumDetailVM
 
 @Composable
 fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, albumId: Int) {
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val musicPlayerService = Intent(context, MusicPlayer::class.java)
+
     val viewModel: AlbumDetailVM = viewModel()
     viewModel.getTracks(albumId = albumId)
     val tempTrackList = viewModel.getTrackList().observeAsState()
 
-    val playingController: State<Boolean> = viewModel.getPlayingController().collectAsState(initial = false)
+    val playingController: State<Boolean> = MusicController.playingController.collectAsState(initial = false)
 
     val likeChecked = remember {
         mutableStateListOf(-1)
     }
-
-    val configuration = LocalConfiguration.current
 
     val trackList = tempTrackList.value?.filter { trackModel: TrackModel ->
         trackModel.title?.lowercase()!!.contains(tfSearch.value.lowercase())
@@ -186,7 +192,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                             bottom = 10.0.dp
                                         )
                                         .clickable {
-                                            viewModel.stopMusic()
+                                            context.stopService(musicPlayerService)
                                         },
                                     text = stringResource(id = R.string.close),
                                     style = TextStyle(
@@ -215,7 +221,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
-                                viewModel.playMusic(url = trackModel.preview!!)
+                                context.startService(musicPlayerService.putExtra("url", trackModel.preview!!))
                             },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
