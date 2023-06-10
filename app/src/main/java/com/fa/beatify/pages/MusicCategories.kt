@@ -44,10 +44,7 @@ import com.fa.beatify.models.GenreModel
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
-import com.fa.beatify.ui.theme.LtGridCategoryBg
-import com.fa.beatify.ui.theme.LtScreenBg
 import com.fa.beatify.ui.theme.Transparent
-import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.MusicCategoriesVM
 
@@ -78,7 +75,7 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
         )
     ) {
         genreList.value?.let { genreModels ->
-            val rowShape: RoundedCornerShape = RoundedCornerShape(size = 10.0.dp)
+            val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
                     GridStrokeColor, GridStrokeColor2, GridStrokeColor3
@@ -132,7 +129,7 @@ fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadd
                                             weight = FontWeight.SemiBold
                                         )
                                     ),
-                                    color = White
+                                    color = currentColor().textColor
                                 )
                             )
                         })
