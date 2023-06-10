@@ -11,6 +11,7 @@ class AlbumDetailVM: ViewModel() {
 
     fun getTracks(albumId: Int) = albumDetailRepo.getTracks(albumId = albumId)
 
+    fun getImage(md5Image: String): String = albumDetailRepo.getImage(md5Image = md5Image)
     fun getDuration(durationInSeconds: Int): String = albumDetailRepo.getDuration(durationInSeconds = durationInSeconds)
 
     fun insertLike(like: LikeEntities) = albumDetailRepo.insertLike(like = like)

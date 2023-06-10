@@ -1,9 +1,6 @@
 package com.fa.beatify.pages
 
 import android.content.Intent
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,13 +11,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -30,15 +25,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -49,10 +40,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
@@ -65,7 +54,6 @@ import com.fa.beatify.ui.theme.GridStrokeColor2
 import com.fa.beatify.ui.theme.GridStrokeColor3
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
-import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.currentColor
 import com.fa.beatify.viewmodels.AlbumDetailVM
 
@@ -119,12 +107,11 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                 items(count = modelList.count()) { pos: Int ->
                     val trackModel = modelList[pos]
 
-                    val musicImage =
-                        "https://e-cdns-images.dzcdn.net/images/cover/${trackModel.md5Image}/500x500-000000-80-0-0.jpg"
+                    val musicImage = viewModel.getImage(md5Image = trackModel.md5Image!!)
                     val musicDuration =
                         viewModel.getDuration(durationInSeconds = trackModel.duration!!)
 
-                    if (playingController.value) {
+                    /*if (playingController.value) {
                         AlertDialog(
                             modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
                             containerColor = currentColor().screenBg,
@@ -211,7 +198,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                 dismissOnClickOutside = false
                             )
                         )
-                    }
+                    }*/
 
                     Row(
                         modifier = Modifier
@@ -221,6 +208,9 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
+                                if (playingController.value) {
+                                    context.stopService(musicPlayerService)
+                                }
                                 context.startService(musicPlayerService.putExtra("url", trackModel.preview!!))
                             },
                         horizontalArrangement = Arrangement.Start,
