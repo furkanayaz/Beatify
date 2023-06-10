@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,11 +69,9 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
     val likesData = viewModel.getLikesData().observeAsState()
     val tempLikeList = likesData.value
 
-    val configuration = LocalConfiguration.current
+    val playingController: State<Boolean> = viewModel.getPlayingController().collectAsState(initial = false)
 
-    val alertController = remember {
-        mutableStateOf(value = false)
-    }
+    val configuration = LocalConfiguration.current
 
     val musicImage = remember {
         mutableStateOf(value = "")
@@ -114,7 +114,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                     items(count = likeList.count()) { pos: Int ->
                         val likeModel = likeList[pos]
 
-                        if (alertController.value) {
+                        if (playingController.value) {
                             AlertDialog(
                                 modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
                                 containerColor = currentColor().screenBg,
@@ -124,7 +124,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                     }
 
                                     val progressAnim = animateFloatAsState(
-                                        targetValue = if (alertController.value) progressValue.value.width.toFloat() else 0.0f,
+                                        targetValue = if (playingController.value) progressValue.value.width.toFloat() else 0.0f,
                                         animationSpec = tween(
                                             delayMillis = 0, durationMillis = 30000
                                         )
@@ -177,7 +177,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                         })
                                     }
                                 },
-                                onDismissRequest = { alertController.value = false },
+                                onDismissRequest = {  },
                                 confirmButton = {
                                     Text(
                                         modifier = Modifier
@@ -189,7 +189,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                                 bottom = 10.0.dp
                                             )
                                             .clickable {
-                                                viewModel.stopMusic(); alertController.value = false
+                                                viewModel.stopMusic()
                                             },
                                         text = stringResource(id = R.string.close),
                                         style = TextStyle(
@@ -219,7 +219,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
                                     viewModel.playMusic(url = likeModel.musicPreview); musicImage.value =
-                                    likeModel.musicImage; alertController.value = true
+                                    likeModel.musicImage
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically

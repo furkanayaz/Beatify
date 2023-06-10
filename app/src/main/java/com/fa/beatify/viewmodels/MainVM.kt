@@ -2,6 +2,7 @@ package com.fa.beatify.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fa.beatify.repositories.MusicPlayerRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class MainVM: ViewModel() {
     private val condition: MutableStateFlow<Boolean> = MutableStateFlow(value = true)
+    private val musicPlayerRepo = MusicPlayerRepo()
 
     init {
         getData()
@@ -24,5 +26,7 @@ class MainVM: ViewModel() {
     fun getCondition(): Boolean {
         return condition.value
     }
+
+    fun getPlayingController(): MutableStateFlow<Boolean> = musicPlayerRepo.getPlayingController()
 
 }

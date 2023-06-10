@@ -1,5 +1,7 @@
 package com.fa.beatify.controllers
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 object MusicController {
-    var isPlaying: Boolean = false
+    val playingController: MutableStateFlow<Boolean> = MutableStateFlow(value = false)
 }

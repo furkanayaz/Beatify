@@ -91,6 +91,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onStart() {
+        if (mainVM.getPlayingController().value) {
+            // Bildirimi sil.
+        }
+        super.onStart()
+    }
+
+    override fun onStop() {
+        if (mainVM.getPlayingController().value) {
+            // Bildirimi başlat.
+        }
+        super.onStop()
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -68,12 +70,11 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
     val viewModel: AlbumDetailVM = viewModel()
     viewModel.getTracks(albumId = albumId)
     val tempTrackList = viewModel.getTrackList().observeAsState()
+
+    val playingController: State<Boolean> = viewModel.getPlayingController().collectAsState(initial = false)
+
     val likeChecked = remember {
         mutableStateListOf(-1)
-    }
-
-    val alertController = remember {
-        mutableStateOf(value = false)
     }
 
     val configuration = LocalConfiguration.current
@@ -117,7 +118,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                     val musicDuration =
                         viewModel.getDuration(durationInSeconds = trackModel.duration!!)
 
-                    if (alertController.value) {
+                    if (playingController.value) {
                         AlertDialog(
                             modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
                             containerColor = currentColor().screenBg,
@@ -127,7 +128,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                 }
 
                                 val progressAnim = animateFloatAsState(
-                                    targetValue = if (alertController.value) progressValue.value.width.toFloat() else 0.0f,
+                                    targetValue = if (playingController.value) progressValue.value.width.toFloat() else 0.0f,
                                     animationSpec = tween(delayMillis = 0, durationMillis = 30000)
                                 )
 
@@ -173,7 +174,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                         })
                                 }
                             },
-                            onDismissRequest = { alertController.value = false },
+                            onDismissRequest = {  },
                             confirmButton = {
                                 Text(
                                     modifier = Modifier
@@ -185,7 +186,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                             bottom = 10.0.dp
                                         )
                                         .clickable {
-                                            viewModel.stopMusic(); alertController.value = false
+                                            viewModel.stopMusic()
                                         },
                                     text = stringResource(id = R.string.close),
                                     style = TextStyle(
@@ -214,8 +215,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
-                                viewModel.playMusic(url = trackModel.preview!!); alertController.value =
-                                true
+                                viewModel.playMusic(url = trackModel.preview!!)
                             },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically

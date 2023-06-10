@@ -6,6 +6,7 @@ import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.TrackModel
 import com.fa.beatify.repositories.AlbumDetailRepo
 import com.fa.beatify.repositories.MusicPlayerRepo
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class AlbumDetailVM: ViewModel() {
     private val albumDetailRepo = AlbumDetailRepo()
@@ -24,4 +25,5 @@ class AlbumDetailVM: ViewModel() {
     fun stopMusic() = musicPlayerRepo.stopMusic()
 
     fun getTrackList(): MutableLiveData<List<TrackModel>> = albumDetailRepo.getTrackList()
+    fun getPlayingController(): MutableStateFlow<Boolean> = musicPlayerRepo.getPlayingController()
 }
