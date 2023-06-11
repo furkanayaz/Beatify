@@ -14,14 +14,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class MusicPlayer: Service() {
-    private lateinit var mediaPlayer: MediaPlayer
     private var timerJob: Job? = null
 
     override fun onCreate() {
-        mediaPlayer = MediaPlayer()
+        MusicController.mediaPlayer = MediaPlayer()
         super.onCreate()
     }
-
     override fun onDestroy() {
         destroyAllProcess()
         super.onDestroy()
@@ -41,23 +39,30 @@ class MusicPlayer: Service() {
         return START_NOT_STICKY
     }
 
+    private fun playMusic(url: String) {
+        MusicController.apply {
+            mediaPlayer?.let { player: MediaPlayer ->
+                player.setDataSource(url)
+                player.prepare()
+                player.setOnPreparedListener { mp: MediaPlayer ->
+                    mp.start()
+                    trackingController.value = true
+                    collectMusicTimer(duration = player.duration.firstTwoDigits())
+                }
+            }
+        }
+    }
+
     private val musicTimer: Flow<Int> = flow {
         var currentPos = 0
 
         while (true) {
-            emit(value = currentPos)
-            delay(timeMillis = 1000L)
-            currentPos++
-        }
-    }
+            if (MusicController.mediaPlayer!!.isPlaying) {
+                emit(value = currentPos)
+                currentPos++
+            }
 
-    private fun playMusic(url: String) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepare()
-        mediaPlayer.setOnPreparedListener { mp: MediaPlayer ->
-            mp.start()
-            MusicController.playingController.value = true
-            collectMusicTimer(duration = mediaPlayer.duration.firstTwoDigits())
+            delay(timeMillis = 1000L)
         }
     }
 
@@ -73,8 +78,10 @@ class MusicPlayer: Service() {
     }
 
     private fun destroyAllProcess() {
-        mediaPlayer.release()
-        MusicController.playingController.value = false
+        MusicController.mediaPlayer?.let { player: MediaPlayer ->
+            player.release()
+        }
+        MusicController.trackingController.value = false
         timerJob?.cancel()
     }
 

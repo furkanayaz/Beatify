@@ -47,6 +47,7 @@ import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.controllers.MusicController
 import com.fa.beatify.entities.LikeEntities
+import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.models.TrackModel
 import com.fa.beatify.services.MusicPlayer
 import com.fa.beatify.ui.theme.GridStrokeColor
@@ -66,15 +67,12 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
     val viewModel: AlbumDetailVM = viewModel()
     viewModel.getTracks(albumId = albumId)
     val tempTrackList = viewModel.getTrackList().observeAsState()
+    MusicController.trackList = tempTrackList.value
 
-    val playingController: State<Boolean> = MusicController.playingController.collectAsState(initial = false)
+    val playingController: State<Boolean> = MusicController.trackingController.collectAsState(initial = false)
 
     val likeChecked = remember {
         mutableStateListOf(-1)
-    }
-
-    val trackList = tempTrackList.value?.filter { trackModel: TrackModel ->
-        trackModel.title?.lowercase()!!.contains(tfSearch.value.lowercase())
     }
 
     Column(
@@ -82,7 +80,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
             .fillMaxSize()
             .background(color = currentColor().screenBg)
     ) {
-        trackList?.let { modelList ->
+        MusicController.trackList?.let { trackList: List<TrackModel> ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
@@ -96,6 +94,10 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                     .padding(top = topPadding, bottom = bottomPadding)
                     .background(color = currentColor().screenBg)
             ) {
+                MusicController.trackList = tempTrackList.value?.filter { trackModel: TrackModel ->
+                    trackModel.title?.lowercase()!!.contains(tfSearch.value.lowercase())
+                }
+
                 item {
                     Spacer(
                         modifier = Modifier
@@ -104,101 +106,11 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .padding(top = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
                     )
                 }
-                items(count = modelList.count()) { pos: Int ->
-                    val trackModel = modelList[pos]
+                items(count = trackList.count()) { pos: Int ->
+                    val trackModel = trackList[pos]
 
-                    val musicImage = viewModel.getImage(md5Image = trackModel.md5Image!!)
-                    val musicDuration =
-                        viewModel.getDuration(durationInSeconds = trackModel.duration!!)
-
-                    /*if (playingController.value) {
-                        AlertDialog(
-                            modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
-                            containerColor = currentColor().screenBg,
-                            text = {
-                                val progressValue = remember {
-                                    mutableStateOf(value = IntSize.Zero)
-                                }
-
-                                val progressAnim = animateFloatAsState(
-                                    targetValue = if (playingController.value) progressValue.value.width.toFloat() else 0.0f,
-                                    animationSpec = tween(delayMillis = 0, durationMillis = 30000)
-                                )
-
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalArrangement = Arrangement.SpaceBetween,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    AsyncImage(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clip(shape = RoundedCornerShape(size = 15.0.dp)),
-                                        model = musicImage,
-                                        contentScale = ContentScale.FillBounds,
-                                        contentDescription = stringResource(id = R.string.music_image)
-                                    )
-                                    Canvas(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 24.0.dp, start = 12.0.dp, end = 12.0.dp),
-                                        onDraw = {
-                                            val componentSize = size
-                                            progressValue.value = IntSize(
-                                                width = componentSize.width.toInt(),
-                                                height = componentSize.height.toInt()
-                                            )
-
-                                            drawLine(
-                                                color = White,
-                                                alpha = 1.0f,
-                                                strokeWidth = 50.0f,
-                                                cap = StrokeCap.Round,
-                                                start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(x = componentSize.width, y = center.y)
-                                            )
-                                            drawLine(
-                                                color = LtPrimary,
-                                                alpha = 1.0f,
-                                                strokeWidth = 50.0f,
-                                                cap = StrokeCap.Round,
-                                                start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(x = progressAnim.value, y = center.y)
-                                            )
-                                        })
-                                }
-                            },
-                            onDismissRequest = {  },
-                            confirmButton = {
-                                Text(
-                                    modifier = Modifier
-                                        .background(color = Transparent)
-                                        .padding(
-                                            top = 24.0.dp,
-                                            start = 10.0.dp,
-                                            end = 10.0.dp,
-                                            bottom = 10.0.dp
-                                        )
-                                        .clickable {
-                                            context.stopService(musicPlayerService)
-                                        },
-                                    text = stringResource(id = R.string.close),
-                                    style = TextStyle(
-                                        fontSize = 16.0.sp, fontFamily = FontFamily(
-                                            Font(
-                                                resId = R.font.sofiaprosemibold,
-                                                weight = FontWeight.Medium
-                                            )
-                                        ), color = LtPrimary
-                                    )
-                                )
-                            },
-                            properties = DialogProperties(
-                                decorFitsSystemWindows = true,
-                                dismissOnBackPress = false,
-                                dismissOnClickOutside = false
-                            )
-                        )
-                    }*/
+                    val musicImage: String = viewModel.getImage(md5Image = trackModel.md5Image!!)
+                    val musicDuration: String = viewModel.getDuration(durationInSeconds = trackModel.duration!!)
 
                     Row(
                         modifier = Modifier
@@ -208,6 +120,9 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
+                                MusicController.playingController.value = false
+                                MusicController.playMusic = PlayMusic(musicName = trackModel.title!!, musicImage = musicImage, musicDuration = musicDuration)
+
                                 if (playingController.value) {
                                     context.stopService(musicPlayerService)
                                 }

@@ -45,6 +45,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.controllers.MusicController
+import com.fa.beatify.entities.LikeEntities
+import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.services.MusicPlayer
 import com.fa.beatify.ui.theme.GridStrokeColor
 import com.fa.beatify.ui.theme.GridStrokeColor2
@@ -62,9 +64,9 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
 
     val viewModel: LikesVM = viewModel()
     val likesData = viewModel.getLikesData().observeAsState()
-    val tempLikeList = likesData.value
+    MusicController.likeList = likesData.value
 
-    val playingController: State<Boolean> = MusicController.playingController.collectAsState(initial = false)
+    val playingController: State<Boolean> = MusicController.trackingController.collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -72,7 +74,7 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
             .background(color = currentColor().screenBg)
     ) {
 
-        tempLikeList?.let {
+        MusicController.likeList?.let { playingList: List<LikeEntities> ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = listOf(
@@ -80,15 +82,14 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                 )
             )
 
-            if (tempLikeList.isNotEmpty()) {
-
+            if (playingList.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = topPadding, bottom = bottomPadding)
                         .background(color = currentColor().screenBg)
                 ) {
-                    val likeList = tempLikeList.filter { likeEntities ->
+                    val likeList = playingList.filter { likeEntities ->
                         likeEntities.musicName.lowercase().contains(tfSearch.value.lowercase())
                     }
 
@@ -107,102 +108,6 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                         val musicName = likeModel.musicName
                         val musicDuration = likeModel.musicDuration
 
-                        /*if (playingController.value) {
-                            AlertDialog(
-                                modifier = Modifier.height(height = (configuration.screenHeightDp / 3).dp),
-                                containerColor = currentColor().screenBg,
-                                text = {
-                                    val progressValue = remember {
-                                        mutableStateOf(value = IntSize.Zero)
-                                    }
-
-                                    val progressAnim = animateFloatAsState(
-                                        targetValue = if (playingController.value) progressValue.value.width.toFloat() else 0.0f,
-                                        animationSpec = tween(
-                                            delayMillis = 0, durationMillis = 30000
-                                        )
-                                    )
-
-                                    Column(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalArrangement = Arrangement.SpaceBetween,
-                                        horizontalAlignment = Alignment.CenterHorizontally
-                                    ) {
-                                        AsyncImage(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .clip(shape = RoundedCornerShape(size = 15.0.dp)),
-                                            model = likeList[pos].musicImage,
-                                            contentScale = ContentScale.FillBounds,
-                                            contentDescription = stringResource(id = R.string.music_image)
-                                        )
-                                        Canvas(modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                top = 24.0.dp, start = 12.0.dp, end = 12.0.dp
-                                            ), onDraw = {
-                                            val componentSize = size
-                                            progressValue.value = IntSize(
-                                                width = componentSize.width.toInt(),
-                                                height = componentSize.height.toInt()
-                                            )
-
-                                            drawLine(
-                                                color = White,
-                                                alpha = 1.0f,
-                                                strokeWidth = 50.0f,
-                                                cap = StrokeCap.Round,
-                                                start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(
-                                                    x = componentSize.width, y = center.y
-                                                )
-                                            )
-                                            drawLine(
-                                                color = LtPrimary,
-                                                alpha = 1.0f,
-                                                strokeWidth = 50.0f,
-                                                cap = StrokeCap.Round,
-                                                start = Offset(x = 0.0f, y = center.y),
-                                                end = Offset(
-                                                    x = progressAnim.value, y = center.y
-                                                )
-                                            )
-                                        })
-                                    }
-                                },
-                                onDismissRequest = {  },
-                                confirmButton = {
-                                    Text(
-                                        modifier = Modifier
-                                            .background(color = Transparent)
-                                            .padding(
-                                                top = 24.0.dp,
-                                                start = 10.0.dp,
-                                                end = 10.0.dp,
-                                                bottom = 10.0.dp
-                                            )
-                                            .clickable {
-                                                context.stopService(musicPlayerService)
-                                            },
-                                        text = stringResource(id = R.string.close),
-                                        style = TextStyle(
-                                            fontSize = 16.0.sp, fontFamily = FontFamily(
-                                                Font(
-                                                    resId = R.font.sofiaprosemibold,
-                                                    weight = FontWeight.Medium
-                                                )
-                                            ), color = LtPrimary
-                                        )
-                                    )
-                                },
-                                properties = DialogProperties(
-                                    decorFitsSystemWindows = true,
-                                    dismissOnBackPress = false,
-                                    dismissOnClickOutside = false
-                                )
-                            )
-                        }*/
-
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -211,6 +116,9 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 .background(color = currentColor().gridArtistBg)
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
+                                    MusicController.playingController.value = false
+                                    MusicController.playMusic = PlayMusic(musicName = likeModel.musicName, musicImage = likeModel.musicImage, musicDuration = likeModel.musicDuration)
+
                                     if (playingController.value) {
                                         context.stopService(musicPlayerService)
                                     }
@@ -274,7 +182,6 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                         }
                     }
                 }
-
             } else {
                 Column(
                     modifier = Modifier

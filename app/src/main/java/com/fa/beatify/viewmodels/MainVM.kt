@@ -16,7 +16,7 @@ class MainVM: ViewModel() {
 
     private fun getData() {
         viewModelScope.launch(context = Dispatchers.IO) {
-            delay(timeMillis = 5000L)
+            delay(timeMillis = 250L)
             condition.value = false
         }
     }

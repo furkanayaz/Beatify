@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.fa.beatify'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.fa.beatify"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -49,37 +49,39 @@ android {
 apply plugin: "kotlin-kapt"
 
 dependencies {
-    def coil_version = "2.3.0"
-    def retrofit_version = "2.9.0"
-    def viewmodel_version = "2.7.0-alpha01"
-    def livedata_version = "1.5.0-alpha04"
-    def room_version = "2.5.1"
+    def material_ver = "1.1.0"
+    def coil_ver = '2.4.0'
+    def retrofit_ver = "2.9.0"
+    def vm_ver = '2.7.0-beta01'
+    def livedata_ver = '1.5.0-beta02'
+    def room_ver = "2.5.1"
 
-    implementation 'androidx.core:core-ktx:1.10.1'
+    //noinspection GradleDynamicVersion
+    implementation 'androidx.core:core-ktx:+'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.2'
-    implementation platform('androidx.compose:compose-bom:2022.10.00')
+    implementation platform('androidx.compose:compose-bom:2023.06.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
+    implementation "androidx.compose.material3:material3:$material_ver"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta"
     implementation "androidx.core:core-splashscreen:1.0.1"
     implementation "androidx.navigation:navigation-compose:2.7.0-beta01"
-    implementation "io.coil-kt:coil-compose:$coil_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "io.coil-kt:coil-compose:$coil_ver"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
     implementation "com.google.code.gson:gson:2.10.1"
-    implementation "androidx.navigation:navigation-compose:$viewmodel_version"
-    implementation "androidx.compose.runtime:runtime-livedata:$livedata_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.navigation:navigation-compose:$vm_ver"
+    implementation "androidx.compose.runtime:runtime-livedata:$livedata_ver"
+    implementation "androidx.room:room-runtime:$room_ver"
+    implementation "androidx.room:room-ktx:$room_ver"
+    kapt "androidx.room:room-compiler:$room_ver"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.06.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.5.0-beta02'
 }

@@ -7,34 +7,39 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,8 +47,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -65,9 +72,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.controllers.BottomBarController
 import com.fa.beatify.controllers.MusicController
+import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.pages.*
@@ -82,44 +91,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().setKeepOnScreenCondition(condition = { mainVM.getCondition() })
         setContent {
-            BeatifyTheme(
-                packageManager = packageManager,
+            BeatifyTheme(packageManager = packageManager,
                 context = LocalContext.current,
                 content = {
                     NavActivity()
-                }
-            )
+                })
         }
-    }
-
-    override fun onStart() {
-        if (MusicController.playingController.value) {
-            // Bildirimi sil.
-        }
-        super.onStart()
-    }
-
-    override fun onStop() {
-        if (MusicController.playingController.value) {
-            // Bildirimi başlat.
-        }
-        super.onStop()
     }
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavActivity() {
+    val context = LocalContext.current
+    val navController = rememberNavController()
+
     val pageTitle = remember { mutableStateOf("Kategoriler") }
     val tfSearch = remember { mutableStateOf("") }
     val searchController = remember { mutableStateOf(value = false) }
     val bottomBarController = remember { mutableStateOf(value = false) }
     var selectedBottomItem by remember { mutableIntStateOf(value = 0) }
 
-    val context = LocalContext.current
-
-    val navController = rememberNavController()
+    val playingController = MusicController.trackingController.collectAsState()
 
     LaunchedEffect(key1 = true) {
         RoomDB.accessDatabase(context = context)
@@ -234,28 +227,46 @@ fun NavActivity() {
                 }
 
             }
-
         }
     }, bottomBar = {
-        AnimatedVisibility(
-            visible = !bottomBarController.value, enter = fadeIn(), exit = fadeOut()
-        ) {
-            val navBarItemColors = NavigationBarItemDefaults.colors(
-                indicatorColor = currentColor().navBarIndicator,
-                selectedIconColor = currentColor().navBarSelected,
-                selectedTextColor = currentColor().navBarSelected,
-                unselectedIconColor = currentColor().navBarUnSelected,
-                unselectedTextColor = currentColor().navBarUnSelected
-            )
-
-            NavigationBar(modifier = Modifier.fillMaxWidth(),
-                contentColor = White,
-                containerColor = currentColor().sysBars,
-                content = {
-                    NavigationBarItem(
-                        label = {
+        Column {
+            AnimatedVisibility(
+                visible = playingController.value,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.0.dp),
+                    contentAlignment = Alignment.Center,
+                    content = {
+                        MusicController.playMusic?.let { playMusic: PlayMusic ->
+                            PlayMusicInBottom(
+                                musicName = playMusic.musicName,
+                                musicImage = playMusic.musicImage,
+                                musicDuration = playMusic.musicDuration
+                            )
+                        }
+                    })
+            }
+            AnimatedVisibility(
+                visible = !bottomBarController.value, enter = fadeIn(), exit = fadeOut()
+            ) {
+                val navBarItemColors = NavigationBarItemDefaults.colors(
+                    indicatorColor = currentColor().navBarIndicator,
+                    selectedIconColor = currentColor().navBarSelected,
+                    selectedTextColor = currentColor().navBarSelected,
+                    unselectedIconColor = currentColor().navBarUnSelected,
+                    unselectedTextColor = currentColor().navBarUnSelected
+                )
+                NavigationBar(modifier = Modifier.fillMaxWidth(),
+                    contentColor = White,
+                    containerColor = currentColor().sysBars,
+                    content = {
+                        NavigationBarItem(label = {
                             Text(
-                                text = stringResource(id = R.string.categories), style = TextStyle(
+                                text = stringResource(id = R.string.categories),
+                                style = TextStyle(
                                     fontSize = 13.0.sp, fontFamily = FontFamily(
                                         Font(
                                             resId = R.font.sofiaprosemibold,
@@ -265,32 +276,31 @@ fun NavActivity() {
                                 )
                             )
                         },
-                        icon = {
-                            if (selectedBottomItem == BottomBarController.SELECT_CATEGORIES) {
+                            icon = {
+                                if (selectedBottomItem == BottomBarController.SELECT_CATEGORIES) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.headset_f),
+                                        tint = currentColor().navIconFill,
+                                        contentDescription = stringResource(id = R.string.categories)
+                                    )
+                                }; if (selectedBottomItem != BottomBarController.SELECT_CATEGORIES) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.headset_f),
-                                    tint = currentColor().navIconFill,
+                                    painter = painterResource(id = R.drawable.headset),
+                                    tint = currentColor().navIcon,
                                     contentDescription = stringResource(id = R.string.categories)
                                 )
-                            }; if (selectedBottomItem != BottomBarController.SELECT_CATEGORIES) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.headset),
-                                tint = currentColor().navIcon,
-                                contentDescription = stringResource(id = R.string.categories)
-                            )
-                        }
-                        },
-                        selected = selectedBottomItem == BottomBarController.SELECT_CATEGORIES,
-                        onClick = {
-                            selectedBottomItem =
-                                BottomBarController.SELECT_CATEGORIES; navController.navigate(
-                            route = "musiccategories"
-                        ) { popUpTo(route = "musiccategories") { inclusive = true } }
-                        },
-                        colors = navBarItemColors
-                    )
-                    NavigationBarItem(
-                        label = {
+                            }
+                            },
+                            selected = selectedBottomItem == BottomBarController.SELECT_CATEGORIES,
+                            onClick = {
+                                selectedBottomItem =
+                                    BottomBarController.SELECT_CATEGORIES; navController.navigate(
+                                route = "musiccategories"
+                            ) { popUpTo(route = "musiccategories") { inclusive = true } }
+                            },
+                            colors = navBarItemColors
+                        )
+                        NavigationBarItem(label = {
                             Text(
                                 text = stringResource(id = R.string.likes), style = TextStyle(
                                     fontSize = 13.0.sp, fontFamily = FontFamily(
@@ -302,38 +312,38 @@ fun NavActivity() {
                                 )
                             )
                         },
-                        icon = {
-                            if (selectedBottomItem == BottomBarController.SELECT_LIKES) {
+                            icon = {
+                                if (selectedBottomItem == BottomBarController.SELECT_LIKES) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.heart_f),
+                                        tint = currentColor().navIconFill,
+                                        contentDescription = stringResource(id = R.string.likes)
+                                    )
+                                }; if (selectedBottomItem != BottomBarController.SELECT_LIKES) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.heart_f),
-                                    tint = currentColor().navIconFill,
+                                    painter = painterResource(id = R.drawable.heart),
+                                    tint = currentColor().navIcon,
                                     contentDescription = stringResource(id = R.string.likes)
                                 )
-                            }; if (selectedBottomItem != BottomBarController.SELECT_LIKES) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.heart),
-                                tint = currentColor().navIcon,
-                                contentDescription = stringResource(id = R.string.likes)
-                            )
-                        }
-                        },
-                        selected = selectedBottomItem == BottomBarController.SELECT_LIKES,
-                        onClick = {
-                            selectedBottomItem =
-                                BottomBarController.SELECT_LIKES; navController.navigate(route = "likes") {
-                            popUpTo(
-                                route = "likes"
-                            ) { inclusive = true }
-                        }
-                        },
-                        colors = navBarItemColors
-                    )
-                })
+                            }
+                            },
+                            selected = selectedBottomItem == BottomBarController.SELECT_LIKES,
+                            onClick = {
+                                selectedBottomItem =
+                                    BottomBarController.SELECT_LIKES; navController.navigate(route = "likes") {
+                                popUpTo(
+                                    route = "likes"
+                                ) { inclusive = true }
+                            }
+                            },
+                            colors = navBarItemColors
+                        )
+                    })
+            }
         }
     })
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CustomTopBar(
     navController: NavHostController,
@@ -342,15 +352,20 @@ private fun CustomTopBar(
     searchController: MutableState<Boolean>
 ) {
     val tfFocusRequester = remember { FocusRequester() }
-    val tfColors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-        textColor = currentColor().textColor,
-        containerColor = currentColor().searchContainer,
-        focusedBorderColor = Transparent,
-        unfocusedBorderColor = Transparent,
+    val containerColor = currentColor().searchContainer
+    val tfColors: TextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = currentColor().textColor,
+        unfocusedTextColor = currentColor().textColor,
+        focusedContainerColor = containerColor,
+        unfocusedContainerColor = containerColor,
+        disabledContainerColor = containerColor,
         cursorColor = currentColor().primary,
         selectionColors = TextSelectionColors(
-            handleColor = currentColor().selectionHandle, backgroundColor = currentColor().selectionBg
-        )
+            handleColor = currentColor().selectionHandle,
+            backgroundColor = currentColor().selectionBg
+        ),
+        focusedBorderColor = Transparent,
+        unfocusedBorderColor = Transparent,
     )
 
     val configuration = LocalConfiguration.current
@@ -470,6 +485,66 @@ private fun CustomTopBar(
             }
         }
 
+    }
+}
+
+@Composable
+fun PlayMusicInBottom(
+    musicName: String, musicImage: String, musicDuration: String
+) {
+    val playingController = MusicController.playingController.collectAsState(initial = false)
+
+    AsyncImage(
+        modifier = Modifier
+            .fillMaxWidth()
+            .blur(radius = 10.0.dp),
+        model = musicImage,
+        contentScale = ContentScale.Crop,
+        contentDescription = musicName
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = {
+            MusicController.apply {
+                if (playingController.value) {
+                    mediaPlayer?.start()
+                    MusicController.playingController.value = false
+                }else {
+                    mediaPlayer?.pause()
+                    MusicController.playingController.value = true
+                }
+
+            }
+        }) {
+            Icon(
+                painter = painterResource(
+                    id = if (playingController.value) R.drawable.play else R.drawable.pause
+                ), tint = White, contentDescription = "Play"
+            )
+        }
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = musicName, style = TextStyle(
+                    fontSize = 14.0.sp, fontFamily = FontFamily(
+                        Font(resId = R.font.sofiaprosemibold, weight = FontWeight.SemiBold)
+                    ), color = White
+                )
+            )
+            Text(
+                text = musicDuration, style = TextStyle(
+                    fontSize = 12.0.sp, fontFamily = FontFamily(
+                        Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal)
+                    ), color = White
+                )
+            )
+        }
     }
 }
 
