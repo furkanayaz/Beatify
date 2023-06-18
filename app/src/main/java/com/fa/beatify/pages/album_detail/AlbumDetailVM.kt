@@ -1,10 +1,9 @@
-package com.fa.beatify.viewmodels
+package com.fa.beatify.pages.album_detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.TrackModel
-import com.fa.beatify.repositories.AlbumDetailRepo
 
 class AlbumDetailVM: ViewModel() {
     private val albumDetailRepo = AlbumDetailRepo()

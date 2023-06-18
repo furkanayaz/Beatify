@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -14,24 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Beatify"
         tools:targetApi="31">
+
         <activity
             android:name=".activities.MainActivity"
-            android:enabled="true"
-            android:exported="true"
-            android:theme="@style/Theme.Beatify.Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.Beatify.Splash" />
 
         <service
             android:enabled="true"
             android:exported="false"
             android:name=".services.MusicPlayer" />
 
-        <!--<activity-alias
+        <activity-alias
             android:name=".alias.LtMode"
             android:enabled="true"
             android:exported="true"
@@ -63,7 +57,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-        </activity-alias>-->
+        </activity-alias>
 
     </application>
 

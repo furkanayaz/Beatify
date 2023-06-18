@@ -1,4 +1,4 @@
-package com.fa.beatify.interfaces
+package com.fa.beatify.apis
 
 import androidx.room.Dao
 import androidx.room.Delete

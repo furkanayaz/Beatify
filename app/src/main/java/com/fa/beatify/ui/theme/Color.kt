@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val Transparent: Color = Color(color = 0x00000000)
 val White: Color = Color(color = 0xFFFFFFFF)
+val Black: Color = Color(color = 0x4D000000)
 
 val LtPrimary: Color = Color(color = 0xFFE94057)
 val LtSelectionHandle: Color = Color(color = 0xFFE94057)
@@ -37,6 +38,9 @@ val NtNavIcon: Color = Color(0xFFFFFFFF)
 val NtNavIconFill: Color = Color(0xFFFFFFFF)
 val NtIcon: Color = Color(color = 0xFFFFFFFF)
 
-val GridStrokeColor: Color = Color(color = 0xFFFF8D9D)
-val GridStrokeColor2: Color = Color(color = 0xFFFD4A63)
-val GridStrokeColor3: Color = Color(color = 0xFFFF0023)
+val GridStroke: Color = Color(color = 0xFFFF8D9D)
+val GridStroke2: Color = Color(color = 0xFFFD4A63)
+val GridStroke3: Color = Color(color = 0xFFFF0023)
+val MusicTimer: Color = Color(color = 0xFFFF0023)
+
+val CustomGradient: List<Color> = listOf(GridStroke, GridStroke2, GridStroke3)

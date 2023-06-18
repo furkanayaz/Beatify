@@ -1,4 +1,4 @@
-package com.fa.beatify.interfaces
+package com.fa.beatify.apis
 
 import com.fa.beatify.models.Album
 import com.fa.beatify.models.Artist

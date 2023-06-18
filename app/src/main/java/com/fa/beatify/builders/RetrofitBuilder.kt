@@ -1,6 +1,6 @@
-package com.fa.beatify.retrofits
+package com.fa.beatify.builders
 
-import com.fa.beatify.interfaces.DeezerDao
+import com.fa.beatify.apis.DeezerDao
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -1,4 +1,4 @@
-package com.fa.beatify.pages
+package com.fa.beatify.pages.artist_detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,17 +38,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.controllers.ImageController
+import com.fa.beatify.constants.ImageConstants
 import com.fa.beatify.models.AlbumModel
-import com.fa.beatify.ui.theme.GridStrokeColor
-import com.fa.beatify.ui.theme.GridStrokeColor2
-import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
-import com.fa.beatify.viewmodels.ArtistDetailVM
 
 @Composable
-fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int) {
+fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int, artistName: String) {
     val viewModel: ArtistDetailVM = viewModel()
     viewModel.getAlbums(artistId = artistId)
     val tempModel = viewModel.getAlbumModel().observeAsState()
@@ -64,9 +61,7 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
         tempModel.value?.let { albumModelList ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
-                colors = listOf(
-                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
-                )
+                colors = CustomGradient
             )
 
             AsyncImage(
@@ -75,7 +70,7 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
                     .height(height = (configuration.screenHeightDp / 4).dp)
                     .padding(bottom = 15.0.dp),
                 contentScale = ContentScale.FillBounds,
-                model = ImageController.ARTIST_IMAGE,
+                model = ImageConstants.ARTIST_IMAGE,
                 contentDescription = stringResource(id = R.string.music_image)
             )
 
@@ -96,7 +91,7 @@ fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding
                         .background(color = currentColor().gridArtistBg)
                         .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
-                            navController.navigate(route = "album_detail/${album.id}/${album.title}") {
+                            navController.navigate(route = "album_detail/$artistName/${album.id}/${album.title}") {
                                 popUpTo(route = "artist_detail") {
                                     inclusive = true
                                 }

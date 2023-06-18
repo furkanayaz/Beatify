@@ -1,4 +1,4 @@
-package com.fa.beatify.pages
+package com.fa.beatify.pages.album_detail
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -45,21 +45,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.controllers.MusicController
+import com.fa.beatify.constants.MusicConstants
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.models.TrackModel
 import com.fa.beatify.services.MusicPlayer
-import com.fa.beatify.ui.theme.GridStrokeColor
-import com.fa.beatify.ui.theme.GridStrokeColor2
-import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
-import com.fa.beatify.viewmodels.AlbumDetailVM
 
 @Composable
-fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, albumId: Int) {
+fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistName: String, albumName: String, albumId: Int) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
@@ -67,9 +64,9 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
     val viewModel: AlbumDetailVM = viewModel()
     viewModel.getTracks(albumId = albumId)
     val tempTrackList = viewModel.getTrackList().observeAsState()
-    MusicController.trackList = tempTrackList.value
+    MusicConstants.trackList = tempTrackList.value
 
-    val playingController: State<Boolean> = MusicController.trackingController.collectAsState(initial = false)
+    val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)
 
     val likeChecked = remember {
         mutableStateListOf(-1)
@@ -80,12 +77,10 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
             .fillMaxSize()
             .background(color = currentColor().screenBg)
     ) {
-        MusicController.trackList?.let { trackList: List<TrackModel> ->
+        MusicConstants.trackList?.let { trackList: List<TrackModel> ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
-                colors = listOf(
-                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
-                )
+                colors = CustomGradient
             )
 
             LazyColumn(
@@ -94,7 +89,7 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                     .padding(top = topPadding, bottom = bottomPadding)
                     .background(color = currentColor().screenBg)
             ) {
-                MusicController.trackList = tempTrackList.value?.filter { trackModel: TrackModel ->
+                MusicConstants.trackList = tempTrackList.value?.filter { trackModel: TrackModel ->
                     trackModel.title?.lowercase()!!.contains(tfSearch.value.lowercase())
                 }
 
@@ -120,8 +115,8 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
-                                MusicController.playingController.value = false
-                                MusicController.playMusic = PlayMusic(musicName = trackModel.title!!, musicImage = musicImage, musicDuration = musicDuration)
+                                MusicConstants.playingController.value = false
+                                MusicConstants.playMusic = PlayMusic(artistName = artistName, albumName = albumName, musicName = trackModel.title!!, musicImage = musicImage, musicDuration = musicDuration)
 
                                 if (playingController.value) {
                                     context.stopService(musicPlayerService)
@@ -181,6 +176,8 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                     likeChecked.remove(trackModel.id); viewModel.deleteLike(
                                         like = LikeEntities(
                                             id = 0,
+                                            artistName = "",
+                                            albumName = "",
                                             musicId = trackModel.id!!,
                                             musicImage = "",
                                             musicName = "",
@@ -192,6 +189,8 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                                     likeChecked.add(trackModel.id!!); viewModel.insertLike(
                                         like = LikeEntities(
                                             id = 0,
+                                            artistName = artistName,
+                                            albumName = albumName,
                                             musicId = trackModel.id!!,
                                             musicImage = musicImage,
                                             musicName = trackModel.title!!,

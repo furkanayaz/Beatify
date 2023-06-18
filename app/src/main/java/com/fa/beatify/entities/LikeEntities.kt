@@ -13,6 +13,12 @@ data class LikeEntities(
     @ColumnInfo("id")
     @NotNull
     var id: Int,
+    @ColumnInfo("artist_name")
+    @NotNull
+    var artistName: String,
+    @ColumnInfo("album_name")
+    @NotNull
+    var albumName: String,
     @ColumnInfo("music_id")
     @NotNull
     var musicId: Int,

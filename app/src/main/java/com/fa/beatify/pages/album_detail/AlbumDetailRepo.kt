@@ -1,13 +1,12 @@
-package com.fa.beatify.repositories
+package com.fa.beatify.pages.album_detail
 
-import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.Track
 import com.fa.beatify.models.TrackModel
-import com.fa.beatify.retrofits.RetrofitBuilder
-import com.fa.beatify.rooms.RoomDB
+import com.fa.beatify.builders.RetrofitBuilder
+import com.fa.beatify.builders.RoomDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class AlbumDetailRepo {
     private val trackList = MutableLiveData<List<TrackModel>>()

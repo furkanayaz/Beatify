@@ -1,9 +1,8 @@
-package com.fa.beatify.viewmodels
+package com.fa.beatify.pages.music_categories
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fa.beatify.models.GenreModel
-import com.fa.beatify.repositories.GenreRepo
 
 class MusicCategoriesVM: ViewModel() {
     private val genreRepo = GenreRepo()

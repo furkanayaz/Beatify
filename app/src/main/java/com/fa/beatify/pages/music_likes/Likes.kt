@@ -1,4 +1,4 @@
-package com.fa.beatify.pages
+package com.fa.beatify.pages.music_likes
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -44,17 +44,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.controllers.MusicController
+import com.fa.beatify.constants.MusicConstants
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.services.MusicPlayer
-import com.fa.beatify.ui.theme.GridStrokeColor
-import com.fa.beatify.ui.theme.GridStrokeColor2
-import com.fa.beatify.ui.theme.GridStrokeColor3
+import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
-import com.fa.beatify.viewmodels.LikesVM
 
 @Composable
 fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
@@ -64,9 +61,9 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
 
     val viewModel: LikesVM = viewModel()
     val likesData = viewModel.getLikesData().observeAsState()
-    MusicController.likeList = likesData.value
+    MusicConstants.likeList = likesData.value
 
-    val playingController: State<Boolean> = MusicController.trackingController.collectAsState(initial = false)
+    val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -74,12 +71,10 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
             .background(color = currentColor().screenBg)
     ) {
 
-        MusicController.likeList?.let { playingList: List<LikeEntities> ->
+        MusicConstants.likeList?.let { playingList: List<LikeEntities> ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
-                colors = listOf(
-                    GridStrokeColor, GridStrokeColor2, GridStrokeColor3
-                )
+                colors = CustomGradient
             )
 
             if (playingList.isNotEmpty()) {
@@ -116,8 +111,8 @@ fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
                                 .background(color = currentColor().gridArtistBg)
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
-                                    MusicController.playingController.value = false
-                                    MusicController.playMusic = PlayMusic(musicName = likeModel.musicName, musicImage = likeModel.musicImage, musicDuration = likeModel.musicDuration)
+                                    MusicConstants.playingController.value = false
+                                    MusicConstants.playMusic = PlayMusic(artistName = likeModel.artistName, albumName = likeModel.albumName, musicName = likeModel.musicName, musicImage = likeModel.musicImage, musicDuration = likeModel.musicDuration)
 
                                     if (playingController.value) {
                                         context.stopService(musicPlayerService)

@@ -1,10 +1,8 @@
-package com.fa.beatify.viewmodels
+package com.fa.beatify.pages.artists
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fa.beatify.models.Artist
 import com.fa.beatify.models.ArtistModel
-import com.fa.beatify.repositories.ArtistsRepo
 
 class ArtistsVM: ViewModel() {
     private val artistsRepo = ArtistsRepo()

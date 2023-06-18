@@ -1,10 +1,10 @@
-package com.fa.beatify.repositories
+package com.fa.beatify.pages.artists
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.fa.beatify.models.Artist
 import com.fa.beatify.models.ArtistModel
-import com.fa.beatify.retrofits.RetrofitBuilder
+import com.fa.beatify.builders.RetrofitBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

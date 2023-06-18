@@ -1,10 +1,16 @@
 package com.fa.beatify.services
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.IBinder
-import com.fa.beatify.controllers.MusicController
+import androidx.core.app.NotificationCompat
+import com.fa.beatify.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,12 +18,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import com.fa.beatify.constants.MusicConstants.mediaPlayer
+import com.fa.beatify.constants.MusicConstants.trackingController
+import com.fa.beatify.constants.MusicConstants.playMusic
+import com.fa.beatify.constants.NotificationConstants.CHANNEL_ID
+import com.fa.beatify.constants.NotificationConstants.CHANNEL_NAME
+import com.fa.beatify.constants.NotificationConstants.NOTIFICATION_ID
+import com.fa.beatify.models.PlayMusic
 
 class MusicPlayer: Service() {
     private var timerJob: Job? = null
 
     override fun onCreate() {
-        MusicController.mediaPlayer = MediaPlayer()
+        mediaPlayer = MediaPlayer()
         super.onCreate()
     }
     override fun onDestroy() {
@@ -34,21 +47,20 @@ class MusicPlayer: Service() {
 
         url?.let { locUrl ->
             playMusic(url = locUrl)
+            showNotification()
         }
 
         return START_NOT_STICKY
     }
 
     private fun playMusic(url: String) {
-        MusicController.apply {
-            mediaPlayer?.let { player: MediaPlayer ->
-                player.setDataSource(url)
-                player.prepare()
-                player.setOnPreparedListener { mp: MediaPlayer ->
-                    mp.start()
-                    trackingController.value = true
-                    collectMusicTimer(duration = player.duration.firstTwoDigits())
-                }
+        mediaPlayer?.let { player: MediaPlayer ->
+            player.setDataSource(url)
+            player.prepare()
+            player.setOnPreparedListener { mp: MediaPlayer ->
+                mp.start()
+                trackingController.value = true
+                collectMusicTimer(duration = player.duration.firstTwoDigits())
             }
         }
     }
@@ -57,7 +69,7 @@ class MusicPlayer: Service() {
         var currentPos = 0
 
         while (true) {
-            if (MusicController.mediaPlayer!!.isPlaying) {
+            if (mediaPlayer!!.isPlaying) {
                 emit(value = currentPos)
                 currentPos++
             }
@@ -66,23 +78,56 @@ class MusicPlayer: Service() {
         }
     }
 
+    private fun showNotification() {
+        playMusic?.let { playMusic: PlayMusic ->
+            val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val builder: NotificationCompat.Builder?
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel: NotificationChannel? = manager.getNotificationChannel(CHANNEL_ID)
+
+                if (channel == null) {
+                    val tempChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+                    manager.createNotificationChannel(tempChannel)
+                }
+
+                builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                builder.setAutoCancel(false)
+                builder.setSmallIcon(R.mipmap.light_icon)
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                builder.setContentTitle(playMusic.artistName)
+                builder.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
+
+            }else {
+                builder = NotificationCompat.Builder(this)
+                builder.setAutoCancel(false)
+                builder.setSmallIcon(R.mipmap.light_icon)
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                builder.setContentTitle(playMusic.artistName)
+                builder.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
+            }
+
+            startForeground(NOTIFICATION_ID, builder.build())
+        }
+    }
+
     private fun collectMusicTimer(duration: Int) {
         timerJob = CoroutineScope(context = Dispatchers.Default).launch {
             musicTimer.collect(collector = { pos: Int ->
                 if (pos == duration) {
                     destroyAllProcess()
-                    stopSelf()
                 }
             })
         }
     }
 
     private fun destroyAllProcess() {
-        MusicController.mediaPlayer?.let { player: MediaPlayer ->
+        mediaPlayer?.let { player: MediaPlayer ->
             player.release()
         }
-        MusicController.trackingController.value = false
+        trackingController.value = false
         timerJob?.cancel()
+        stopSelf()
     }
 
     private fun Int.firstTwoDigits(): Int {

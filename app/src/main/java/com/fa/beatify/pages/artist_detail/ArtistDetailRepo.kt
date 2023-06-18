@@ -1,11 +1,11 @@
-package com.fa.beatify.repositories
+package com.fa.beatify.pages.artist_detail
 
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.fa.beatify.models.Album
 import com.fa.beatify.models.AlbumModel
-import com.fa.beatify.retrofits.RetrofitBuilder
+import com.fa.beatify.builders.RetrofitBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
