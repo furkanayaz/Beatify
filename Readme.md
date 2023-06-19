@@ -5,18 +5,18 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 
 💙 JETPACK COMPOSE 💙
 
-**Popular Used Libraries**
-- MVVM
-- Live Data
-- Repository
-- Retrofit
-- Room
-- Dependency Injection with Hilt
-- Navigation Component
-- Safe Args
-- Kotlin Coroutines
-- Accompanist
-- Coil Image Library
+**Popular Used Libraries 🎉**
+- MVVM 🏗️
+- Live Data 📡
+- Repository 🗄️
+- Retrofit 🌐
+- Room 🏠
+- Dependency Injection with Hilt 💉
+- Navigation Component 🧭
+- Safe Args 🔒
+- Kotlin Coroutines ⚙️
+- Accompanist 🎵
+- Coil Image Library 🖼️
 
 App Introduction on YouTube: https://youtu.be/AeIloqi5Oic
 
