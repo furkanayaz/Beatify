@@ -4,22 +4,22 @@ import com.fa.beatify.models.Album
 import com.fa.beatify.models.Artist
 import com.fa.beatify.models.Genre
 import com.fa.beatify.models.Track
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface DeezerDao {
 
     @GET("genre")
-    fun getGenre(): Call<Genre>
+    suspend fun getGenre(): Response<Genre>
 
     @GET("genre/{genre_id}/artists")
-    fun getArtists( @Path("genre_id") genreId: Int ): Call<Artist>
+    suspend fun getArtists( @Path("genre_id") genreId: Int ): Response<Artist>
 
     @GET("artist/{artist_id}/albums")
-    fun getAlbums( @Path("artist_id") artistId: Int ): Call<Album>
+    suspend fun getAlbums( @Path("artist_id") artistId: Int ): Response<Album>
 
     @GET("album/{album_id}/tracks")
-    fun getTracks( @Path("album_id") albumId: Int ): Call<Track>
+    suspend fun getTracks( @Path("album_id") albumId: Int ): Response<Track>
 
 }

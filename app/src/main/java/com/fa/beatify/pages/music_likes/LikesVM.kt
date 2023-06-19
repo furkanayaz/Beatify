@@ -2,14 +2,29 @@ package com.fa.beatify.pages.music_likes
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.fa.beatify.apis.BeatifyRepo
 import com.fa.beatify.entities.LikeEntities
-import com.fa.beatify.pages.music_likes.LikesRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LikesVM: ViewModel() {
-    private val likesRepo = LikesRepo()
+@HiltViewModel
+class LikesVM @Inject constructor(private val beatifyRepo: BeatifyRepo) : ViewModel() {
+    private val likesData = MutableLiveData<List<LikeEntities>>()
 
-    fun deleteLike(like: LikeEntities) = likesRepo.deleteLike(like = like)
+    fun allLikes() {
+        viewModelScope.launch {
+            likesData.postValue(beatifyRepo.allLikes())
+        }
+    }
 
-    fun getLikesData(): MutableLiveData<List<LikeEntities>> = likesRepo.getLikesData()
+    fun deleteLike(like: LikeEntities) {
+        viewModelScope.launch {
+            beatifyRepo.deleteLike(like = like)
+        }
+    }
+
+    fun getLikesData(): MutableLiveData<List<LikeEntities>> = likesData
 
 }

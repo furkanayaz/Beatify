@@ -2,20 +2,41 @@ package com.fa.beatify.pages.album_detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.fa.beatify.apis.BeatifyRepo
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.TrackModel
+import com.fa.beatify.utils.DurationRepo
+import com.fa.beatify.utils.ImageRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AlbumDetailVM: ViewModel() {
-    private val albumDetailRepo = AlbumDetailRepo()
+@HiltViewModel
+class AlbumDetailVM @Inject constructor(private val beatifyRepo: BeatifyRepo, private val imageRepo: ImageRepo, private val durationRepo: DurationRepo): ViewModel() {
+    private val trackList = MutableLiveData<List<TrackModel>>()
 
-    fun getTracks(albumId: Int) = albumDetailRepo.getTracks(albumId = albumId)
+    fun getTracks(albumId: Int) {
+        viewModelScope.launch {
+            trackList.postValue(beatifyRepo.allTracks(albumId = albumId))
+        }
+    }
 
-    fun getImage(md5Image: String): String = albumDetailRepo.getImage(md5Image = md5Image)
-    fun getDuration(durationInSeconds: Int): String = albumDetailRepo.getDuration(durationInSeconds = durationInSeconds)
+    fun getImage(md5Image: String?): String = imageRepo.getImage(md5Image = md5Image?: "")
 
-    fun insertLike(like: LikeEntities) = albumDetailRepo.insertLike(like = like)
+    fun getDuration(durationInSeconds: Int?): String = durationRepo.getDuration(durationInSeconds = durationInSeconds?: 0)
 
-    fun deleteLike(like: LikeEntities) = albumDetailRepo.deleteLike(like = like)
+    fun insertLike(like: LikeEntities) {
+        viewModelScope.launch {
+            beatifyRepo.insertLike(like = like)
+        }
+    }
 
-    fun getTrackList(): MutableLiveData<List<TrackModel>> = albumDetailRepo.getTrackList()
+    fun deleteLike(like: LikeEntities) {
+        viewModelScope.launch {
+            beatifyRepo.deleteLike(like = like)
+        }
+    }
+
+    fun getTrackList(): MutableLiveData<List<TrackModel>> = trackList
 }

@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.fa.beatify.alias.LtMode
-import com.fa.beatify.alias.NtMode
+import com.fa.beatify.LtMode
+import com.fa.beatify.NtMode
 import com.fa.beatify.schemes.AppColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 

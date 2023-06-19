@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
@@ -45,8 +44,7 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
 
 @Composable
-fun ArtistDetail(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int, artistName: String) {
-    val viewModel: ArtistDetailVM = viewModel()
+fun ArtistDetail(viewModel: ArtistDetailVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int, artistName: String) {
     viewModel.getAlbums(artistId = artistId)
     val tempModel = viewModel.getAlbumModel().observeAsState()
 

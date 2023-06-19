@@ -47,9 +47,9 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
 
 @Composable
-fun MusicCategories(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
-    val viewModel: MusicCategoriesVM = viewModel()
+fun MusicCategories(viewModel: MusicCategoriesVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
     val genreList = viewModel.getGenres().observeAsState()
+    viewModel.allGenres()
 
     val itemAnimEnabled = remember {
         mutableStateOf(value = false)

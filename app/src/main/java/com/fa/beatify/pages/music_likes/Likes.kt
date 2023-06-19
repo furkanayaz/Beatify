@@ -54,13 +54,14 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
 
 @Composable
-fun Likes(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
+fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
 
-    val viewModel: LikesVM = viewModel()
     val likesData = viewModel.getLikesData().observeAsState()
+    viewModel.allLikes()
+
     MusicConstants.likeList = likesData.value
 
     val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)

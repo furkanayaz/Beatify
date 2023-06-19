@@ -11,6 +11,7 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 - Repository
 - Retrofit
 - Room
+- Dependency Injection with Hilt
 - Navigation Component
 - Safe Args
 - Kotlin Coroutines

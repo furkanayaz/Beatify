@@ -41,8 +41,7 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
 
 @Composable
-fun Artist(navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, genreId: Int) {
-    val viewModel: ArtistsVM = viewModel()
+fun Artist(viewModel: ArtistsVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, genreId: Int) {
     val artistList = viewModel.getArtists().observeAsState()
     viewModel.allArtists(genreId = genreId)
 

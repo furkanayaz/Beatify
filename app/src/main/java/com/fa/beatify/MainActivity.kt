@@ -1,10 +1,11 @@
-package com.fa.beatify.activities
+package com.fa.beatify
 
 import com.fa.beatify.ui.theme.currentColor
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -73,7 +74,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
-import com.fa.beatify.R
 import com.fa.beatify.pages.album_detail.AlbumDetail
 import com.fa.beatify.pages.artist_detail.ArtistDetail
 import com.fa.beatify.pages.artists.Artist
@@ -89,19 +89,42 @@ import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.Black
 import com.fa.beatify.constants.MusicConstants.trackingController
 import com.fa.beatify.builders.RoomDB
+import com.fa.beatify.pages.album_detail.AlbumDetailVM
+import com.fa.beatify.pages.artist_detail.ArtistDetailVM
+import com.fa.beatify.pages.artists.ArtistsVM
+import com.fa.beatify.pages.music_categories.MusicCategoriesVM
+import com.fa.beatify.pages.music_likes.LikesVM
 import com.fa.beatify.ui.theme.BeatifyTheme
+import com.fa.beatify.utils.DateRepo
+import com.fa.beatify.utils.DurationRepo
+import com.fa.beatify.utils.ImageRepo
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val musicCategoriesVM: MusicCategoriesVM by viewModels()
+    private val likesVM: LikesVM by viewModels()
+    private val artistsVM: ArtistsVM by viewModels()
+    private val artistDetailVM: ArtistDetailVM by viewModels()
+    private val albumDetailVM: AlbumDetailVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            BeatifyTheme(packageManager = packageManager,
+            BeatifyTheme(
+                packageManager = packageManager,
                 context = LocalContext.current,
                 content = {
-                    NavActivity()
+                    NavActivity(
+                        musicCategoriesVM = musicCategoriesVM,
+                        likesVM = likesVM,
+                        artistsVM = artistsVM,
+                        artistDetailVM = artistDetailVM,
+                        albumDetailVM = albumDetailVM
+                    )
                 })
         }
     }
@@ -109,7 +132,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavActivity() {
+fun NavActivity(
+    musicCategoriesVM: MusicCategoriesVM,
+    likesVM: LikesVM,
+    artistsVM: ArtistsVM,
+    artistDetailVM: ArtistDetailVM,
+    albumDetailVM: AlbumDetailVM
+) {
     val context = LocalContext.current
     val navController = rememberNavController()
 
@@ -145,6 +174,7 @@ fun NavActivity() {
                 selectedBottomItem = BottomBarConstants.SELECT_CATEGORIES
                 bottomBarController.value = false
                 MusicCategories(
+                    viewModel = musicCategoriesVM,
                     navController = navController,
                     topPadding = values.calculateTopPadding(),
                     bottomPadding = values.calculateBottomPadding(),
@@ -157,6 +187,7 @@ fun NavActivity() {
                 pageTitle.value = stringResource(id = R.string.likes2)
                 selectedBottomItem = BottomBarConstants.SELECT_LIKES
                 Likes(
+                    viewModel = likesVM,
                     topPadding = values.calculateTopPadding(),
                     bottomPadding = values.calculateBottomPadding(),
                     tfSearch = tfSearch
@@ -179,6 +210,7 @@ fun NavActivity() {
                         pageTitle.value = name
 
                         Artist(
+                            viewModel = artistsVM,
                             navController = navController,
                             topPadding = values.calculateTopPadding(),
                             bottomPadding = values.calculateBottomPadding(),
@@ -204,6 +236,7 @@ fun NavActivity() {
                     pageTitle.value = artistName
 
                     ArtistDetail(
+                        viewModel = artistDetailVM,
                         navController = navController,
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
@@ -228,6 +261,7 @@ fun NavActivity() {
                     searchController.value = false
                     pageTitle.value = albumName
                     AlbumDetail(
+                        viewModel = albumDetailVM,
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
                         tfSearch = tfSearch,

@@ -42,7 +42,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.constants.MusicConstants
@@ -56,14 +55,14 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
 
 @Composable
-fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistName: String, albumName: String, albumId: Int) {
+fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistName: String, albumName: String, albumId: Int) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
 
-    val viewModel: AlbumDetailVM = viewModel()
-    viewModel.getTracks(albumId = albumId)
     val tempTrackList = viewModel.getTrackList().observeAsState()
+    viewModel.getTracks(albumId = albumId)
+
     MusicConstants.trackList = tempTrackList.value
 
     val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)
@@ -104,8 +103,8 @@ fun AlbumDetail(topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String
                 items(count = trackList.count()) { pos: Int ->
                     val trackModel = trackList[pos]
 
-                    val musicImage: String = viewModel.getImage(md5Image = trackModel.md5Image!!)
-                    val musicDuration: String = viewModel.getDuration(durationInSeconds = trackModel.duration!!)
+                    val musicImage: String = viewModel.getImage(md5Image = trackModel.md5Image)
+                    val musicDuration: String = viewModel.getDuration(durationInSeconds = trackModel.duration)
 
                     Row(
                         modifier = Modifier
