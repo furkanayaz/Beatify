@@ -7,9 +7,8 @@ import androidx.room.Query
 import com.fa.beatify.entities.LikeEntities
 
 @Dao
-interface LikesDao {
-
-    @Query("SELECT * FROM likes")
+interface LikeDao {
+    @Query("SELECT * FROM like")
     suspend fun getLikes(): List<LikeEntities>
 
     @Insert
@@ -17,5 +16,4 @@ interface LikesDao {
 
     @Delete
     suspend fun deleteLike(like: LikeEntities)
-
 }

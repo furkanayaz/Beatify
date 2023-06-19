@@ -38,7 +38,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
@@ -88,19 +87,14 @@ import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.Black
 import com.fa.beatify.constants.MusicConstants.trackingController
-import com.fa.beatify.builders.RoomDB
 import com.fa.beatify.pages.album_detail.AlbumDetailVM
 import com.fa.beatify.pages.artist_detail.ArtistDetailVM
 import com.fa.beatify.pages.artists.ArtistsVM
 import com.fa.beatify.pages.music_categories.MusicCategoriesVM
 import com.fa.beatify.pages.music_likes.LikesVM
 import com.fa.beatify.ui.theme.BeatifyTheme
-import com.fa.beatify.utils.DateRepo
-import com.fa.beatify.utils.DurationRepo
-import com.fa.beatify.utils.ImageRepo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -139,7 +133,6 @@ fun NavActivity(
     artistDetailVM: ArtistDetailVM,
     albumDetailVM: AlbumDetailVM
 ) {
-    val context = LocalContext.current
     val navController = rememberNavController()
 
     val pageTitle = remember { mutableStateOf("Kategoriler") }
@@ -149,10 +142,6 @@ fun NavActivity(
     var selectedBottomItem by remember { mutableIntStateOf(value = 0) }
 
     val trackController: State<Boolean> = trackingController.collectAsState()
-
-    LaunchedEffect(key1 = true) {
-        RoomDB.accessDatabase(context = context)
-    }
 
     Scaffold(modifier = Modifier.fillMaxSize(), containerColor = White, topBar = {
         CustomTopBar(

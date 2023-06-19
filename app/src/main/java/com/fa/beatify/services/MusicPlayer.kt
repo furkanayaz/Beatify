@@ -1,8 +1,8 @@
 package com.fa.beatify.services
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.fa.beatify.MainActivity
 import com.fa.beatify.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ import com.fa.beatify.constants.MusicConstants.playMusic
 import com.fa.beatify.constants.NotificationConstants.CHANNEL_ID
 import com.fa.beatify.constants.NotificationConstants.CHANNEL_NAME
 import com.fa.beatify.constants.NotificationConstants.NOTIFICATION_ID
+import com.fa.beatify.constants.NotificationConstants.REQUEST_CODE
 import com.fa.beatify.models.PlayMusic
 
 class MusicPlayer: Service() {
@@ -82,6 +84,8 @@ class MusicPlayer: Service() {
         playMusic?.let { playMusic: PlayMusic ->
             val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder?
+            val intent = Intent(this, MainActivity::class.java)
+            val pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel: NotificationChannel? = manager.getNotificationChannel(CHANNEL_ID)
@@ -90,21 +94,15 @@ class MusicPlayer: Service() {
                     val tempChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
                     manager.createNotificationChannel(tempChannel)
                 }
+            }
 
-                builder = NotificationCompat.Builder(this, CHANNEL_ID)
-                builder.setAutoCancel(false)
-                builder.setSmallIcon(R.mipmap.light_icon)
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                builder.setContentTitle(playMusic.artistName)
-                builder.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
-
-            }else {
-                builder = NotificationCompat.Builder(this)
-                builder.setAutoCancel(false)
-                builder.setSmallIcon(R.mipmap.light_icon)
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                builder.setContentTitle(playMusic.artistName)
-                builder.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
+            builder = NotificationCompat.Builder(this, CHANNEL_ID).also {
+                it.setAutoCancel(false)
+                it.setSmallIcon(R.mipmap.light_icon)
+                it.setContentIntent(pendingIntent)
+                it.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                it.setContentTitle(playMusic.artistName)
+                it.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
             }
 
             startForeground(NOTIFICATION_ID, builder.build())

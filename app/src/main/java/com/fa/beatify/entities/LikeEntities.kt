@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
 
-@Entity(tableName = "likes")
+@Entity(tableName = "like")
 @SuppressLint("KotlinNullnessAnnotation")
 data class LikeEntities(
     @PrimaryKey(autoGenerate = true)
