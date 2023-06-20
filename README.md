@@ -3,9 +3,9 @@
 
 I made this project with Jetpack Compose, which I made using Deezer API, for Apptern Case Study prepared by Appcent company.
 
-Built with **JETPACK COMPOSE** Framework as a based Kotlin!
+Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 
-**Popular Used Libraries 🎉**
+**Popular Used Libraries** 🎉
 - MVVM 🏗️
 - Live Data 📡
 - Repository 🗄️
@@ -18,10 +18,10 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin!
 - Accompanist 🎵
 - Coil Image Library 🖼️
 
-**ALSO**
-- Clean Architecture
-- Singleton Responsibility
+**ALSO** 👇
+- Clean Architecture ☄️
+- Singleton Responsibility 🥇
 
-App Introduction on YouTube: https://youtu.be/AeIloqi5Oic
+App Introduction on YouTube: https://youtu.be/AeIloqi5Oic 📼
 
-21 June 2023 - FURKAN AYAZ :)
+21 June 2023 - FURKAN AYAZ :) 🗓️
