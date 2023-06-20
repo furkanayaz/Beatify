@@ -1,5 +1,5 @@
 
-![Beatify SS](https://github.com/furkanayaz/Beatify/assets/59910223/cf77e2a0-1f8e-4b29-ba45-5cf2e858e71a)
+![Beatify SS](https://user-images.githubusercontent.com/59910223/247273759-530f9671-ecf8-4296-ac30-f188555fcb26.png)
 
 I made this project with Jetpack Compose, which I made using Deezer API, for Apptern Case Study prepared by Appcent company.
 
