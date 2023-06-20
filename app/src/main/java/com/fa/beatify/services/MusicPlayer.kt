@@ -85,7 +85,7 @@ class MusicPlayer: Service() {
             val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder?
             val intent = Intent(this, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel: NotificationChannel? = manager.getNotificationChannel(CHANNEL_ID)
