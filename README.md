@@ -22,6 +22,6 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - Clean Architecture ☄️
 - Singleton Responsibility 🥇
 
-App Introduction on YouTube: https://youtu.be/AeIloqi5Oic 📼
+App Introduction on YouTube: [Click to Watch!] (https://youtu.be/AeIloqi5Oic) 📼
 
 21 June 2023 - FURKAN AYAZ :) 🗓️
