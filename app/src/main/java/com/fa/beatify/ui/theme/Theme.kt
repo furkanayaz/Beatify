@@ -8,7 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.fa.beatify.LtMode
 import com.fa.beatify.NtMode
-import com.fa.beatify.schemes.AppColor
+import com.fa.beatify.AppColors
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -25,7 +26,7 @@ fun BeatifyTheme(
         packageManager.setComponentEnabledSetting(ComponentName(context, NtMode::class.java), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
     }
 
-    val systemUiController = rememberSystemUiController()
+    val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.apply {
         setSystemBarsColor(color = currentColor().sysBars)
         statusBarDarkContentEnabled = !isSystemInDarkTheme()
@@ -36,7 +37,7 @@ fun BeatifyTheme(
     )
 }
 
-private val LtColors = AppColor(
+private val LtColors = AppColors(
     primary = LtPrimary,
     selectionHandle = LtSelectionHandle,
     selectionBg = LtSelectionBg,
@@ -45,7 +46,10 @@ private val LtColors = AppColor(
     navBarIndicator = LtNavBarIndicator,
     navBarUnSelected = LtNavBarUnSelected,
     navBarSelected = LtNavBarSelected,
-    textColor = LtTextColor,
+    text = LtText,
+    searchPlaceText = LtSearchPlaceText,
+    searchText = LtSearchText,
+    searchIcon = LtSearchIcon,
     searchContainer = LtSearchContainer,
     gridCategoryBg = LtGridCategoryBg,
     gridArtistBg = LtGridArtistBg,
@@ -54,7 +58,7 @@ private val LtColors = AppColor(
     icon = LtIcon
 )
 
-private val NtColors = AppColor(
+private val NtColors = AppColors(
     primary = NtPrimary,
     selectionHandle = NtSelectionHandle,
     selectionBg = NtSelectionBg,
@@ -63,7 +67,10 @@ private val NtColors = AppColor(
     navBarIndicator = NtNavBarIndicator,
     navBarUnSelected = NtNavBarUnSelected,
     navBarSelected = NtNavBarSelected,
-    textColor = NtTextColor,
+    text = NtText,
+    searchPlaceText = NtSearchPlaceText,
+    searchText = NtSearchText,
+    searchIcon = NtSearchIcon,
     searchContainer = NtSearchContainer,
     gridCategoryBg = NtGridCategoryBg,
     gridArtistBg = NtGridArtistBg,
@@ -73,4 +80,4 @@ private val NtColors = AppColor(
 )
 
 @Composable
-fun currentColor(): AppColor = if (isSystemInDarkTheme()) NtColors else LtColors
+fun currentColor(): AppColors = if (isSystemInDarkTheme()) NtColors else LtColors

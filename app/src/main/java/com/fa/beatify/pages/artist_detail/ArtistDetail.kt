@@ -101,13 +101,13 @@ fun ArtistDetail(viewModel: ArtistDetailVM, navController: NavHostController, to
                             .weight(weight = 0.7f), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start) {
                             Text(modifier = Modifier
                                 .width(width = (configuration.screenWidthDp / 2).dp)
-                                .padding(start = 16.0.dp), textAlign = TextAlign.Start, maxLines = 1, text = album.title!!, style = TextStyle(color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                .padding(start = 16.0.dp), textAlign = TextAlign.Start, maxLines = 1, text = album.title!!, style = TextStyle(color = currentColor().text, fontSize = 14.0.sp, fontFamily = FontFamily(
                                 Font(resId = R.font.sofiaprosemibold, weight = FontWeight.SemiBold)
                             )), overflow = TextOverflow.Ellipsis
                             )
                             Text(modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 8.0.dp, start = 16.0.dp), textAlign = TextAlign.Start, text = viewModel.getReleaseDate(releaseDate = album.releaseDate!!), style = TextStyle(color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal))))
+                                .padding(top = 8.0.dp, start = 16.0.dp), textAlign = TextAlign.Start, text = viewModel.getReleaseDate(releaseDate = album.releaseDate!!), style = TextStyle(color = currentColor().text, fontSize = 12.0.sp, fontFamily = FontFamily(Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal))))
                         }
                     }
                 })

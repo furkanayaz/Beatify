@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
@@ -125,7 +124,7 @@ fun MusicCategories(viewModel: MusicCategoriesVM, navController: NavHostControll
                                             weight = FontWeight.SemiBold
                                         )
                                     ),
-                                    color = currentColor().textColor
+                                    color = currentColor().text
                                 )
                             )
                         })

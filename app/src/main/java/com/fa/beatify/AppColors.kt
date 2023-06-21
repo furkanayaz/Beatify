@@ -1,8 +1,8 @@
-package com.fa.beatify.schemes
+package com.fa.beatify
 
 import androidx.compose.ui.graphics.Color
 
-data class AppColor(
+data class AppColors(
     val primary: Color,
     val selectionHandle: Color,
     val selectionBg: Color,
@@ -11,7 +11,10 @@ data class AppColor(
     val navBarIndicator: Color,
     val navBarUnSelected: Color,
     val navBarSelected: Color,
-    val textColor: Color,
+    val text: Color,
+    val searchPlaceText: Color,
+    val searchText: Color,
+    val searchIcon: Color,
     val searchContainer: Color,
     val gridCategoryBg: Color,
     val gridArtistBg: Color,

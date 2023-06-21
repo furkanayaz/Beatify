@@ -100,8 +100,8 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
                             .padding(top = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
                     )
                 }
-                items(count = trackList.count()) { pos: Int ->
-                    val trackModel = trackList[pos]
+                items(count = MusicConstants.trackList!!.count()) { pos: Int ->
+                    val trackModel = MusicConstants.trackList!![pos]
 
                     val musicImage: String = viewModel.getImage(md5Image = trackModel.md5Image)
                     val musicDuration: String = viewModel.getDuration(durationInSeconds = trackModel.duration)
@@ -142,7 +142,7 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
                                 modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                 text = trackModel.title!!,
                                 style = TextStyle(
-                                    color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                    color = currentColor().text, fontSize = 14.0.sp, fontFamily = FontFamily(
                                         Font(
                                             resId = R.font.sofiaprosemibold,
                                             weight = FontWeight.SemiBold
@@ -154,7 +154,7 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
                             )
                             Text(
                                 text = musicDuration, style = TextStyle(
-                                    color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(
+                                    color = currentColor().text, fontSize = 12.0.sp, fontFamily = FontFamily(
                                         Font(
                                             resId = R.font.sofiaprosemibold,
                                             weight = FontWeight.SemiBold

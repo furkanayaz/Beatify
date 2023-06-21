@@ -134,14 +134,13 @@ fun NavActivity(
     albumDetailVM: AlbumDetailVM
 ) {
     val navController = rememberNavController()
+    val trackController: State<Boolean> = trackingController.collectAsState()
 
     val pageTitle = remember { mutableStateOf("Kategoriler") }
     val tfSearch = remember { mutableStateOf("") }
     val searchController = remember { mutableStateOf(value = false) }
     val bottomBarController = remember { mutableStateOf(value = false) }
     var selectedBottomItem by remember { mutableIntStateOf(value = 0) }
-
-    val trackController: State<Boolean> = trackingController.collectAsState()
 
     Scaffold(modifier = Modifier.fillMaxSize(), containerColor = White, topBar = {
         CustomTopBar(
@@ -391,8 +390,8 @@ private fun CustomTopBar(
     val tfFocusRequester = remember { FocusRequester() }
     val containerColor = currentColor().searchContainer
     val tfColors: TextFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = currentColor().textColor,
-        unfocusedTextColor = currentColor().textColor,
+        focusedTextColor = currentColor().searchText,
+        unfocusedTextColor = currentColor().searchText,
         focusedContainerColor = containerColor,
         unfocusedContainerColor = containerColor,
         disabledContainerColor = containerColor,
@@ -473,7 +472,7 @@ private fun CustomTopBar(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.search),
-                        tint = currentColor().icon,
+                        tint = currentColor().searchIcon,
                         contentDescription = stringResource(id = R.string.search)
                     )
                 },
@@ -483,6 +482,7 @@ private fun CustomTopBar(
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.close),
+                            tint = currentColor().searchIcon,
                             contentDescription = stringResource(id = R.string.delete)
                         )
                     }
@@ -494,7 +494,7 @@ private fun CustomTopBar(
                                 Font(
                                     resId = R.font.sofiaproregular, weight = FontWeight.Medium
                                 )
-                            ), color = currentColor().textColor
+                            ), color = currentColor().searchPlaceText
                         )
                     )
                 },

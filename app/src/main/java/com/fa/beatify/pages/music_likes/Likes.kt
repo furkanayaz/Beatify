@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.constants.MusicConstants
@@ -139,7 +138,7 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                     modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                     text = musicName,
                                     style = TextStyle(
-                                        color = currentColor().textColor, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().text, fontSize = 14.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -151,7 +150,7 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                 )
                                 Text(
                                     text = musicDuration, style = TextStyle(
-                                        color = currentColor().textColor, fontSize = 12.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().text, fontSize = 12.0.sp, fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -197,7 +196,7 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                 Font(
                                     resId = R.font.sofiaproregular, weight = FontWeight.Medium
                                 )
-                            ), color = currentColor().textColor
+                            ), color = currentColor().text
                         )
                     )
                 }
