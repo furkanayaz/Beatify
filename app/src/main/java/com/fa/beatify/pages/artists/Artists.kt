@@ -38,16 +38,26 @@ import com.fa.beatify.models.ArtistModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
-fun Artist(viewModel: ArtistsVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, genreId: Int) {
+fun Artist(
+    viewModel: ArtistsVM,
+    navController: NavHostController,
+    topPadding: Dp,
+    bottomPadding: Dp,
+    tfSearch: MutableState<String>,
+    genreId: Int
+) {
     val artistList = viewModel.artists.observeAsState()
     viewModel.allArtists(genreId = genreId)
 
-    val oddPaddingValues = PaddingValues(top = 7.5.dp, bottom = 7.5.dp, start = 15.0.dp, end = 7.5.dp)
-    val evenPaddingValues = PaddingValues(top = 7.5.dp, bottom = 7.5.dp, end = 15.0.dp, start = 7.5.dp)
+    val oddPaddingValues =
+        PaddingValues(top = 7.5.dp, bottom = 7.5.dp, start = 15.0.dp, end = 7.5.dp)
+    val evenPaddingValues =
+        PaddingValues(top = 7.5.dp, bottom = 7.5.dp, end = 15.0.dp, start = 7.5.dp)
 
-    Column(modifier = Modifier
+    /*Column(modifier = Modifier
         .fillMaxSize()
         .background(color = currentColor().screenBg)
         .padding(
@@ -109,5 +119,5 @@ fun Artist(viewModel: ArtistsVM, navController: NavHostController, topPadding: D
                 }
             }
         }?: println("Null pointer exception...")
-    }
+    }*/
 }

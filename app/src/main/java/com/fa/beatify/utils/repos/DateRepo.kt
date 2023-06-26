@@ -1,4 +1,4 @@
-package com.fa.beatify.utils
+package com.fa.beatify.utils.repos
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat

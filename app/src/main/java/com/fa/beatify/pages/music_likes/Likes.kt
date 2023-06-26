@@ -51,9 +51,15 @@ import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
-fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>) {
+fun Likes(
+    viewModel: LikesVM,
+    topPadding: Dp,
+    bottomPadding: Dp,
+    tfSearch: MutableState<String>
+) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
@@ -63,7 +69,8 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
 
     MusicConstants.likeList = likesData.value
 
-    val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)
+    val playingController: State<Boolean> =
+        MusicConstants.trackingController.collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -112,12 +119,22 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
                                     MusicConstants.playingController.value = false
-                                    MusicConstants.playMusic = PlayMusic(artistName = likeModel.artistName, albumName = likeModel.albumName, musicName = likeModel.musicName, musicImage = likeModel.musicImage, musicDuration = likeModel.musicDuration)
+                                    MusicConstants.playMusic = PlayMusic(
+                                        artistName = likeModel.artistName,
+                                        albumName = likeModel.albumName,
+                                        musicName = likeModel.musicName,
+                                        musicImage = likeModel.musicImage,
+                                        musicDuration = likeModel.musicDuration
+                                    )
 
                                     if (playingController.value) {
                                         context.stopService(musicPlayerService)
                                     }
-                                    context.startService(musicPlayerService.putExtra("url", likeModel.musicPreview))
+                                    context.startService(
+                                        musicPlayerService.putExtra(
+                                            "url", likeModel.musicPreview
+                                        )
+                                    )
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
@@ -138,7 +155,9 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                     modifier = Modifier.width(width = (configuration.screenWidthDp / 2).dp),
                                     text = musicName,
                                     style = TextStyle(
-                                        color = currentColor().text, fontSize = 14.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().text,
+                                        fontSize = 14.0.sp,
+                                        fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold
@@ -150,7 +169,9 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
                                 )
                                 Text(
                                     text = musicDuration, style = TextStyle(
-                                        color = currentColor().text, fontSize = 12.0.sp, fontFamily = FontFamily(
+                                        color = currentColor().text,
+                                        fontSize = 12.0.sp,
+                                        fontFamily = FontFamily(
                                             Font(
                                                 resId = R.font.sofiaprosemibold,
                                                 weight = FontWeight.SemiBold

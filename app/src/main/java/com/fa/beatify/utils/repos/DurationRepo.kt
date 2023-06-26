@@ -1,4 +1,4 @@
-package com.fa.beatify.utils
+package com.fa.beatify.utils.repos
 
 class DurationRepo {
     fun getDuration(durationInSeconds: Int): String {

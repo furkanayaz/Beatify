@@ -53,9 +53,18 @@ import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
-fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistName: String, albumName: String, albumId: Int) {
+fun AlbumDetail(
+    viewModel: AlbumDetailVM,
+    topPadding: Dp,
+    bottomPadding: Dp,
+    tfSearch: MutableState<String>,
+    artistName: String,
+    albumName: String,
+    albumId: Int
+) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
@@ -63,15 +72,16 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
     val tempTrackList = viewModel.trackList.observeAsState()
     viewModel.getTracks(albumId = albumId)
 
-    MusicConstants.trackList = tempTrackList.value
+    //MusicConstants.trackList = tempTrackList.value
 
-    val playingController: State<Boolean> = MusicConstants.trackingController.collectAsState(initial = false)
+    val playingController: State<Boolean> =
+        MusicConstants.trackingController.collectAsState(initial = false)
 
     val likeChecked = remember {
         mutableStateListOf(-1)
     }
 
-    Column(
+    /*Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = currentColor().screenBg)
@@ -212,7 +222,7 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
                 }
             }
         }
-    }
+    }*/
 
 
 }

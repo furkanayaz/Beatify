@@ -93,8 +93,10 @@ import com.fa.beatify.pages.artists.ArtistsVM
 import com.fa.beatify.pages.music_categories.MusicCategoriesVM
 import com.fa.beatify.pages.music_likes.LikesVM
 import com.fa.beatify.ui.theme.BeatifyTheme
+import com.fa.beatify.utils.network.NetworkConnection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

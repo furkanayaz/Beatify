@@ -42,20 +42,28 @@ import com.fa.beatify.models.AlbumModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
-fun ArtistDetail(viewModel: ArtistDetailVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int, artistName: String) {
-    viewModel.getAlbums(artistId = artistId)
+fun ArtistDetail(
+    viewModel: ArtistDetailVM,
+    navController: NavHostController,
+    topPadding: Dp,
+    bottomPadding: Dp,
+    tfSearch: MutableState<String>,
+    artistId: Int,
+    artistName: String
+) {
     val tempModel = viewModel.albumModel.observeAsState()
+    viewModel.getAlbums(artistId = artistId)
 
     val configuration = LocalConfiguration.current
     val lazyListState = rememberLazyListState()
 
-    Column(modifier = Modifier
+    /*Column(modifier = Modifier
         .fillMaxSize()
         .padding(top = topPadding, bottom = bottomPadding)
         .background(color = currentColor().screenBg), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
-
         tempModel.value?.let { albumModelList ->
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
@@ -113,6 +121,5 @@ fun ArtistDetail(viewModel: ArtistDetailVM, navController: NavHostController, to
                 })
             })
         }
-
-    }
+    }*/
 }

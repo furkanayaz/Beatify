@@ -10,9 +10,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import com.fa.beatify.constants.ApiConstants.BASE_URL
-import com.fa.beatify.utils.DateRepo
-import com.fa.beatify.utils.DurationRepo
-import com.fa.beatify.utils.ImageRepo
+import com.fa.beatify.utils.network.NetworkConnection
+import com.fa.beatify.utils.repos.DateRepo
+import com.fa.beatify.utils.repos.DurationRepo
+import com.fa.beatify.utils.repos.ImageRepo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
@@ -34,6 +35,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideImageRepo(): ImageRepo = ImageRepo()
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnection(@ApplicationContext context: Context): NetworkConnection = NetworkConnection(context = context)
 
     @Provides
     @Singleton
