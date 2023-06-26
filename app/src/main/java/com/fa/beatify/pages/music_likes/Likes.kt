@@ -58,7 +58,7 @@ fun Likes(viewModel: LikesVM, topPadding: Dp, bottomPadding: Dp, tfSearch: Mutab
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
 
-    val likesData = viewModel.getLikesData().observeAsState()
+    val likesData = viewModel.likesData.observeAsState()
     viewModel.allLikes()
 
     MusicConstants.likeList = likesData.value

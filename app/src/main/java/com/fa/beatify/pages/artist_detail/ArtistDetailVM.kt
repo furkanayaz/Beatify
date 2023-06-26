@@ -12,16 +12,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArtistDetailVM @Inject constructor(private val beatifyRepo: BeatifyRepo, private val dateRepo: DateRepo): ViewModel() {
-    private val albumModel = MutableLiveData<List<AlbumModel>>()
-
+    private val _albumModel = MutableLiveData<List<AlbumModel>>()
+    val albumModel: MutableLiveData<List<AlbumModel>>
+        get() = _albumModel
     fun getAlbums(artistId: Int) {
         viewModelScope.launch {
-            albumModel.postValue(beatifyRepo.allAlbums(artistId = artistId))
+            _albumModel.postValue(beatifyRepo.allAlbums(artistId = artistId))
         }
     }
 
     fun getReleaseDate(releaseDate: String?): String = dateRepo.getReleaseDate(releaseDate = releaseDate?: "0")
-
-    fun getAlbumModel(): MutableLiveData<List<AlbumModel>> = albumModel
-
 }

@@ -11,11 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LikesVM @Inject constructor(private val beatifyRepo: BeatifyRepo) : ViewModel() {
-    private val likesData = MutableLiveData<List<LikeEntities>>()
-
+    private val _likesData = MutableLiveData<List<LikeEntities>>()
+    val likesData: MutableLiveData<List<LikeEntities>>
+        get() = _likesData
     fun allLikes() {
         viewModelScope.launch {
-            likesData.postValue(beatifyRepo.allLikes())
+            _likesData.postValue(beatifyRepo.allLikes())
         }
     }
 
@@ -24,7 +25,4 @@ class LikesVM @Inject constructor(private val beatifyRepo: BeatifyRepo) : ViewMo
             beatifyRepo.deleteLike(like = like)
         }
     }
-
-    fun getLikesData(): MutableLiveData<List<LikeEntities>> = likesData
-
 }

@@ -41,7 +41,7 @@ import com.fa.beatify.ui.theme.currentColor
 
 @Composable
 fun Artist(viewModel: ArtistsVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, genreId: Int) {
-    val artistList = viewModel.getArtists().observeAsState()
+    val artistList = viewModel.artists.observeAsState()
     viewModel.allArtists(genreId = genreId)
 
     val oddPaddingValues = PaddingValues(top = 7.5.dp, bottom = 7.5.dp, start = 15.0.dp, end = 7.5.dp)

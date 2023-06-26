@@ -14,11 +14,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumDetailVM @Inject constructor(private val beatifyRepo: BeatifyRepo, private val imageRepo: ImageRepo, private val durationRepo: DurationRepo): ViewModel() {
-    private val trackList = MutableLiveData<List<TrackModel>>()
-
+    private val _trackList = MutableLiveData<List<TrackModel>>()
+    val trackList: MutableLiveData<List<TrackModel>>
+        get() = _trackList
     fun getTracks(albumId: Int) {
         viewModelScope.launch {
-            trackList.postValue(beatifyRepo.allTracks(albumId = albumId))
+            _trackList.postValue(beatifyRepo.allTracks(albumId = albumId))
         }
     }
 
@@ -37,6 +38,4 @@ class AlbumDetailVM @Inject constructor(private val beatifyRepo: BeatifyRepo, pr
             beatifyRepo.deleteLike(like = like)
         }
     }
-
-    fun getTrackList(): MutableLiveData<List<TrackModel>> = trackList
 }

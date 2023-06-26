@@ -11,13 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArtistsVM @Inject constructor(private val beatifyRepo: BeatifyRepo): ViewModel() {
-    private val artists = MutableLiveData<List<ArtistModel>>()
-
+    private val _artists = MutableLiveData<List<ArtistModel>>()
+    val artists: MutableLiveData<List<ArtistModel>>
+        get() = _artists
     fun allArtists(genreId: Int) {
         viewModelScope.launch {
-            artists.postValue(beatifyRepo.allArtists(genreId = genreId))
+            _artists.postValue(beatifyRepo.allArtists(genreId = genreId))
         }
     }
-
-    fun getArtists(): MutableLiveData<List<ArtistModel>> = artists
 }

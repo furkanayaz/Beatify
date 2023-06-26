@@ -60,7 +60,7 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
 
-    val tempTrackList = viewModel.getTrackList().observeAsState()
+    val tempTrackList = viewModel.trackList.observeAsState()
     viewModel.getTracks(albumId = albumId)
 
     MusicConstants.trackList = tempTrackList.value
@@ -76,7 +76,7 @@ fun AlbumDetail(viewModel: AlbumDetailVM, topPadding: Dp, bottomPadding: Dp, tfS
             .fillMaxSize()
             .background(color = currentColor().screenBg)
     ) {
-        MusicConstants.trackList?.let { trackList: List<TrackModel> ->
+        MusicConstants.trackList?.let {
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = CustomGradient

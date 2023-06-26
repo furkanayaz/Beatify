@@ -46,7 +46,7 @@ import com.fa.beatify.ui.theme.currentColor
 @Composable
 fun ArtistDetail(viewModel: ArtistDetailVM, navController: NavHostController, topPadding: Dp, bottomPadding: Dp, tfSearch: MutableState<String>, artistId: Int, artistName: String) {
     viewModel.getAlbums(artistId = artistId)
-    val tempModel = viewModel.getAlbumModel().observeAsState()
+    val tempModel = viewModel.albumModel.observeAsState()
 
     val configuration = LocalConfiguration.current
     val lazyListState = rememberLazyListState()
