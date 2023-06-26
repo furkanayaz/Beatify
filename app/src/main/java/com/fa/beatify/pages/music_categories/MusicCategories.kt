@@ -51,8 +51,6 @@ import com.fa.beatify.models.GenreModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
-import com.fa.beatify.utils.network.Connection
-import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
 fun MusicCategories(
@@ -85,7 +83,10 @@ fun MusicCategories(
         )
 
         is BeatifyResponse.Loading -> LoadingMusicCategories(
-            oddPaddingValues = oddPaddingValues, evenPaddingValues = evenPaddingValues
+            topPadding = topPadding,
+            bottomPadding = bottomPadding,
+            oddPaddingValues = oddPaddingValues,
+            evenPaddingValues = evenPaddingValues
         )
 
         else -> {}
@@ -187,7 +188,7 @@ fun FailureMusicCategories(
             text = stringResource(id = R.string.no_content), style = TextStyle(
                 color = currentColor().text, fontSize = 15.0.sp, fontFamily = FontFamily(
                     Font(resId = R.font.sofiaprosemibold, weight = FontWeight.SemiBold)
-                )
+                ), textAlign = TextAlign.Center
             )
         )
         Box(modifier = Modifier.clickable { viewModel.allGenres() },
@@ -208,7 +209,10 @@ fun FailureMusicCategories(
 
 @Composable
 fun LoadingMusicCategories(
-    oddPaddingValues: PaddingValues, evenPaddingValues: PaddingValues
+    topPadding: Dp,
+    bottomPadding: Dp,
+    oddPaddingValues: PaddingValues,
+    evenPaddingValues: PaddingValues
 ) {
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.6f),
@@ -229,14 +233,17 @@ fun LoadingMusicCategories(
         end = Offset(x = translateAnim.value, y = translateAnim.value)
     )
 
-    LazyVerticalGrid(columns = GridCells.Fixed(count = 2), content = {
-        items(count = 10) { pos: Int ->
-            Box(modifier = Modifier
-                .aspectRatio(ratio = 1.0f)
-                .padding(if (pos % 2 == 0) oddPaddingValues else evenPaddingValues)
-                .clip(shape = RoundedCornerShape(size = 10.0.dp))
-                .background(brush = shimmerBrush)
+    LazyVerticalGrid(modifier = Modifier.fillMaxSize().padding(top = topPadding, bottom = bottomPadding),
+        columns = GridCells.Fixed(count = 2),
+        content = {
+            items(count = 10) { pos: Int ->
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(ratio = 1.0f)
+                        .padding(if (pos % 2 == 0) oddPaddingValues else evenPaddingValues)
+                        .clip(shape = RoundedCornerShape(size = 10.0.dp))
+                        .background(brush = shimmerBrush)
                 )
-        }
-    })
+            }
+        })
 }
