@@ -1,6 +1,7 @@
 package com.fa.beatify.pages.music_likes
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.LtPrimary
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 
 @Composable
@@ -63,6 +65,8 @@ fun Likes(
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
+
+    val connObserver: State<Connection.Status> = NetworkConnection(context = context).observe().collectAsState(initial = Connection.Status.Unavailable)
 
     val likesData = viewModel.likesData.observeAsState()
     viewModel.allLikes()
@@ -118,23 +122,27 @@ fun Likes(
                                 .background(color = currentColor().gridArtistBg)
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
-                                    MusicConstants.playingController.value = false
-                                    MusicConstants.playMusic = PlayMusic(
-                                        artistName = likeModel.artistName,
-                                        albumName = likeModel.albumName,
-                                        musicName = likeModel.musicName,
-                                        musicImage = likeModel.musicImage,
-                                        musicDuration = likeModel.musicDuration
-                                    )
-
-                                    if (playingController.value) {
-                                        context.stopService(musicPlayerService)
-                                    }
-                                    context.startService(
-                                        musicPlayerService.putExtra(
-                                            "url", likeModel.musicPreview
+                                    if (connObserver.value == Connection.Status.Available) {
+                                        MusicConstants.playingController.value = false
+                                        MusicConstants.playMusic = PlayMusic(
+                                            artistName = likeModel.artistName,
+                                            albumName = likeModel.albumName,
+                                            musicName = likeModel.musicName,
+                                            musicImage = likeModel.musicImage,
+                                            musicDuration = likeModel.musicDuration
                                         )
-                                    )
+
+                                        if (playingController.value) {
+                                            context.stopService(musicPlayerService)
+                                        }
+                                        context.startService(
+                                            musicPlayerService.putExtra(
+                                                "url", likeModel.musicPreview
+                                            )
+                                        )
+                                    } else {
+                                        Toast.makeText(context, context.getString(R.string.play_problem), Toast.LENGTH_LONG).show()
+                                    }
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically

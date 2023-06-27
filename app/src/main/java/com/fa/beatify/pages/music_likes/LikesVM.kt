@@ -23,6 +23,7 @@ class LikesVM @Inject constructor(private val beatifyRepo: BeatifyRepo) : ViewMo
     fun deleteLike(like: LikeEntities) {
         viewModelScope.launch {
             beatifyRepo.deleteLike(like = like)
+            allLikes()
         }
     }
 }
