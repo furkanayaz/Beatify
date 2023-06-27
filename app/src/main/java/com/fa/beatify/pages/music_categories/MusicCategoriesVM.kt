@@ -22,7 +22,7 @@ class MusicCategoriesVM @Inject constructor(networkConnection: NetworkConnection
     val genres: MutableLiveData<BeatifyResponse<Genre>>
         get() = _genres
 
-    init {
+    fun fetchData() {
         _genres.postValue(BeatifyResponse.Loading())
 
         viewModelScope.launch {
@@ -36,7 +36,7 @@ class MusicCategoriesVM @Inject constructor(networkConnection: NetworkConnection
         }
     }
 
-    fun allGenres() {
+    private fun allGenres() {
         viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 val allGenres: Genre? = beatifyRepo.allGenres()
