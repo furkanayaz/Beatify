@@ -39,7 +39,7 @@ fun AlbumDetail(
         )
 
         is BeatifyResponse.Failure -> FailureMusicCategories(
-            topPadding = topPadding, bottomPadding = bottomPadding
+            topPadding = topPadding, bottomPadding = bottomPadding, code = trackList.value?.code
         )
 
         is BeatifyResponse.Loading -> LoadingPage(

@@ -12,6 +12,7 @@
     <string name="like">Beğen</string>
     <string name="no_likes">Beğendiğiniz herhangi bir şarkı bulunmamaktadır.</string>
     <string name="no_content">İçerik yüklenirken hata oluştu.</string>
+    <string name="timeout_content">İleri tarihli bir albüm seçtiğinizden dolayı, gösterilebilecek içerik bulunmamaktadır.</string>
     <string name="play_problem">İnternet bağlantınız olmadığından dolayı, müzik oynatılamadı.</string>
     <string name="again">YENİDEN DENE</string>
 </resources>
