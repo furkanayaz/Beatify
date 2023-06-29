@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Beatify</string>
+    <string name="categories">Categories</string>
+    <string name="likes">Likes</string>
+    <string name="likes2">Likes</string>
+    <string name="back">Back</string>
+    <string name="enter_category">Enter category…</string>
+    <string name="search">Search</string>
+    <string name="delete">Delete</string>
+    <string name="music_image">Music Image</string>
+    <string name="close">CLOSE</string>
+    <string name="like">Like</string>
+    <string name="no_likes">You have not liked any songs.</string>
+    <string name="no_content">An error occurred while loading content.</string>
+    <string name="no_album_content">There is no content in the album.</string>
+    <string name="play_problem">Music playback failed due to lack of internet connection.</string>
+</resources>

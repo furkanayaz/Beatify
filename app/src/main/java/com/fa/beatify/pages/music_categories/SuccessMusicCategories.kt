@@ -41,6 +41,7 @@ import com.fa.beatify.models.GenreModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.NavUtility
 
 @Composable
 fun SuccessMusicCategories(
@@ -71,7 +72,9 @@ fun SuccessMusicCategories(
             )
 
             LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(count = 2), state = gridState
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Fixed(count = 2),
+                state = gridState
             ) {
                 val tempList: List<GenreModel> = genreModels!!.filter { genreModel: GenreModel ->
                     genreModel.name!!.lowercase().contains(tfSearch.value.lowercase())
@@ -86,13 +89,15 @@ fun SuccessMusicCategories(
                         .clip(shape = rowShape)
                         .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
-                            navController.navigate(
-                                route = "artists/${model.id!!}/${
-                                    model.name!!.replace(
-                                        "/", " "
+                            navController
+                                .navigate(
+                                    route = NavUtility.Artists.withSourceArgs(
+                                        model.id.toString(), model.name!!.replace("/", " ")
                                     )
-                                }"
-                            ).also { ListState.CATEGORIES_STATE = gridState.firstVisibleItemIndex }
+                                )
+                                .also {
+                                    ListState.CATEGORIES_STATE = gridState.firstVisibleItemIndex
+                                }
                         }, contentAlignment = Alignment.BottomCenter, content = {
                         AsyncImage(
                             modifier = Modifier.fillMaxSize(),

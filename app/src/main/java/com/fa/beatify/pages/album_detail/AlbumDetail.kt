@@ -19,12 +19,12 @@ fun AlbumDetail(
     tfSearch: MutableState<String>,
     artistName: String,
     albumName: String,
-    albumId: Int
+    albumId: String
 ) {
     val trackList: State<BeatifyResponse<Track>?> = viewModel.trackList.observeAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchData(albumId = albumId)
+        viewModel.fetchData(albumId = albumId.toInt())
     }
 
     when (trackList.value) {

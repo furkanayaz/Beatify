@@ -38,7 +38,7 @@ fun FailureMusicCategories(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth().padding(start = 8.0.dp, end = 8.0.dp),
-            text = stringResource(id = if (code == 204) R.string.no_content else if (code == 404) R.string.timeout_content else R.string.no_content), style = TextStyle(
+            text = stringResource(id = if (code == 204) R.string.no_content else if (code == 404) R.string.no_album_content else R.string.no_content), style = TextStyle(
                 color = currentColor().text, fontSize = 15.0.sp, fontFamily = FontFamily(
                     Font(resId = R.font.sofiaprosemibold, weight = FontWeight.SemiBold)
                 ), textAlign = TextAlign.Center

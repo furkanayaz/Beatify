@@ -21,12 +21,12 @@ fun Artist(
     topPadding: Dp,
     bottomPadding: Dp,
     tfSearch: MutableState<String>,
-    genreId: Int
+    genreId: String
 ) {
     val artist: State<BeatifyResponse<Artist>?> = viewModel.artists.observeAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchData(genreId = genreId)
+        viewModel.fetchData(genreId = genreId.toInt())
     }
 
     val oddPaddingValues =

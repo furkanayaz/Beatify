@@ -48,8 +48,12 @@ class MusicPlayer: Service() {
         val url: String? = intent?.getStringExtra("url")
 
         url?.let { locUrl ->
-            playMusic(url = locUrl)
-            showNotification()
+            try {
+                playMusic(url = locUrl)
+                showNotification()
+            }catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         return START_NOT_STICKY
@@ -70,13 +74,17 @@ class MusicPlayer: Service() {
     private val musicTimer: Flow<Int> = flow {
         var currentPos = 0
 
-        while (true) {
-            if (mediaPlayer!!.isPlaying) {
-                emit(value = currentPos)
-                currentPos++
-            }
+        try {
+            while (true) {
+                if (mediaPlayer!!.isPlaying) {
+                    emit(value = currentPos)
+                    currentPos++
+                }
 
-            delay(timeMillis = 1000L)
+                delay(timeMillis = 1000L)
+            }
+        }catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

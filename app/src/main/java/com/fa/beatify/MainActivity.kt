@@ -2,7 +2,6 @@ package com.fa.beatify
 
 import com.fa.beatify.ui.theme.currentColor
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -18,6 +17,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -83,6 +83,7 @@ import com.fa.beatify.pages.music_categories.MusicCategories
 import com.fa.beatify.pages.music_likes.Likes
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import com.fa.beatify.constants.utils.ClearConstants
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.Black
@@ -93,6 +94,7 @@ import com.fa.beatify.pages.artists.ArtistsVM
 import com.fa.beatify.pages.music_categories.MusicCategoriesVM
 import com.fa.beatify.pages.music_likes.LikesVM
 import com.fa.beatify.ui.theme.BeatifyTheme
+import com.fa.beatify.utils.NavUtility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -108,8 +110,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            BeatifyTheme(
-                packageManager = packageManager,
+            BeatifyTheme(packageManager = packageManager,
                 context = LocalContext.current,
                 content = {
                     NavActivity(
@@ -123,6 +124,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        clearConstants()
+    }
+
+    private fun clearConstants() {
+        ClearConstants.apply {
+            clearListConsts()
+            clearImageConsts()
+        }
+    }
+
 }
 
 @Composable
@@ -133,14 +146,14 @@ fun NavActivity(
     artistDetailVM: ArtistDetailVM,
     albumDetailVM: AlbumDetailVM
 ) {
-    val navController = rememberNavController()
+    val navController: NavHostController = rememberNavController()
     val trackController: State<Boolean> = trackingController.collectAsState()
 
-    val pageTitle = remember { mutableStateOf("Kategoriler") }
-    val tfSearch = remember { mutableStateOf("") }
-    val searchController = remember { mutableStateOf(value = false) }
-    val bottomBarController = remember { mutableStateOf(value = false) }
-    var selectedBottomItem by remember { mutableIntStateOf(value = 0) }
+    val pageTitle: MutableState<String> = remember { mutableStateOf("Kategoriler") }
+    val tfSearch: MutableState<String> = remember { mutableStateOf("") }
+    val searchController: MutableState<Boolean> = remember { mutableStateOf(value = false) }
+    val bottomBarController: MutableState<Boolean> = remember { mutableStateOf(value = false) }
+    var selectedBottomItem: Int by remember { mutableIntStateOf(value = 0) }
 
     Scaffold(modifier = Modifier.fillMaxSize(), containerColor = White, topBar = {
         CustomTopBar(
@@ -149,7 +162,7 @@ fun NavActivity(
             tfSearch = tfSearch,
             searchController = searchController
         )
-    }, content = { values ->
+    }, content = { values: PaddingValues ->
         NavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
@@ -182,43 +195,39 @@ fun NavActivity(
                 )
             }
             composable(
-                route = "artists/{id}/{name}",
-                arguments = listOf(navArgument(name = "id") { type = NavType.IntType },
+                route = NavUtility.Artists.withRouteArgs("id", "name"),
+                arguments = listOf(navArgument(name = "id") { type = NavType.StringType },
                     navArgument(name = "name") { type = NavType.StringType })
             ) { stackEntry ->
-                val genreId = stackEntry.arguments?.getInt("id")
-                val genreName = stackEntry.arguments?.getString("name")
+                val genreId: String? = stackEntry.arguments?.getString("id")
+                val genreName: String = stackEntry.arguments?.getString("name") ?: ""
 
-                genreId?.let { id: Int ->
+                genreId?.let { id: String ->
                     bottomBarController.value = true
 
-                    genreName?.let { name: String ->
-                        tfSearch.value = ""
-                        searchController.value = false
-                        pageTitle.value = name
+                    tfSearch.value = ""
+                    searchController.value = false
+                    pageTitle.value = genreName
 
-                        Artist(
-                            viewModel = artistsVM,
-                            navController = navController,
-                            topPadding = values.calculateTopPadding(),
-                            bottomPadding = values.calculateBottomPadding(),
-                            tfSearch = tfSearch,
-                            genreId = id
-                        )
-
-                    } ?: Log.e("Hata", "Değerler null içeriyor.")
-
-                } ?: Log.e("Hata", "Değerler null içeriyor.")
+                    Artist(
+                        viewModel = artistsVM,
+                        navController = navController,
+                        topPadding = values.calculateTopPadding(),
+                        bottomPadding = values.calculateBottomPadding(),
+                        tfSearch = tfSearch,
+                        genreId = id
+                    )
+                }
             }
             composable(
-                route = "artist_detail/{id}/{name}",
-                arguments = listOf(navArgument(name = "id") { type = NavType.IntType },
+                route = NavUtility.ArtistDetail.withRouteArgs("id", "name"),
+                arguments = listOf(navArgument(name = "id") { type = NavType.StringType },
                     navArgument(name = "name") { type = NavType.StringType })
             ) { stackEntry ->
-                val artistId = stackEntry.arguments?.getInt("id")
-                val artistName = stackEntry.arguments?.getString("name")
+                val artistId: String? = stackEntry.arguments?.getString("id")
+                val artistName: String = stackEntry.arguments?.getString("name") ?: ""
 
-                if (artistId != null && artistName != null) {
+                artistId?.let { id: String ->
                     tfSearch.value = ""
                     searchController.value = false
                     pageTitle.value = artistName
@@ -229,22 +238,22 @@ fun NavActivity(
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
                         tfSearch = tfSearch,
-                        artistId = artistId,
+                        artistId = id,
                         artistName = artistName,
                     )
                 }
             }
             composable(
-                route = "album_detail/{artistName}/{albumId}/{albumName}",
+                route = NavUtility.AlbumDetail.withRouteArgs("artistName", "albumId", "albumName"),
                 arguments = listOf(navArgument(name = "albumId") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
             ) { stackEntry ->
-                val artistName = stackEntry.arguments?.getString("artistName")
-                val albumId = stackEntry.arguments?.getInt("albumId")
-                val albumName = stackEntry.arguments?.getString("albumName")
+                val albumId: String? = stackEntry.arguments?.getString("albumId")
+                val artistName: String = stackEntry.arguments?.getString("artistName") ?: ""
+                val albumName: String = stackEntry.arguments?.getString("albumName") ?: ""
 
-                if (artistName != null && albumId != null && albumName != null) {
+                albumId?.let { id: String ->
                     tfSearch.value = ""
                     searchController.value = false
                     pageTitle.value = albumName
@@ -255,7 +264,7 @@ fun NavActivity(
                         tfSearch = tfSearch,
                         artistName = artistName,
                         albumName = albumName,
-                        albumId = albumId
+                        albumId = id
                     )
                 }
 
@@ -297,20 +306,19 @@ fun NavActivity(
                     contentColor = White,
                     containerColor = currentColor().sysBars,
                     content = {
-                        NavigationBarItem(
-                            label = {
-                                Text(
-                                    text = stringResource(id = R.string.categories),
-                                    style = TextStyle(
-                                        fontSize = 13.0.sp, fontFamily = FontFamily(
-                                            Font(
-                                                resId = R.font.sofiaprosemibold,
-                                                weight = FontWeight.SemiBold
-                                            )
+                        NavigationBarItem(label = {
+                            Text(
+                                text = stringResource(id = R.string.categories),
+                                style = TextStyle(
+                                    fontSize = 13.0.sp, fontFamily = FontFamily(
+                                        Font(
+                                            resId = R.font.sofiaprosemibold,
+                                            weight = FontWeight.SemiBold
                                         )
                                     )
                                 )
-                            },
+                            )
+                        },
                             icon = {
                                 if (selectedBottomItem == BottomBarConstants.SELECT_CATEGORIES) {
                                     Icon(
@@ -335,19 +343,18 @@ fun NavActivity(
                             },
                             colors = navBarItemColors
                         )
-                        NavigationBarItem(
-                            label = {
-                                Text(
-                                    text = stringResource(id = R.string.likes), style = TextStyle(
-                                        fontSize = 13.0.sp, fontFamily = FontFamily(
-                                            Font(
-                                                resId = R.font.sofiaprosemibold,
-                                                weight = FontWeight.SemiBold
-                                            )
+                        NavigationBarItem(label = {
+                            Text(
+                                text = stringResource(id = R.string.likes), style = TextStyle(
+                                    fontSize = 13.0.sp, fontFamily = FontFamily(
+                                        Font(
+                                            resId = R.font.sofiaprosemibold,
+                                            weight = FontWeight.SemiBold
                                         )
                                     )
                                 )
-                            },
+                            )
+                        },
                             icon = {
                                 if (selectedBottomItem == BottomBarConstants.SELECT_LIKES) {
                                     Icon(
@@ -418,7 +425,10 @@ private fun CustomTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        if ((!searchController.value && (pageTitle != "Kategoriler" && pageTitle != "Begeniler"))) {
+        if ((!searchController.value && (pageTitle != stringResource(id = R.string.categories) && pageTitle != stringResource(
+                id = R.string.likes2
+            )))
+        ) {
             IconButton(onClick = {
                 navController.popBackStack()
             }) {

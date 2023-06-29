@@ -42,6 +42,7 @@ import com.fa.beatify.models.ArtistModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.NavUtility
 
 @Composable
 fun SuccessArtist(
@@ -72,7 +73,9 @@ fun SuccessArtist(
             )
 
             LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(count = 2), state = gridState
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Fixed(count = 2),
+                state = gridState
             ) {
                 val tempArtists: List<ArtistModel> =
                     artistModelList!!.filter { artistModel: ArtistModel ->
@@ -90,7 +93,15 @@ fun SuccessArtist(
                         .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
                             ImageConstants.ARTIST_IMAGE = model.pictureMedium
-                            navController.navigate(route = "artist_detail/${model.id}/${model.name}").also { ListState.ARTISTS_STATE = gridState.firstVisibleItemIndex }
+                            navController
+                                .navigate(
+                                    route = NavUtility.ArtistDetail.withSourceArgs(
+                                        model.id.toString(), model.name.toString()
+                                    )
+                                )
+                                .also {
+                                    ListState.ARTISTS_STATE = gridState.firstVisibleItemIndex
+                                }
                         }, contentAlignment = Alignment.BottomCenter, content = {
                         AsyncImage(
                             modifier = Modifier.fillMaxSize(),

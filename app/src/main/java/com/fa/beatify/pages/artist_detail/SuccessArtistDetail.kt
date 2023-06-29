@@ -46,6 +46,7 @@ import com.fa.beatify.models.AlbumModel
 import com.fa.beatify.ui.theme.CustomGradient
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.currentColor
+import com.fa.beatify.utils.NavUtility
 
 @Composable
 fun SuccessArtistDetail(
@@ -107,11 +108,18 @@ fun SuccessArtistDetail(
                                 .background(color = currentColor().gridArtistBg)
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
-                                    navController.navigate(route = "album_detail/$artistName/${album.id}/${album.title}") {
-                                        popUpTo(route = "artist_detail") {
-                                            inclusive = true
+                                    navController
+                                        .navigate(
+                                            route = NavUtility.AlbumDetail.withSourceArgs(
+                                                artistName,
+                                                album.id.toString(),
+                                                album.title!!.replace("/", "-")
+                                            )
+                                        )
+                                        .also {
+                                            ListState.ARTIST_DETAIL_STATE =
+                                                listState.firstVisibleItemIndex
                                         }
-                                    }.also { ListState.ARTIST_DETAIL_STATE = listState.firstVisibleItemIndex }
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically

@@ -3,7 +3,6 @@ package com.fa.beatify.pages.music_likes
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -81,7 +80,6 @@ fun Likes(
     )
 
     LaunchedEffect(key1 = listState) {
-        Log.e("List State", "Çalışıyor")
         snapshotFlow {
             listState.firstVisibleItemIndex
         }.debounce(timeoutMillis = 500L) // 500 millis içerisinde herhangi bir değişim olmazsa, collect eder.
