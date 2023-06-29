@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +35,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.apis.BeatifyResponse
+import com.fa.beatify.constants.controller.ListState
 import com.fa.beatify.models.Genre
 import com.fa.beatify.models.GenreModel
 import com.fa.beatify.ui.theme.CustomGradient
@@ -49,6 +52,10 @@ fun SuccessMusicCategories(
     evenPaddingValues: PaddingValues,
     tfSearch: MutableState<String>
 ) {
+    val gridState: LazyGridState = rememberLazyGridState(
+        initialFirstVisibleItemIndex = ListState.CATEGORIES_STATE
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +71,7 @@ fun SuccessMusicCategories(
             )
 
             LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(count = 2)
+                modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(count = 2), state = gridState
             ) {
                 val tempList: List<GenreModel> = genreModels!!.filter { genreModel: GenreModel ->
                     genreModel.name!!.lowercase().contains(tfSearch.value.lowercase())
@@ -85,7 +92,7 @@ fun SuccessMusicCategories(
                                         "/", " "
                                     )
                                 }"
-                            )
+                            ).also { ListState.CATEGORIES_STATE = gridState.firstVisibleItemIndex }
                         }, contentAlignment = Alignment.BottomCenter, content = {
                         AsyncImage(
                             modifier = Modifier.fillMaxSize(),

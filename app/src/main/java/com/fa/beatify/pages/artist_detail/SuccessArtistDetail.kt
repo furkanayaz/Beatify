@@ -1,5 +1,6 @@
 package com.fa.beatify.pages.artist_detail
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -37,7 +39,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.apis.BeatifyResponse
-import com.fa.beatify.constants.ImageConstants
+import com.fa.beatify.constants.controller.ListState
+import com.fa.beatify.constants.utils.ImageConstants
 import com.fa.beatify.models.Album
 import com.fa.beatify.models.AlbumModel
 import com.fa.beatify.ui.theme.CustomGradient
@@ -54,8 +57,10 @@ fun SuccessArtistDetail(
     artistName: String,
     tfSearch: MutableState<String>
 ) {
-    val configuration = LocalConfiguration.current
-    val lazyListState = rememberLazyListState()
+    val configuration: Configuration = LocalConfiguration.current
+    val listState: LazyListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = ListState.ARTIST_DETAIL_STATE
+    )
 
     Column(
         modifier = Modifier
@@ -88,10 +93,10 @@ fun SuccessArtistDetail(
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .background(color = Transparent),
-                state = lazyListState,
+                state = listState,
                 content = {
                     items(count = filteredAlbumModel.count(), itemContent = { pos: Int ->
-                        val album = filteredAlbumModel[pos]
+                        val album: AlbumModel = filteredAlbumModel[pos]
 
                         Row(
                             modifier = Modifier
@@ -106,7 +111,7 @@ fun SuccessArtistDetail(
                                         popUpTo(route = "artist_detail") {
                                             inclusive = true
                                         }
-                                    }
+                                    }.also { ListState.ARTIST_DETAIL_STATE = listState.firstVisibleItemIndex }
                                 },
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically

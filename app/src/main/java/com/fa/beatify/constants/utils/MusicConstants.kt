@@ -1,4 +1,4 @@
-package com.fa.beatify.constants
+package com.fa.beatify.constants.utils
 
 import android.media.MediaPlayer
 import com.fa.beatify.entities.LikeEntities

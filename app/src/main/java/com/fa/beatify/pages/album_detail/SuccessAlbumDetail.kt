@@ -1,6 +1,8 @@
 package com.fa.beatify.pages.album_detail
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +27,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.apis.BeatifyResponse
-import com.fa.beatify.constants.MusicConstants
+import com.fa.beatify.constants.utils.MusicConstants
 import com.fa.beatify.entities.LikeEntities
 import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.models.Track
@@ -65,14 +68,14 @@ fun SuccessAlbumDetail(
     artistName: String,
     albumName: String,
 ) {
-    val context = LocalContext.current
-    val configuration = LocalConfiguration.current
+    val context: Context = LocalContext.current
+    val configuration: Configuration = LocalConfiguration.current
     val musicPlayerService = Intent(context, MusicPlayer::class.java)
 
     val playingController: State<Boolean> =
         MusicConstants.trackingController.collectAsState(initial = false)
 
-    val likeChecked = remember {
+    val likeChecked: SnapshotStateList<Int> = remember {
         mutableStateListOf(-1)
     }
 

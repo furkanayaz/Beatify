@@ -76,8 +76,8 @@ import coil.compose.AsyncImage
 import com.fa.beatify.pages.album_detail.AlbumDetail
 import com.fa.beatify.pages.artist_detail.ArtistDetail
 import com.fa.beatify.pages.artists.Artist
-import com.fa.beatify.constants.BottomBarConstants
-import com.fa.beatify.constants.MusicConstants
+import com.fa.beatify.constants.controller.BottomBarConstants
+import com.fa.beatify.constants.utils.MusicConstants
 import com.fa.beatify.models.PlayMusic
 import com.fa.beatify.pages.music_categories.MusicCategories
 import com.fa.beatify.pages.music_likes.Likes
@@ -86,17 +86,15 @@ import androidx.compose.ui.platform.LocalContext
 import com.fa.beatify.ui.theme.Transparent
 import com.fa.beatify.ui.theme.White
 import com.fa.beatify.ui.theme.Black
-import com.fa.beatify.constants.MusicConstants.trackingController
+import com.fa.beatify.constants.utils.MusicConstants.trackingController
 import com.fa.beatify.pages.album_detail.AlbumDetailVM
 import com.fa.beatify.pages.artist_detail.ArtistDetailVM
 import com.fa.beatify.pages.artists.ArtistsVM
 import com.fa.beatify.pages.music_categories.MusicCategoriesVM
 import com.fa.beatify.pages.music_likes.LikesVM
 import com.fa.beatify.ui.theme.BeatifyTheme
-import com.fa.beatify.utils.network.NetworkConnection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

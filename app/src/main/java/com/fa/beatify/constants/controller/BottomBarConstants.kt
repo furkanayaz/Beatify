@@ -1,4 +1,4 @@
-package com.fa.beatify.constants
+package com.fa.beatify.constants.controller
 
 object BottomBarConstants {
     var SELECT_CATEGORIES = 0
