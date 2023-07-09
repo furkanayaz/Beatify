@@ -5,7 +5,7 @@ I made this project with Jetpack Compose, which I made using Deezer API, for App
 Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 
 **Popular Used Libraries** 🎉
-- MVVM 🏗️
+- View Model 📱
 - Live Data 📡
 - Repository 🗄️
 - Retrofit 🌐
@@ -18,6 +18,7 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - Coil Image Library 🖼️
 
 **ALSO** 👇
+- MVVM 🏗️
 - Clean Architecture ☄️
 - Singleton Responsibility 🥇
 
