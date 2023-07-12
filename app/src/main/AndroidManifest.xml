@@ -19,13 +19,13 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:theme="@style/Theme.Beatify.Splash" />
 
         <service
             android:enabled="true"
             android:exported="false"
-            android:name=".services.MusicPlayer" />
+            android:name=".services.MusicService" />
 
         <activity-alias
             android:name=".LtMode"
@@ -34,7 +34,7 @@
             android:label="@string/app_name"
             android:icon="@mipmap/light_icon"
             android:roundIcon="@mipmap/light_icon_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".presentation.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,7 @@
             android:label="@string/app_name"
             android:icon="@mipmap/night_icon"
             android:roundIcon="@mipmap/night_icon_round"
-            android:targetActivity=".MainActivity">
+            android:targetActivity=".presentation.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
