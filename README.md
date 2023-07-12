@@ -24,4 +24,4 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 
 App Introduction on YouTube: [Click to Watch!](https://youtu.be/AeIloqi5Oic) 📼
 
-29 June 2023 - FURKAN AYAZ :) 🗓️
+12 Jul 2023 - FURKAN AYAZ :) 🗓️
