@@ -13,8 +13,8 @@ android {
         applicationId "com.fa.beatify"
         minSdk 24
         targetSdk 34
-        versionCode 3
-        versionName "2.2"
+        versionCode 4
+        versionName "2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -70,7 +70,8 @@ dependencies {
     def gson_ver = "2.10.1"
     implementation "com.google.code.gson:gson:$gson_ver"
 
-    def vm_ver = '2.7.0-beta01'
+    def vm_ver = '2.7.0-beta02'
+    implementation "androidx.navigation:navigation-compose:$vm_ver"
     implementation "androidx.navigation:navigation-compose:$vm_ver"
 
     def livedata_ver = '1.5.0-beta02'
@@ -96,7 +97,6 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta"
     implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation "androidx.navigation:navigation-compose:2.7.0-beta01"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
