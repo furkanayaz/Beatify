@@ -18,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ArtistDetailVM @Inject constructor(
     networkConnection: NetworkConnection,
-    private val allAlbumsUseCase: AllAlbumsUseCase, private val dateRepo: DateRepo
+    private val allAlbumsUseCase: AllAlbumsUseCase,
+    private val dateRepo: DateRepo
 ) : ViewModel() {
     private val _connObserver: Flow<Connection.Status> = networkConnection.observe()
     private val _albums = MutableLiveData<BeatifyResponse<List<Album>>>()

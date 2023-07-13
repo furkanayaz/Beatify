@@ -72,4 +72,5 @@ object AppModule {
 
     @[Provides Singleton]
     fun provideAllTracks(deezerDao: DeezerDao): AllTracksUseCase = AllTracksUseCase(deezerDao = deezerDao)
+
 }

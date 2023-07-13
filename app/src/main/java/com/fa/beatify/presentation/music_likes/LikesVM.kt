@@ -7,6 +7,7 @@ import com.fa.beatify.domain.local_use_cases.AllLikesUseCase
 import com.fa.beatify.domain.local_use_cases.DeleteLikeUseCase
 import com.fa.beatify.data.models.Like
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,13 +21,13 @@ class LikesVM @Inject constructor(
         get() = _likesData
 
     fun allLikes() {
-        viewModelScope.launch {
+        viewModelScope.launch(context = Dispatchers.IO) {
             _likesData.postValue(allLikesUseCase())
         }
     }
 
     fun deleteLike(like: Like) {
-        viewModelScope.launch {
+        viewModelScope.launch(context = Dispatchers.IO) {
             deleteLikeUseCase(like = like)
             allLikes()
         }
