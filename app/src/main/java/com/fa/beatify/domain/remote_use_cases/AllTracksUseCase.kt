@@ -1,6 +1,6 @@
 package com.fa.beatify.domain.remote_use_cases
 
-import com.fa.beatify.data.mappers.toTrack
+import com.fa.beatify.domain.mappers.toTrack
 import com.fa.beatify.data.remote_source.DeezerDao
 import com.fa.beatify.data.models.TrackDtoModel
 import com.fa.beatify.domain.models.Track
