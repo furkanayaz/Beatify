@@ -10,7 +10,7 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - Repository 🗄️
 - Retrofit 🌐
 - Room 🏠
-- Dependency Injection with Hilt 💉
+- Dependency Injection with Koin 💉
 - Navigation Component 🧭
 - Safe Args 🔒
 - Kotlin Coroutines ⚙️
@@ -21,7 +21,8 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - MVVM 🏗️
 - Clean Architecture ☄️
 - Singleton Responsibility 🥇
+- Use Case 📁
 
 App Introduction on YouTube: [Click to Watch!](https://youtu.be/AeIloqi5Oic) 📼
 
-12 Jul 2023 - FURKAN AYAZ :) 🗓️
+16 Jul 2023 - FURKAN AYAZ :) 🗓️

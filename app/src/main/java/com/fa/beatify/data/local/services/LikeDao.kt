@@ -1,4 +1,4 @@
-package com.fa.beatify.data.local_source
+package com.fa.beatify.data.local.services
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -8,7 +8,7 @@ import com.fa.beatify.data.models.Like
 
 @Dao
 interface LikeDao {
-    @Query("SELECT * FROM like")
+    @Query("SELECT * FROM 'like'")
     suspend fun getLikes(): List<Like>
 
     @Insert

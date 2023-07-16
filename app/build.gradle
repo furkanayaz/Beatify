@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
 }
 
@@ -13,8 +12,8 @@ android {
         applicationId "com.fa.beatify"
         minSdk 24
         targetSdk 34
-        versionCode 4
-        versionName "2.3"
+        versionCode 5
+        versionName "2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -82,11 +81,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_ver"
     kapt "androidx.room:room-compiler:$room_ver"
 
-    def hilt_ver = '2.46.1'
-    implementation "com.google.dagger:hilt-android:$hilt_ver"
-
-    def hilt_kapt_ver = '2.46.1'
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_kapt_ver"
+    def koin_ver = "3.4.2"
+    implementation "io.insert-koin:koin-android:$koin_ver"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_ver"
 
     //noinspection GradleDynamicVersion
     implementation 'androidx.core:core-ktx:1.12.0-alpha05'

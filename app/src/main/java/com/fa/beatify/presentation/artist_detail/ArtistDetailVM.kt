@@ -5,18 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fa.beatify.data.response.BeatifyResponse
 import com.fa.beatify.domain.models.Album
-import com.fa.beatify.domain.remote_use_cases.AllAlbumsUseCase
+import com.fa.beatify.domain.remote.use_cases.AllAlbumsUseCase
 import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 import com.fa.beatify.utils.repos.DateRepo
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ArtistDetailVM @Inject constructor(
+class ArtistDetailVM(
     networkConnection: NetworkConnection,
     private val allAlbumsUseCase: AllAlbumsUseCase,
     private val dateRepo: DateRepo

@@ -5,22 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fa.beatify.data.response.BeatifyResponse
 import com.fa.beatify.data.models.Like
-import com.fa.beatify.domain.local_use_cases.DeleteLikeUseCase
-import com.fa.beatify.domain.local_use_cases.InsertLikeUseCase
+import com.fa.beatify.domain.local.use_cases.DeleteLikeUseCase
+import com.fa.beatify.domain.local.use_cases.InsertLikeUseCase
 import com.fa.beatify.domain.models.Track
-import com.fa.beatify.domain.remote_use_cases.AllTracksUseCase
+import com.fa.beatify.domain.remote.use_cases.AllTracksUseCase
 import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 import com.fa.beatify.utils.repos.DurationRepo
 import com.fa.beatify.utils.repos.ImageRepo
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AlbumDetailVM @Inject constructor(
+class AlbumDetailVM(
     networkConnection: NetworkConnection,
     private val allTracksUseCase: AllTracksUseCase,
     private val insertLikeUseCase: InsertLikeUseCase,
@@ -61,7 +58,7 @@ class AlbumDetailVM @Inject constructor(
         }
     }
 
-    fun getImage(md5Image: String?): String = imageRepo.getImage(md5Image = md5Image ?: "")
+    fun getImage(md5Image: String?): String = imageRepo.getImage(md5Image ?: "")
 
     fun getDuration(durationInSeconds: Int?): String =
         durationRepo.getDuration(durationInSeconds = durationInSeconds ?: 0)

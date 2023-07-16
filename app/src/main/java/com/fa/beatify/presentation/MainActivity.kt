@@ -4,7 +4,6 @@ import com.fa.beatify.presentation.ui.theme.currentColor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -24,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Icon
@@ -81,14 +79,8 @@ import com.fa.beatify.utils.constants.utils.MusicConstants
 import com.fa.beatify.domain.models.PlayMusic
 import com.fa.beatify.presentation.music_categories.MusicCategories
 import com.fa.beatify.presentation.music_likes.Likes
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import com.fa.beatify.R
 import com.fa.beatify.utils.constants.utils.ClearConstants
-import com.fa.beatify.presentation.ui.theme.Transparent
-import com.fa.beatify.presentation.ui.theme.White
-import com.fa.beatify.presentation.ui.theme.Black
-import com.fa.beatify.utils.constants.utils.MusicConstants.trackingController
 import com.fa.beatify.presentation.album_detail.AlbumDetailVM
 import com.fa.beatify.presentation.artist_detail.ArtistDetailVM
 import com.fa.beatify.presentation.artists.ArtistsVM
@@ -96,16 +88,26 @@ import com.fa.beatify.presentation.music_categories.MusicCategoriesVM
 import com.fa.beatify.presentation.music_likes.LikesVM
 import com.fa.beatify.presentation.ui.theme.BeatifyTheme
 import com.fa.beatify.utils.NavUtility
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.shape.CircleShape
+import com.fa.beatify.presentation.ui.theme.Transparent
+import com.fa.beatify.presentation.ui.theme.White
+import com.fa.beatify.presentation.ui.theme.Black
+import com.fa.beatify.utils.constants.utils.MusicConstants.trackingController
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.scope.Scope
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    private val musicCategoriesVM: MusicCategoriesVM by viewModels()
-    private val likesVM: LikesVM by viewModels()
-    private val artistsVM: ArtistsVM by viewModels()
-    private val artistDetailVM: ArtistDetailVM by viewModels()
-    private val albumDetailVM: AlbumDetailVM by viewModels()
+class MainActivity : ComponentActivity(), AndroidScopeComponent {
+    override val scope: Scope by activityScope()
+    private val musicCategoriesVM by viewModel<MusicCategoriesVM>()
+    private val likesVM by viewModel<LikesVM>()
+    private val artistsVM by viewModel<ArtistsVM>()
+    private val artistDetailVM by viewModel<ArtistDetailVM>()
+    private val albumDetailVM by viewModel<AlbumDetailVM>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

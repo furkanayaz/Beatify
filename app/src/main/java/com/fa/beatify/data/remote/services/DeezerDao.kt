@@ -1,4 +1,4 @@
-package com.fa.beatify.data.remote_source
+package com.fa.beatify.data.remote.services
 
 import com.fa.beatify.data.models.AlbumDto
 import com.fa.beatify.data.models.ArtistDto
