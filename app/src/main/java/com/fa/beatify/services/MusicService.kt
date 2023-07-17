@@ -10,7 +10,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.fa.beatify.presentation.MainActivity
+import com.fa.beatify.presentation.activity.MainActivity
 import com.fa.beatify.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

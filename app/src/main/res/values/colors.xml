@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">#E94057</color>
+    <color name="primary">#FFE94057</color>
     <color name="background">#FFECECEC</color>
+    <color name="nav_icon_f">#FFFFFFFF</color>
+    <color name="nav_icon">#FF696969</color>
 </resources>

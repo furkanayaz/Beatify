@@ -1,4 +1,4 @@
-package com.fa.beatify.presentation
+package com.fa.beatify.presentation.activity
 
 import com.fa.beatify.presentation.ui.theme.currentColor
 import android.os.Bundle
@@ -74,7 +74,6 @@ import coil.compose.AsyncImage
 import com.fa.beatify.presentation.album_detail.AlbumDetail
 import com.fa.beatify.presentation.artist_detail.ArtistDetail
 import com.fa.beatify.presentation.artists.Artist
-import com.fa.beatify.utils.constants.controller.BottomBarConstants
 import com.fa.beatify.utils.constants.utils.MusicConstants
 import com.fa.beatify.domain.models.PlayMusic
 import com.fa.beatify.presentation.music_categories.MusicCategories
@@ -90,6 +89,10 @@ import com.fa.beatify.presentation.ui.theme.BeatifyTheme
 import com.fa.beatify.utils.NavUtility
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.scope.Scope
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.shape.CircleShape
@@ -97,12 +100,14 @@ import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.White
 import com.fa.beatify.presentation.ui.theme.Black
 import com.fa.beatify.utils.constants.utils.MusicConstants.trackingController
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.scope.activityScope
-import org.koin.core.scope.Scope
+import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_LIKES
+import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_CATEGORIES
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityScope()
+
+    private val mainActivityVM by viewModel<MainActivityVM>()
+
     private val musicCategoriesVM by viewModel<MusicCategoriesVM>()
     private val likesVM by viewModel<LikesVM>()
     private val artistsVM by viewModel<ArtistsVM>()
@@ -117,6 +122,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 context = LocalContext.current,
                 content = {
                     NavActivity(
+                        mainActivityVM = mainActivityVM,
                         musicCategoriesVM = musicCategoriesVM,
                         likesVM = likesVM,
                         artistsVM = artistsVM,
@@ -143,6 +149,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
 @Composable
 fun NavActivity(
+    mainActivityVM: MainActivityVM,
     musicCategoriesVM: MusicCategoriesVM,
     likesVM: LikesVM,
     artistsVM: ArtistsVM,
@@ -175,7 +182,7 @@ fun NavActivity(
                 tfSearch.value = ""
                 searchController.value = false
                 pageTitle.value = stringResource(id = R.string.categories)
-                selectedBottomItem = BottomBarConstants.SELECT_CATEGORIES
+                selectedBottomItem = SELECT_CATEGORIES
                 bottomBarController.value = false
                 MusicCategories(
                     viewModel = musicCategoriesVM,
@@ -189,7 +196,7 @@ fun NavActivity(
                 tfSearch.value = ""
                 searchController.value = false
                 pageTitle.value = stringResource(id = R.string.likes2)
-                selectedBottomItem = BottomBarConstants.SELECT_LIKES
+                selectedBottomItem = SELECT_LIKES
                 Likes(
                     viewModel = likesVM,
                     topPadding = values.calculateTopPadding(),
@@ -287,6 +294,7 @@ fun NavActivity(
                     content = {
                         MusicConstants.playMusic?.let { playMusic: PlayMusic ->
                             PlayMusicInBottom(
+                                viewModel = mainActivityVM,
                                 artistName = playMusic.artistName,
                                 albumName = playMusic.albumName,
                                 musicName = playMusic.musicName,
@@ -309,74 +317,76 @@ fun NavActivity(
                     contentColor = White,
                     containerColor = currentColor().sysBars,
                     content = {
-                        NavigationBarItem(label = {
-                            Text(
-                                text = stringResource(id = R.string.categories),
-                                style = TextStyle(
-                                    fontSize = 13.0.sp, fontFamily = FontFamily(
-                                        Font(
-                                            resId = R.font.sofiaprosemibold,
-                                            weight = FontWeight.SemiBold
+                        NavigationBarItem(
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.categories),
+                                    style = TextStyle(
+                                        fontSize = 13.0.sp, fontFamily = FontFamily(
+                                            Font(
+                                                resId = R.font.sofiaprosemibold,
+                                                weight = FontWeight.SemiBold
+                                            )
                                         )
                                     )
                                 )
-                            )
-                        },
+                            },
                             icon = {
-                                if (selectedBottomItem == BottomBarConstants.SELECT_CATEGORIES) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.headset_f),
-                                        tint = currentColor().navIconFill,
-                                        contentDescription = stringResource(id = R.string.categories)
-                                    )
-                                }; if (selectedBottomItem != BottomBarConstants.SELECT_CATEGORIES) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.headset),
-                                    tint = currentColor().navIcon,
+                                    painter = painterResource(
+                                        id = mainActivityVM.getCategoryIconPair(
+                                            controller = selectedBottomItem
+                                        ).first
+                                    ),
+                                    tint = colorResource(
+                                        id = mainActivityVM.getCategoryIconPair(
+                                            controller = selectedBottomItem
+                                        ).second
+                                    ),
                                     contentDescription = stringResource(id = R.string.categories)
                                 )
-                            }
                             },
-                            selected = selectedBottomItem == BottomBarConstants.SELECT_CATEGORIES,
+                            selected = selectedBottomItem == SELECT_CATEGORIES,
                             onClick = {
                                 selectedBottomItem =
-                                    BottomBarConstants.SELECT_CATEGORIES; navController.navigate(
+                                    SELECT_CATEGORIES; navController.navigate(
                                 route = "musiccategories"
                             ) { popUpTo(route = "musiccategories") { inclusive = true } }
                             },
                             colors = navBarItemColors
                         )
-                        NavigationBarItem(label = {
-                            Text(
-                                text = stringResource(id = R.string.likes), style = TextStyle(
-                                    fontSize = 13.0.sp, fontFamily = FontFamily(
-                                        Font(
-                                            resId = R.font.sofiaprosemibold,
-                                            weight = FontWeight.SemiBold
+                        NavigationBarItem(
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.likes), style = TextStyle(
+                                        fontSize = 13.0.sp, fontFamily = FontFamily(
+                                            Font(
+                                                resId = R.font.sofiaprosemibold,
+                                                weight = FontWeight.SemiBold
+                                            )
                                         )
                                     )
                                 )
-                            )
-                        },
+                            },
                             icon = {
-                                if (selectedBottomItem == BottomBarConstants.SELECT_LIKES) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.heart_f),
-                                        tint = currentColor().navIconFill,
-                                        contentDescription = stringResource(id = R.string.likes)
-                                    )
-                                }; if (selectedBottomItem != BottomBarConstants.SELECT_LIKES) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.heart),
-                                    tint = currentColor().navIcon,
+                                    painter = painterResource(
+                                        id = mainActivityVM.getLikeIconPair(
+                                            controller = selectedBottomItem
+                                        ).first
+                                    ),
+                                    tint = colorResource(
+                                        id = mainActivityVM.getLikeIconPair(
+                                            controller = selectedBottomItem
+                                        ).second
+                                    ),
                                     contentDescription = stringResource(id = R.string.likes)
                                 )
-                            }
                             },
-                            selected = selectedBottomItem == BottomBarConstants.SELECT_LIKES,
+                            selected = selectedBottomItem == SELECT_LIKES,
                             onClick = {
                                 selectedBottomItem =
-                                    BottomBarConstants.SELECT_LIKES; navController.navigate(route = "likes") {
+                                    SELECT_LIKES; navController.navigate(route = "likes") {
                                 popUpTo(
                                     route = "likes"
                                 ) { inclusive = true }
@@ -541,7 +551,11 @@ private fun CustomTopBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayMusicInBottom(
-    artistName: String, albumName: String, musicName: String, musicImage: String
+    viewModel: MainActivityVM,
+    artistName: String,
+    albumName: String,
+    musicName: String,
+    musicImage: String
 ) {
     val playingController: State<Boolean> =
         MusicConstants.playingController.collectAsState(initial = false)
@@ -562,23 +576,17 @@ fun PlayMusicInBottom(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = {
-            MusicConstants.apply {
-                if (playingController.value) {
-                    mediaPlayer?.start()
-                    MusicConstants.playingController.value = false
-                } else {
-                    mediaPlayer?.pause()
-                    MusicConstants.playingController.value = true
-                }
-
-            }
+            if (playingController.value)
+                viewModel.resumeMusic()
+            else
+                viewModel.pauseMusic()
         }) {
             Box(modifier = Modifier
                 .clip(shape = CircleShape)
                 .background(color = Black), content = {
                 Icon(
                     modifier = Modifier.padding(all = 5.0.dp), painter = painterResource(
-                        id = if (playingController.value) R.drawable.play else R.drawable.pause
+                        id = viewModel.getPlayingIcon(playingController.value)
                     ), tint = White, contentDescription = "Play"
                 )
             })
@@ -602,7 +610,7 @@ fun PlayMusicInBottom(
                 modifier = textModifier
                     .padding(bottom = 2.0.dp)
                     .basicMarquee(),
-                text = "$albumName - $musicName",
+                text = viewModel.getMusicTitle(albumName, musicName),
                 style = TextStyle(
                     fontSize = 12.0.sp, fontFamily = FontFamily(
                         Font(resId = R.font.sofiaproregular, weight = FontWeight.Normal)

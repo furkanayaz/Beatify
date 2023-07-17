@@ -16,20 +16,28 @@ class MusicCategoriesVM(
     networkConnection: NetworkConnection,
     private val allGenresUseCase: AllGenresUseCase
 ) : ViewModel() {
-    private val _connObserver: Flow<Connection.Status> = networkConnection.observe()
-    private val _genres = MutableLiveData<BeatifyResponse<List<Genre>>>()
+    private var _connObserver: Flow<Connection.Status>? = null
+
+    private val connObserver: Flow<Connection.Status> get() = _connObserver!!
+
+    private var _genres: MutableLiveData<BeatifyResponse<List<Genre>>>? = null
     val genres: MutableLiveData<BeatifyResponse<List<Genre>>>
-        get() = _genres
+        get() = _genres!!
+
+    init {
+        _connObserver = networkConnection.observe()
+        _genres = MutableLiveData<BeatifyResponse<List<Genre>>>()
+    }
 
     fun fetchData() {
-        _genres.postValue(BeatifyResponse.Loading())
+        genres.postValue(BeatifyResponse.Loading())
 
         viewModelScope.launch(context = Dispatchers.Unconfined) {
-            _connObserver.collect {
+            connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> allGenres()
-                    Connection.Status.Losing -> _genres.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> _genres.postValue(
+                    Connection.Status.Losing -> genres.postValue(BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> genres.postValue(
                         BeatifyResponse.Failure(code = 404)
                     )
                 }
@@ -41,11 +49,18 @@ class MusicCategoriesVM(
         viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allGenresUseCase().also { genreList: List<Genre> ->
-                    _genres.postValue(BeatifyResponse.Success(genreList, code = 200))
+                    genres.postValue(BeatifyResponse.Success(genreList, code = 200))
                 }
             } catch (e: Exception) {
-                _genres.postValue(BeatifyResponse.Failure(code = 404))
+                genres.postValue(BeatifyResponse.Failure(code = 404))
             }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        _connObserver = null
+        _genres = null
+    }
+
 }

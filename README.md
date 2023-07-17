@@ -7,6 +7,7 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 **Popular Used Libraries** 🎉
 - View Model 📱
 - Live Data 📡
+- Flows 🌊
 - Repository 🗄️
 - Retrofit 🌐
 - Room 🏠
@@ -18,11 +19,10 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - Coil Image Library 🖼️
 
 **ALSO** 👇
-- MVVM 🏗️
 - Clean Architecture ☄️
 - Singleton Responsibility 🥇
-- Use Case 📁
+- Use Case 🏗️
 
 App Introduction on YouTube: [Click to Watch!](https://youtu.be/AeIloqi5Oic) 📼
 
-16 Jul 2023 - FURKAN AYAZ :) 🗓️
+17 Jul 2023 - FURKAN AYAZ :) 🗓️
