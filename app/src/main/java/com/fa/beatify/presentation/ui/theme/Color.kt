@@ -40,7 +40,7 @@ val NtSearchIcon: Color = Color(0xFF414141)
 val NtSearchContainer: Color = Color(color = 0xFFCFCFCF)
 val NtGridCategoryBg: Color = Color(0xBF202020)
 val NtGridArtistBg: Color = Color(0xFF414141)
-val NtNavIcon: Color = Color(0xFFFFFFFF)
+val NtNavIcon: Color = Color(0xFF696969)
 val NtNavIconFill: Color = Color(0xFFFFFFFF)
 val NtIcon: Color = Color(color = 0xFFFFFFFF)
 

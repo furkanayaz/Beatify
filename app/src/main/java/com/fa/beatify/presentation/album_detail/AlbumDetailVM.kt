@@ -25,20 +25,28 @@ class AlbumDetailVM(
     private val imageRepo: ImageRepo,
     private val durationRepo: DurationRepo
 ) : ViewModel() {
-    private val _connObserver: Flow<Connection.Status> = networkConnection.observe()
-    private val _tracks = MutableLiveData<BeatifyResponse<List<Track>>>()
+    private var _connObserver: Flow<Connection.Status>? = null
+
+    private val connObserver: Flow<Connection.Status> get() = _connObserver!!
+
+    private var _tracks: MutableLiveData<BeatifyResponse<List<Track>>>? = null
     val tracks: MutableLiveData<BeatifyResponse<List<Track>>>
-        get() = _tracks
+        get() = _tracks!!
+
+    init {
+        _connObserver = networkConnection.observe()
+        _tracks = MutableLiveData<BeatifyResponse<List<Track>>>()
+    }
 
     fun fetchData(albumId: Int) {
-        _tracks.postValue(BeatifyResponse.Loading())
+        tracks.postValue(BeatifyResponse.Loading())
 
         viewModelScope.launch(context = Dispatchers.Unconfined) {
-            _connObserver.collect {
+            connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> getTracks(albumId = albumId)
-                    Connection.Status.Losing -> _tracks.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> _tracks.postValue(
+                    Connection.Status.Losing -> tracks.postValue(BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> tracks.postValue(
                         BeatifyResponse.Failure(code = 404)
                     )
                 }
@@ -50,10 +58,10 @@ class AlbumDetailVM(
         viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allTracksUseCase(albumId = albumId).also { trackList: List<Track> ->
-                    _tracks.postValue(BeatifyResponse.Success(data = trackList, code = 200))
+                    tracks.postValue(BeatifyResponse.Success(data = trackList, code = 200))
                 }
             } catch (e: Exception) {
-                _tracks.postValue(BeatifyResponse.Failure(code = 404))
+                tracks.postValue(BeatifyResponse.Failure(code = 404))
             }
         }
     }
@@ -74,4 +82,11 @@ class AlbumDetailVM(
             deleteLikeUseCase(like = like)
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        _connObserver = null
+        _tracks = null
+    }
+
 }

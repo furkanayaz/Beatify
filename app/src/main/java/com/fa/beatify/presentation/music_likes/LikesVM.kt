@@ -14,14 +14,18 @@ class LikesVM(
     private val allLikesUseCase: AllLikesUseCase,
     private val deleteLikeUseCase: DeleteLikeUseCase
 ) : ViewModel() {
-    private val _likesData = MutableLiveData<List<Like>>()
+    private var _likesData: MutableLiveData<List<Like>>? = null
     val likesData: MutableLiveData<List<Like>>
-        get() = _likesData
+        get() = _likesData!!
+
+    init {
+        _likesData = MutableLiveData<List<Like>>()
+    }
 
     @SuppressLint("NullSafeMutableLiveData")
     fun allLikes() {
         viewModelScope.launch(context = Dispatchers.IO) {
-            _likesData.postValue(allLikesUseCase())
+            likesData.postValue(allLikesUseCase())
         }
     }
 
@@ -31,4 +35,10 @@ class LikesVM(
             allLikes()
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        _likesData = null
+    }
+
 }

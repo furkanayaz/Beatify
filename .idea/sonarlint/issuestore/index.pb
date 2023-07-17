@@ -1,14 +1,4 @@
 
-p
-@app/src/main/java/com/fa/beatify/data/remote_source/DeezerDao.kt,7\b\7bb5661ec52da15f95471f9bb596c7d883d5e4df
-|
-Lapp/src/main/java/com/fa/beatify/domain/local_use_cases/InsertLikeUseCase.kt,1\7\17a635336ab410b9a3739527813d08473ff35f3f
-m
-=app/src/main/java/com/fa/beatify/data/local_source/LikeDao.kt,9\a\9ac51a78b6545c88c21bd6f06f608f701e50ea94
-|
-Lapp/src/main/java/com/fa/beatify/domain/local_use_cases/DeleteLikeUseCase.kt,1\2\127755c9650ab28d90adc6779220b13186baee96
-z
-Japp/src/main/java/com/fa/beatify/domain/local_use_cases/AllLikesUseCase.kt,d\b\dbe4bba255dc7e9fd9e034a10ae961797af813d9
 h
 8app/src/main/java/com/fa/beatify/data/models/GenreDto.kt,c\9\c930cf274ee5c80f1d2b6a4b6b736a8b3f269f85
 g
@@ -25,14 +15,6 @@ h
 8app/src/main/java/com/fa/beatify/data/models/AlbumDto.kt,c\3\c3491bd691fe5c48ca7a7bff8d3457de05bf6e4b
 g
 7app/src/main/java/com/fa/beatify/domain/models/Album.kt,e\7\e7ee8771105964003f80a62e63ba6929fa38ecd2
-|
-Lapp/src/main/java/com/fa/beatify/domain/remote_use_cases/AllAlbumsUseCase.kt,5\6\5617f3ef6fac7b39a873f5c066cc11d199bbeea4
-}
-Mapp/src/main/java/com/fa/beatify/domain/remote_use_cases/AllArtistsUseCase.kt,f\9\f9a0a7f43cc18498fcbca8596f1beaa153ab7e94
-|
-Lapp/src/main/java/com/fa/beatify/domain/remote_use_cases/AllGenresUseCase.kt,c\c\cc7a838361e67900c19a008c2364c8f504315acd
-|
-Lapp/src/main/java/com/fa/beatify/domain/remote_use_cases/AllTracksUseCase.kt,a\a\aafc9c51bc44883ed13bc78f1695f84d7d6a3bde
 d
 4app/src/main/java/com/fa/beatify/data/models/Like.kt,f\f\ff13cda98b27557ce04a602c06b2c30041085bce
 y
@@ -57,8 +39,6 @@ i
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 ˆ
 Xapp/src/main/java/com/fa/beatify/presentation/music_categories/SuccessMusicCategories.kt,1\b\1b02309ebc2e6877d68941f5de418efd988c8821
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 h
 8app/src/main/java/com/fa/beatify/domain/mappers/Album.kt,e\9\e9294e42a3d097593dd334cc08b11a9736e8d09f
 q
@@ -73,16 +53,16 @@ l
 <app/src/main/java/com/fa/beatify/utils/network/Connection.kt,1\9\1945f1bbf249162987cb5b7fd97535a91ffd8bd1
 p
 @app/src/main/java/com/fa/beatify/presentation/artists/Artists.kt,f\5\f5be52fe6fcd89cae6999bc0b409fbb08ce76032
-^
-.app/src/main/java/com/fa/beatify/BeatifyApp.kt,7\1\71fd06d3033d888728ca6fc5337a3e9c32cd0562
 s
 Capp/src/main/java/com/fa/beatify/utils/network/NetworkConnection.kt,5\6\56a5371ed23ed7fa085b58e52fa7efdf4db7e069
 r
 Bapp/src/main/java/com/fa/beatify/presentation/music_likes/Likes.kt,4\4\4413101b202940aabd4f9bbd0a99cb335fd421ab
-m
-=app/src/main/java/com/fa/beatify/presentation/MainActivity.kt,c\f\cf83fba4db94af77d704bade887b477f304b419b
-`
-0app/src/main/java/com/fa/beatify/di/AppModule.kt,4\d\4de94ad762b3d03e5245326687e0725dee10bac5
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+^
+.app/src/main/java/com/fa/beatify/BeatifyApp.kt,7\1\71fd06d3033d888728ca6fc5337a3e9c32cd0562
+l
+<app/src/main/java/com/fa/beatify/presentation/di/VmModule.kt,f\a\faefdda39a1c34401501dfb61034361ea53cc2d6
 {
 Kapp/src/main/java/com/fa/beatify/presentation/album_detail/AlbumDetailVM.kt,4\3\43c750a9d3275cfd2ac8e3245ed9d852ec3d44c4
 }
@@ -93,3 +73,11 @@ Bapp/src/main/java/com/fa/beatify/presentation/artists/ArtistsVM.kt,3\4\34d5e39
 Sapp/src/main/java/com/fa/beatify/presentation/music_categories/MusicCategoriesVM.kt,8\c\8c481af4ce5ea61e1d343d7d5b52c3b7c9790b6f
 t
 Dapp/src/main/java/com/fa/beatify/presentation/music_likes/LikesVM.kt,9\3\93244e2ad5782278de011d35ca194e9a078fd769
+
+Qapp/src/main/java/com/fa/beatify/utils/constants/controller/BottomBarConstants.kt,e\b\eb0aac8faacba8aacb445bf6529a10b018686feb
+o
+?app/src/main/java/com/fa/beatify/presentation/ui/theme/Theme.kt,b\b\bbd7ea070847990d93d8705553a95eff7c3effcb
+c
+3app/src/main/java/com/fa/beatify/utils/AppColors.kt,4\e\4e3d975a6bef962df2868f486a77c692914628c9
+o
+?app/src/main/java/com/fa/beatify/presentation/ui/theme/Color.kt,f\1\f16f0796ecd7c56d61f20722f0c11c09881d1bea
