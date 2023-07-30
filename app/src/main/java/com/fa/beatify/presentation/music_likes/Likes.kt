@@ -29,7 +29,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -92,12 +91,9 @@ fun Likes(
 
     val connObserver: State<Connection.Status> = NetworkConnection(context = context).observe().collectAsState(initial = Connection.Status.Unavailable)
 
-    val likesData = viewModel.likesData.observeAsState()
-    viewModel.allLikes()
+    val likesData: State<List<Like>> = viewModel.likesData.collectAsState(initial = emptyList())
 
-    likesData.value?.let { likes: List<Like> ->
-        MusicConstants.likeList = likes
-    }
+    MusicConstants.likeList = likesData.value
 
     val playingController: State<Boolean> =
         MusicConstants.trackingController.collectAsState(initial = false)

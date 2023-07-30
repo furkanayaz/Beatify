@@ -5,11 +5,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.fa.beatify.data.models.Like
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LikeDao {
     @Query("SELECT * FROM 'like'")
-    suspend fun getLikes(): List<Like>
+    fun getLikes(): Flow<List<Like>>
 
     @Insert
     suspend fun insertLike(like: Like)

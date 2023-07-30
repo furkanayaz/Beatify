@@ -6,8 +6,6 @@ g
 g
 7app/src/main/java/com/fa/beatify/domain/models/Track.kt,b\d\bd9814e43da2ff090e6405e2c52e38d48ecacb8f
 h
-8app/src/main/java/com/fa/beatify/data/models/TrackDto.kt,e\3\e377ff6beffeee9054f942f4c02799b07a40a258
-h
 8app/src/main/java/com/fa/beatify/domain/models/Artist.kt,5\c\5c4ec11266ef39bb08eea718816a707468031c16
 i
 9app/src/main/java/com/fa/beatify/data/models/ArtistDto.kt,4\b\4b652edf0c833f0b0cf04878638925019f457284
@@ -15,8 +13,6 @@ h
 8app/src/main/java/com/fa/beatify/data/models/AlbumDto.kt,c\3\c3491bd691fe5c48ca7a7bff8d3457de05bf6e4b
 g
 7app/src/main/java/com/fa/beatify/domain/models/Album.kt,e\7\e7ee8771105964003f80a62e63ba6929fa38ecd2
-d
-4app/src/main/java/com/fa/beatify/data/models/Like.kt,f\f\ff13cda98b27557ce04a602c06b2c30041085bce
 y
 Iapp/src/main/java/com/fa/beatify/presentation/album_detail/AlbumDetail.kt,8\d\8d6c2dc8a6e39701ec10563882d96a73f1699545
 {
@@ -35,14 +31,10 @@ x
 Happ/src/main/java/com/fa/beatify/utils/constants/utils/MusicConstants.kt,5\9\59dd8bcddf9b6d067c2cff2c418857a4f0dda02d
 i
 9app/src/main/java/com/fa/beatify/services/MusicService.kt,3\b\3bdb06380bb47b3edf945728b68a70214e7b3523
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 ˆ
 Xapp/src/main/java/com/fa/beatify/presentation/music_categories/SuccessMusicCategories.kt,1\b\1b02309ebc2e6877d68941f5de418efd988c8821
 h
 8app/src/main/java/com/fa/beatify/domain/mappers/Album.kt,e\9\e9294e42a3d097593dd334cc08b11a9736e8d09f
-q
-Aapp/src/main/java/com/fa/beatify/data/response/BeatifyResponse.kt,f\1\f1e21252844b025b4cb8917fa87f579230e498d3
 p
 @app/src/main/java/com/fa/beatify/utils/constants/ApiConstants.kt,1\1\11bb1c21eb0d989a75859ae20753d597eec95ec0
 y
@@ -55,12 +47,6 @@ p
 @app/src/main/java/com/fa/beatify/presentation/artists/Artists.kt,f\5\f5be52fe6fcd89cae6999bc0b409fbb08ce76032
 s
 Capp/src/main/java/com/fa/beatify/utils/network/NetworkConnection.kt,5\6\56a5371ed23ed7fa085b58e52fa7efdf4db7e069
-r
-Bapp/src/main/java/com/fa/beatify/presentation/music_likes/Likes.kt,4\4\4413101b202940aabd4f9bbd0a99cb335fd421ab
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-^
-.app/src/main/java/com/fa/beatify/BeatifyApp.kt,7\1\71fd06d3033d888728ca6fc5337a3e9c32cd0562
 l
 <app/src/main/java/com/fa/beatify/presentation/di/VmModule.kt,f\a\faefdda39a1c34401501dfb61034361ea53cc2d6
 {
@@ -71,8 +57,6 @@ r
 Bapp/src/main/java/com/fa/beatify/presentation/artists/ArtistsVM.kt,3\4\34d5e399303ced96fa66615bdf6d0c24210719a3
 ƒ
 Sapp/src/main/java/com/fa/beatify/presentation/music_categories/MusicCategoriesVM.kt,8\c\8c481af4ce5ea61e1d343d7d5b52c3b7c9790b6f
-t
-Dapp/src/main/java/com/fa/beatify/presentation/music_likes/LikesVM.kt,9\3\93244e2ad5782278de011d35ca194e9a078fd769
 
 Qapp/src/main/java/com/fa/beatify/utils/constants/controller/BottomBarConstants.kt,e\b\eb0aac8faacba8aacb445bf6529a10b018686feb
 o
