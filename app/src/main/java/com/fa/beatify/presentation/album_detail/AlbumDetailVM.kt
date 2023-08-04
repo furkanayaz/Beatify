@@ -14,6 +14,7 @@ import com.fa.beatify.utils.network.NetworkConnection
 import com.fa.beatify.utils.repos.DurationRepo
 import com.fa.beatify.utils.repos.ImageRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,10 @@ class AlbumDetailVM(
     private var _tracks: MutableLiveData<BeatifyResponse<List<Track>>>? = null
     val tracks: MutableLiveData<BeatifyResponse<List<Track>>>
         get() = _tracks!!
+
+    private var getTracksJob: Job? = null
+    private var insertLikeJob: Job? = null
+    private var deleteLikeJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
@@ -55,7 +60,7 @@ class AlbumDetailVM(
     }
 
     private fun getTracks(albumId: Int) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        getTracksJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allTracksUseCase(albumId = albumId).also { trackList: List<Track> ->
                     tracks.postValue(BeatifyResponse.Success(data = trackList, code = 200))
@@ -72,19 +77,23 @@ class AlbumDetailVM(
         durationRepo.getDuration(durationInSeconds = durationInSeconds ?: 0)
 
     fun insertLike(like: Like) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        insertLikeJob = viewModelScope.launch(context = Dispatchers.IO) {
             insertLikeUseCase(like = like)
         }
     }
 
     fun deleteLike(like: Like) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        deleteLikeJob = viewModelScope.launch(context = Dispatchers.IO) {
             deleteLikeUseCase(like = like)
         }
     }
 
     override fun onCleared() {
         super.onCleared()
+        getTracksJob = null
+        insertLikeJob = null
+        deleteLikeJob = null
+
         _connObserver = null
         _tracks = null
     }

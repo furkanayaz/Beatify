@@ -17,8 +17,6 @@ y
 Iapp/src/main/java/com/fa/beatify/presentation/album_detail/AlbumDetail.kt,8\d\8d6c2dc8a6e39701ec10563882d96a73f1699545
 {
 Kapp/src/main/java/com/fa/beatify/presentation/artist_detail/ArtistDetail.kt,5\c\5ccd37a20a22e8094d390bd7b0eb193f29295d9d
-Å
-Qapp/src/main/java/com/fa/beatify/presentation/music_categories/MusicCategories.kt,0\6\065723ea1d503a75e4ec60306de99f00376622a1
 v
 Fapp/src/main/java/com/fa/beatify/presentation/artists/SuccessArtist.kt,d\4\d4ff47cf8372f77a637f54437c59273e6aca29e6
 Ç
@@ -49,14 +47,6 @@ s
 Capp/src/main/java/com/fa/beatify/utils/network/NetworkConnection.kt,5\6\56a5371ed23ed7fa085b58e52fa7efdf4db7e069
 l
 <app/src/main/java/com/fa/beatify/presentation/di/VmModule.kt,f\a\faefdda39a1c34401501dfb61034361ea53cc2d6
-{
-Kapp/src/main/java/com/fa/beatify/presentation/album_detail/AlbumDetailVM.kt,4\3\43c750a9d3275cfd2ac8e3245ed9d852ec3d44c4
-}
-Mapp/src/main/java/com/fa/beatify/presentation/artist_detail/ArtistDetailVM.kt,9\d\9d61421a19cfcd876bc9b073ccdd0c879c9402ed
-r
-Bapp/src/main/java/com/fa/beatify/presentation/artists/ArtistsVM.kt,3\4\34d5e399303ced96fa66615bdf6d0c24210719a3
-É
-Sapp/src/main/java/com/fa/beatify/presentation/music_categories/MusicCategoriesVM.kt,8\c\8c481af4ce5ea61e1d343d7d5b52c3b7c9790b6f
 Å
 Qapp/src/main/java/com/fa/beatify/utils/constants/controller/BottomBarConstants.kt,e\b\eb0aac8faacba8aacb445bf6529a10b018686feb
 o
