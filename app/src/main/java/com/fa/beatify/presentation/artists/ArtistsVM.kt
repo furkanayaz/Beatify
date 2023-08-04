@@ -9,6 +9,7 @@ import com.fa.beatify.domain.remote.use_cases.AllArtistsUseCase
 import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,8 @@ class ArtistsVM(
     private var _artists: MutableLiveData<BeatifyResponse<List<Artist>>>? = null
     val artists: MutableLiveData<BeatifyResponse<List<Artist>>>
         get() = _artists!!
+
+    private var allArtistsJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
@@ -46,7 +49,7 @@ class ArtistsVM(
     }
 
     private fun allArtists(genreId: Int) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        allArtistsJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allArtistsUseCase(genreId = genreId).also { artistList: List<Artist> ->
                     artists.postValue(BeatifyResponse.Success(data = artistList, code = 200))
@@ -59,6 +62,8 @@ class ArtistsVM(
 
     override fun onCleared() {
         super.onCleared()
+        allArtistsJob = null
+
         _connObserver = null
         _artists = null
     }

@@ -10,6 +10,7 @@ import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 import com.fa.beatify.utils.repos.DateRepo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,8 @@ class ArtistDetailVM(
     private var _albums: MutableLiveData<BeatifyResponse<List<Album>>>? = null
     val albums: MutableLiveData<BeatifyResponse<List<Album>>>
         get() = _albums!!
+
+    private var getAlbumsJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
@@ -48,7 +51,7 @@ class ArtistDetailVM(
     }
 
     private fun getAlbums(artistId: Int) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        getAlbumsJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allAlbumsUseCase(artistId = artistId).also { albumList: List<Album> ->
                     albums.postValue(
@@ -68,6 +71,8 @@ class ArtistDetailVM(
 
     override fun onCleared() {
         super.onCleared()
+        getAlbumsJob = null
+
         _connObserver = null
         _albums = null
     }

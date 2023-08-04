@@ -9,6 +9,7 @@ import com.fa.beatify.domain.remote.use_cases.AllGenresUseCase
 import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,8 @@ class MusicCategoriesVM(
     private var _genres: MutableLiveData<BeatifyResponse<List<Genre>>>? = null
     val genres: MutableLiveData<BeatifyResponse<List<Genre>>>
         get() = _genres!!
+
+    private var allGenresJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
@@ -46,7 +49,7 @@ class MusicCategoriesVM(
     }
 
     private fun allGenres() {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        allGenresJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allGenresUseCase().also { genreList: List<Genre> ->
                     genres.postValue(BeatifyResponse.Success(genreList, code = 200))
@@ -59,6 +62,8 @@ class MusicCategoriesVM(
 
     override fun onCleared() {
         super.onCleared()
+        allGenresJob = null
+
         _connObserver = null
         _genres = null
     }
