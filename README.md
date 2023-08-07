@@ -20,7 +20,7 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 
 **ALSO** 👇
 - Clean Architecture ☄️
-- Singleton Responsibility 🥇
+- Single Responsibility 🥇
 - Use Case 🏗️
 
 App Introduction on YouTube: [Click to Watch!](https://youtu.be/AeIloqi5Oic) 📼
