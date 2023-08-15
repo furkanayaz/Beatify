@@ -28,6 +28,14 @@ import com.fa.beatify.utils.constants.NotificationConstants.NOTIFICATION_ID
 import com.fa.beatify.utils.constants.NotificationConstants.REQUEST_CODE
 import com.fa.beatify.domain.models.PlayMusic
 
+/***
+ *
+ *
+ * THIS CLASS WILL MODIFY ACCORDING TO SINGLETON DESIGN PATTERN.
+ * ALSO WILL ADD A MUSIC THEME NOTIFICATION INSTEAD CLASSIC NOTIFICATION.
+ *
+ * */
+
 class MusicService: Service() {
     private var timerJob: Job? = null
 
