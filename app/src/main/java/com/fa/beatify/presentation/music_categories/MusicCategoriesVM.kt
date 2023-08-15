@@ -33,14 +33,14 @@ class MusicCategoriesVM(
     }
 
     fun fetchData() {
-        genres.postValue(BeatifyResponse.Loading())
+        _genres?.postValue(BeatifyResponse.Loading())
 
         viewModelScope.launch(context = Dispatchers.Unconfined) {
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> allGenres()
-                    Connection.Status.Losing -> genres.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> genres.postValue(
+                    Connection.Status.Losing -> _genres?.postValue(BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> _genres?.postValue(
                         BeatifyResponse.Failure(code = 404)
                     )
                 }
@@ -52,10 +52,10 @@ class MusicCategoriesVM(
         allGenresJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allGenresUseCase().also { genreList: List<Genre> ->
-                    genres.postValue(BeatifyResponse.Success(genreList, code = 200))
+                    _genres?.postValue(BeatifyResponse.Success(genreList, code = 200))
                 }
             } catch (e: Exception) {
-                genres.postValue(BeatifyResponse.Failure(code = 404))
+                _genres?.postValue(BeatifyResponse.Failure(code = 404))
             }
         }
     }

@@ -35,14 +35,14 @@ class ArtistDetailVM(
     }
 
     fun fetchData(artistId: Int) {
-        albums.postValue(BeatifyResponse.Loading())
+        _albums?.postValue(BeatifyResponse.Loading())
 
         viewModelScope.launch(context = Dispatchers.Unconfined) {
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> getAlbums(artistId = artistId)
-                    Connection.Status.Losing -> albums.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> albums.postValue(
+                    Connection.Status.Losing -> _albums?.postValue(BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> _albums?.postValue(
                         BeatifyResponse.Failure(code = 404)
                     )
                 }
@@ -54,14 +54,14 @@ class ArtistDetailVM(
         getAlbumsJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allAlbumsUseCase(artistId = artistId).also { albumList: List<Album> ->
-                    albums.postValue(
+                    _albums?.postValue(
                         BeatifyResponse.Success(
                             data = albumList, code = 200
                         )
                     )
                 }
             } catch (e: Exception) {
-                albums.postValue(BeatifyResponse.Failure(code = 404))
+                _albums?.postValue(BeatifyResponse.Failure(code = 404))
             }
         }
     }
