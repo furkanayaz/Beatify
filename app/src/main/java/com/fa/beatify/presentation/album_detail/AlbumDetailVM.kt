@@ -1,6 +1,5 @@
 package com.fa.beatify.presentation.album_detail
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fa.beatify.data.response.BeatifyResponse
@@ -16,6 +15,9 @@ import com.fa.beatify.utils.repos.ImageRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AlbumDetailVM(
@@ -30,9 +32,9 @@ class AlbumDetailVM(
 
     private val connObserver: Flow<Connection.Status> get() = _connObserver!!
 
-    private var _tracks: MutableLiveData<BeatifyResponse<List<Track>>>? = null
-    val tracks: MutableLiveData<BeatifyResponse<List<Track>>>
-        get() = _tracks!!
+    private var _tracks: MutableStateFlow<BeatifyResponse<List<Track>>>? = null
+    val tracks: StateFlow<BeatifyResponse<List<Track>>>
+        get() = _tracks!!.asStateFlow()
 
     private var getTracksJob: Job? = null
     private var insertLikeJob: Job? = null
@@ -40,20 +42,16 @@ class AlbumDetailVM(
 
     init {
         _connObserver = networkConnection.observe()
-        _tracks = MutableLiveData<BeatifyResponse<List<Track>>>()
+        _tracks = MutableStateFlow(value = BeatifyResponse.Loading())
     }
 
     fun fetchData(albumId: Int) {
-        _tracks?.postValue(BeatifyResponse.Loading())
-
         viewModelScope.launch(context = Dispatchers.Unconfined) {
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> getTracks(albumId = albumId)
-                    Connection.Status.Losing -> _tracks?.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> _tracks?.postValue(
-                        BeatifyResponse.Failure(code = 404)
-                    )
+                    Connection.Status.Losing -> _tracks?.emit(value = BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> _tracks?.emit(value = BeatifyResponse.Failure(code = 404))
                 }
             }
         }
@@ -63,10 +61,10 @@ class AlbumDetailVM(
         getTracksJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allTracksUseCase(albumId = albumId).also { trackList: List<Track> ->
-                    _tracks?.postValue(BeatifyResponse.Success(data = trackList, code = 200))
+                    _tracks?.emit(value = BeatifyResponse.Success(data = trackList, code = 200))
                 }
             } catch (e: Exception) {
-                _tracks?.postValue(BeatifyResponse.Failure(code = 404))
+                _tracks?.emit(value = BeatifyResponse.Failure(code = 404))
             }
         }
     }

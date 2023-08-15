@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -22,7 +22,7 @@ fun MusicCategories(
     bottomPadding: Dp,
     tfSearch: MutableState<String>
 ) {
-    val genres: State<BeatifyResponse<List<Genre>>?> = viewModel.genres.observeAsState()
+    val genres: State<BeatifyResponse<List<Genre>>?> = viewModel.genres.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchData()

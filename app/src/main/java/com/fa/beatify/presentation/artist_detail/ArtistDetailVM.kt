@@ -1,6 +1,5 @@
 package com.fa.beatify.presentation.artist_detail
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fa.beatify.data.response.BeatifyResponse
@@ -12,6 +11,9 @@ import com.fa.beatify.utils.repos.DateRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ArtistDetailVM(
@@ -23,27 +25,27 @@ class ArtistDetailVM(
 
     private val connObserver: Flow<Connection.Status> get() = _connObserver!!
 
-    private var _albums: MutableLiveData<BeatifyResponse<List<Album>>>? = null
-    val albums: MutableLiveData<BeatifyResponse<List<Album>>>
-        get() = _albums!!
+    private var _albums: MutableStateFlow<BeatifyResponse<List<Album>>>? = null
+    val albums: StateFlow<BeatifyResponse<List<Album>>>
+        get() = _albums!!.asStateFlow()
 
     private var getAlbumsJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
-        _albums = MutableLiveData<BeatifyResponse<List<Album>>>()
+        _albums = MutableStateFlow(value = BeatifyResponse.Loading())
     }
 
     fun fetchData(artistId: Int) {
-        _albums?.postValue(BeatifyResponse.Loading())
-
         viewModelScope.launch(context = Dispatchers.Unconfined) {
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> getAlbums(artistId = artistId)
-                    Connection.Status.Losing -> _albums?.postValue(BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> _albums?.postValue(
-                        BeatifyResponse.Failure(code = 404)
+                    Connection.Status.Losing -> _albums?.emit(value = BeatifyResponse.Loading())
+                    Connection.Status.Unavailable, Connection.Status.Lost -> _albums?.emit(
+                        value = BeatifyResponse.Failure(
+                            code = 404
+                        )
                     )
                 }
             }
@@ -54,14 +56,14 @@ class ArtistDetailVM(
         getAlbumsJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allAlbumsUseCase(artistId = artistId).also { albumList: List<Album> ->
-                    _albums?.postValue(
-                        BeatifyResponse.Success(
+                    _albums?.emit(
+                        value = BeatifyResponse.Success(
                             data = albumList, code = 200
                         )
                     )
                 }
             } catch (e: Exception) {
-                _albums?.postValue(BeatifyResponse.Failure(code = 404))
+                _albums?.emit(value = BeatifyResponse.Failure(code = 404))
             }
         }
     }

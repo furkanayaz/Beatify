@@ -12,16 +12,14 @@ import java.util.concurrent.TimeUnit
 val dataRemoteModule: Module = module {
 
     single {
-        OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .build()
+        OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS).build()
     }
 
     single {
         Retrofit.Builder().baseUrl(ApiConstants.BASE_URL).client(get())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(DeezerDataSource::class.java)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(DeezerDataSource::class.java)
     }
 
 }

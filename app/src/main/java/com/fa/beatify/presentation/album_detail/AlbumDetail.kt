@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.Dp
 import com.fa.beatify.data.response.BeatifyResponse
 import com.fa.beatify.domain.models.Track
@@ -21,7 +21,7 @@ fun AlbumDetail(
     albumName: String,
     albumId: String
 ) {
-    val tracks: State<BeatifyResponse<List<Track>>?> = viewModel.tracks.observeAsState()
+    val tracks: State<BeatifyResponse<List<Track>>?> = viewModel.tracks.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchData(albumId = albumId.toInt())

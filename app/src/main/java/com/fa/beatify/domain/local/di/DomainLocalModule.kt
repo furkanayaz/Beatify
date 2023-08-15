@@ -9,15 +9,15 @@ import org.koin.dsl.module
 val domainLocalModule: Module = module {
 
     single {
-        AllLikesUseCase(get())
+        AllLikesUseCase(likeDataSource = get())
     }
 
     single {
-        DeleteLikeUseCase(get())
+        DeleteLikeUseCase(likeDataSource = get())
     }
 
     single {
-        InsertLikeUseCase(get())
+        InsertLikeUseCase(likeDataSource = get())
     }
 
 }

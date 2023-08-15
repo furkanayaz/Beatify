@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -23,7 +23,7 @@ fun Artist(
     tfSearch: MutableState<String>,
     genreId: String
 ) {
-    val artists: State<BeatifyResponse<List<Artist>>?> = viewModel.artists.observeAsState()
+    val artists: State<BeatifyResponse<List<Artist>>?> = viewModel.artists.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchData(genreId = genreId.toInt())

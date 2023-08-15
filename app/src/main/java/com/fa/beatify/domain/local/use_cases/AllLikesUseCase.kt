@@ -1,13 +1,13 @@
 package com.fa.beatify.domain.local.use_cases
 
-import androidx.lifecycle.LiveData
 import com.fa.beatify.data.local.services.LikeDataSource
 import com.fa.beatify.data.models.Like
+import kotlinx.coroutines.flow.Flow
 
 class AllLikesUseCase(
     private val likeDataSource: LikeDataSource
 ) {
 
-    suspend operator fun invoke(): LiveData<List<Like>> = likeDataSource.getLikes()
+    operator fun invoke(): Flow<List<Like>> = likeDataSource.getLikes()
 
 }
