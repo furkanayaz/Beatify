@@ -30,19 +30,21 @@ import com.fa.beatify.domain.models.PlayMusic
 
 /***
  *
+ * ATTENTION PLEASE!
  *
  * THIS CLASS WILL MODIFY ACCORDING TO SINGLETON DESIGN PATTERN.
  * ALSO WILL ADD A MUSIC THEME NOTIFICATION INSTEAD CLASSIC NOTIFICATION.
  *
  * */
 
-class MusicService: Service() {
+class MusicService : Service() {
     private var timerJob: Job? = null
 
     override fun onCreate() {
         mediaPlayer = MediaPlayer()
         super.onCreate()
     }
+
     override fun onDestroy() {
         destroyAllProcess()
         super.onDestroy()
@@ -59,7 +61,7 @@ class MusicService: Service() {
             try {
                 playMusic(url = locUrl)
                 showNotification()
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -91,31 +93,43 @@ class MusicService: Service() {
 
                 delay(timeMillis = 1000L)
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     private fun showNotification() {
         playMusic?.let { playMusic: PlayMusic ->
-            val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val manager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder?
             val intent = Intent(this, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                REQUEST_CODE,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel: NotificationChannel? = manager.getNotificationChannel(CHANNEL_ID)
 
                 if (channel == null) {
-                    val tempChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+                    val tempChannel = NotificationChannel(
+                        CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
+                    )
                     manager.createNotificationChannel(tempChannel)
                 }
             }
 
             builder = NotificationCompat.Builder(this, CHANNEL_ID).also {
+                it.setStyle(androidx.media.app.NotificationCompat.MediaStyle())
+                it.priority = NotificationCompat.PRIORITY_LOW
                 it.setAutoCancel(false)
                 it.setSmallIcon(R.mipmap.light_icon)
                 it.setContentIntent(pendingIntent)
+                it.setShowWhen(false)
+                it.setOnlyAlertOnce(true)
                 it.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 it.setContentTitle(playMusic.artistName)
                 it.setContentText("${playMusic.albumName} - ${playMusic.musicName}")
