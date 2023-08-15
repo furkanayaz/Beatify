@@ -76,9 +76,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$vm_ver"
     implementation "androidx.navigation:navigation-compose:$vm_ver"
 
-    def livedata_ver = '1.6.0-alpha03'
-    implementation "androidx.compose.runtime:runtime-livedata:$livedata_ver"
-
     def room_ver = "2.5.2"
     implementation "androidx.room:room-runtime:$room_ver"
     implementation "androidx.room:room-ktx:$room_ver"
