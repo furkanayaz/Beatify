@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace 'com.fa.beatify'
-    compileSdk 34
+    compileSdk AppConfig.compile_sdk
 
     defaultConfig {
         applicationId "com.fa.beatify"
-        minSdk 24
-        targetSdk 34
-        versionCode 6
-        versionName "2.4.2"
+        minSdk AppConfig.min_sdk
+        targetSdk AppConfig.target_sdk
+        versionCode AppConfig.version_code
+        versionName AppConfig.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -53,53 +53,61 @@ kapt {
 
 dependencies {
 
-    def comp_ver = "1.6.0-alpha03"
-    implementation "androidx.compose.ui:ui-android:$comp_ver"
+    // Compose Impl...
+    implementation "androidx.compose.ui:ui-android:${AndroidX.comp}"
 
-    def material_ver = "1.1.1"
-    implementation "androidx.compose.material3:material3:$material_ver"
+    // Material Impl...
+    implementation "androidx.compose.material3:material3:${AndroidX.material}"
 
-    def media_ver = "1.6.0"
-    implementation "androidx.media:media:$media_ver"
+    // Media Impl...
+    implementation "androidx.media:media:${AndroidX.media}"
 
-    def coil_ver = "2.4.0"
-    implementation "io.coil-kt:coil-compose:$coil_ver"
+    // ViewModel Impls...
+    implementation "androidx.navigation:navigation-compose:${AndroidX.vm}"
+    implementation "androidx.navigation:navigation-compose:${AndroidX.vm}"
 
-    def retrofit_ver = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
-
-    def gson_ver = "2.10.1"
-    implementation "com.google.code.gson:gson:$gson_ver"
-
-    def vm_ver = '2.7.0'
-    implementation "androidx.navigation:navigation-compose:$vm_ver"
-    implementation "androidx.navigation:navigation-compose:$vm_ver"
-
-    def room_ver = "2.5.2"
-    implementation "androidx.room:room-runtime:$room_ver"
-    implementation "androidx.room:room-ktx:$room_ver"
-    kapt "androidx.room:room-compiler:$room_ver"
-
-    def koin_ver = "3.4.2"
-    implementation "io.insert-koin:koin-android:$koin_ver"
-    implementation "io.insert-koin:koin-androidx-compose:$koin_ver"
+    // Room Impls...
+    implementation "androidx.room:room-runtime:${AndroidX.room}"
+    implementation "androidx.room:room-ktx:${AndroidX.room}"
+    //noinspection KaptUsageInsteadOfKsp
+    kapt "androidx.room:room-compiler:${AndroidX.room}"
 
     //noinspection GradleDynamicVersion
-    implementation 'androidx.core:core-ktx:1.12.0-rc01'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.2'
-    implementation platform('androidx.compose:compose-bom:2023.06.00')
+    implementation "androidx.core:core-ktx:${AndroidX.ktx}"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lfcyc_runt}"
+    implementation "androidx.activity:activity-compose:${AndroidX.act_comp}"
+    implementation platform("androidx.compose:compose-bom:${AndroidX.bom}")
+    implementation "androidx.core:core-splashscreen:1.0.1"
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta"
-    implementation "androidx.core:core-splashscreen:1.0.1"
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation platform('androidx.compose:compose-bom:2023.06.00')
+    // Accompanist Impl...
+    implementation "com.google.accompanist:accompanist-systemuicontroller:${UInterface.accomp}"
+
+    // Coil Impl...
+    implementation "io.coil-kt:coil-compose:${UInterface.coil}"
+
+    // Retrofit Impls...
+    implementation "com.squareup.retrofit2:retrofit:${Feat.retro}"
+    implementation "com.squareup.retrofit2:converter-gson:${Feat.retro}"
+
+    // Gson Impl...
+    implementation "com.google.code.gson:gson:${Feat.gson}"
+
+    // Koin Impls...
+    implementation "io.insert-koin:koin-android:${Feat.koin}"
+    implementation "io.insert-koin:koin-androidx-compose:${Feat.koin}"
+
+    // Test Impl...
+    testImplementation "junit:junit:${TEST.junit}"
+
+    // Android Test Impls...
+    androidTestImplementation "androidx.test.ext:junit:${ANDTEST.junit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${ANDTEST.espr}"
+    androidTestImplementation platform("androidx.compose:compose-bom:${ANDTEST.bom}")
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+
+    // Debug Test Impls...
     debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.6.0-alpha03'
+    debugImplementation "androidx.compose.ui:ui-test-manifest:${DEBTEST.mani}"
 }
