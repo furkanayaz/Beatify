@@ -35,12 +35,13 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.data.response.BeatifyResponse
-import com.fa.beatify.utils.constants.controller.ListState
+import com.fa.beatify.utils.constants.ListState
 import com.fa.beatify.domain.models.Genre
 import com.fa.beatify.presentation.ui.theme.CustomGradient
 import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.currentColor
 import com.fa.beatify.utils.NavUtility
+import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessMusicCategories(
@@ -75,8 +76,8 @@ fun SuccessMusicCategories(
                 columns = GridCells.Fixed(count = 2),
                 state = gridState
             ) {
-                val tempList: List<Genre> = genreList!!.filter { genre: Genre ->
-                    genre.name.lowercase().contains(tfSearch.value.lowercase())
+                val tempList: List<Genre> = genreList!!.filter {
+                    SearchRepo(model = it, searchedText = tfSearch.value)::search.invoke()
                 }
 
                 items(count = tempList.count()) { pos: Int ->

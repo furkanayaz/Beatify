@@ -2,21 +2,21 @@ package com.fa.beatify.presentation.activity
 
 import androidx.lifecycle.ViewModel
 import com.fa.beatify.R
-import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_CATEGORIES
-import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_LIKES
-import com.fa.beatify.utils.constants.utils.MusicConstants
+import com.fa.beatify.utils.constants.controller.BottomBarController.SELECT_CATEGORIES
+import com.fa.beatify.utils.constants.controller.BottomBarController.SELECT_LIKES
+import com.fa.beatify.utils.constants.controller.MusicController
 
 class MainActivityVM : ViewModel() {
 
     fun resumeMusic() {
-        MusicConstants.apply {
+        MusicController.apply {
             mediaPlayer?.start()
             playingController.value = false
         }
     }
 
     fun pauseMusic() {
-        MusicConstants.apply {
+        MusicController.apply {
             mediaPlayer?.pause()
             playingController.value = true
         }

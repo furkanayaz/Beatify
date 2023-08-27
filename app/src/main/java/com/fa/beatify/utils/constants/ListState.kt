@@ -1,4 +1,4 @@
-package com.fa.beatify.utils.constants.controller
+package com.fa.beatify.utils.constants
 
 object ListState {
     var CATEGORIES_STATE = 0

@@ -39,13 +39,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.data.response.BeatifyResponse
-import com.fa.beatify.utils.constants.controller.ListState
-import com.fa.beatify.utils.constants.utils.ImageConstants
+import com.fa.beatify.utils.constants.ListState
+import com.fa.beatify.utils.constants.controller.ImageController
 import com.fa.beatify.domain.models.Album
 import com.fa.beatify.presentation.ui.theme.CustomGradient
 import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.currentColor
 import com.fa.beatify.utils.NavUtility
+import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessArtistDetail(
@@ -82,13 +83,11 @@ fun SuccessArtistDetail(
                     .height(height = (configuration.screenHeightDp / 4).dp)
                     .padding(bottom = 15.0.dp),
                 contentScale = ContentScale.FillBounds,
-                model = ImageConstants.ARTIST_IMAGE,
+                model = ImageController.ARTIST_IMAGE,
                 contentDescription = stringResource(id = R.string.music_image)
             )
 
-            val filteredAlbumModel = albumList.filter { album: Album ->
-                album.title.lowercase().contains(tfSearch.value.lowercase())
-            }
+            val filteredAlbumModel: List<Album> = albumList.filter { SearchRepo(model = it, searchedText = tfSearch.value)::search.invoke() }
 
             LazyColumn(modifier = Modifier
                 .fillMaxSize()

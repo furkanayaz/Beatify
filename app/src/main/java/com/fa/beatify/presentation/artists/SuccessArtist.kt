@@ -35,13 +35,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.data.response.BeatifyResponse
-import com.fa.beatify.utils.constants.controller.ListState
-import com.fa.beatify.utils.constants.utils.ImageConstants
+import com.fa.beatify.utils.constants.ListState
+import com.fa.beatify.utils.constants.controller.ImageController
 import com.fa.beatify.domain.models.Artist
 import com.fa.beatify.presentation.ui.theme.CustomGradient
 import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.currentColor
 import com.fa.beatify.utils.NavUtility
+import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessArtist(
@@ -77,9 +78,7 @@ fun SuccessArtist(
                 state = gridState
             ) {
                 val tempArtists: List<Artist> =
-                    artistList!!.filter { artist: Artist ->
-                        artist.name.lowercase().contains(tfSearch.value.lowercase())
-                    }
+                    artistList!!.filter { SearchRepo(model = it, searchedText = tfSearch.value)::search.invoke() }
 
                 items(count = tempArtists.count()) { pos: Int ->
                     val model: Artist = tempArtists[pos]
@@ -91,7 +90,7 @@ fun SuccessArtist(
                         .clip(shape = rowShape)
                         .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                         .clickable {
-                            ImageConstants.ARTIST_IMAGE = model.pictureMedium
+                            ImageController.ARTIST_IMAGE = model.pictureMedium
                             navController
                                 .navigate(
                                     route = NavUtility.ArtistDetail.withSourceArgs(

@@ -19,9 +19,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import com.fa.beatify.utils.constants.utils.MusicConstants.mediaPlayer
-import com.fa.beatify.utils.constants.utils.MusicConstants.trackingController
-import com.fa.beatify.utils.constants.utils.MusicConstants.playMusic
+import com.fa.beatify.utils.constants.controller.MusicController.mediaPlayer
+import com.fa.beatify.utils.constants.controller.MusicController.trackingController
+import com.fa.beatify.utils.constants.controller.MusicController.playMusic
 import com.fa.beatify.utils.constants.NotificationConstants.CHANNEL_ID
 import com.fa.beatify.utils.constants.NotificationConstants.CHANNEL_NAME
 import com.fa.beatify.utils.constants.NotificationConstants.NOTIFICATION_ID

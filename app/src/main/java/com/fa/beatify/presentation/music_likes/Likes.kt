@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.utils.constants.controller.ListState
-import com.fa.beatify.utils.constants.utils.MusicConstants
+import com.fa.beatify.utils.constants.ListState
+import com.fa.beatify.utils.constants.controller.MusicController
 import com.fa.beatify.data.models.Like
 import com.fa.beatify.domain.models.PlayMusic
 import com.fa.beatify.services.MusicService
@@ -60,6 +60,7 @@ import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.currentColor
 import com.fa.beatify.utils.network.Connection
 import com.fa.beatify.utils.network.NetworkConnection
+import com.fa.beatify.utils.repos.SearchRepo
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -93,10 +94,10 @@ fun Likes(
 
     val likesData: State<List<Like>> = viewModel.likesData.collectAsState(initial = emptyList())
 
-    MusicConstants.likeList = likesData.value
+    MusicController.likeList = likesData.value
 
     val playingController: State<Boolean> =
-        MusicConstants.trackingController.collectAsState(initial = false)
+        MusicController.trackingController.collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -104,7 +105,7 @@ fun Likes(
             .background(color = currentColor().screenBg)
     ) {
 
-        MusicConstants.likeList.apply {
+        MusicController.likeList.apply {
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = CustomGradient
@@ -117,8 +118,8 @@ fun Likes(
                         .padding(top = topPadding, bottom = bottomPadding)
                         .background(color = currentColor().screenBg), state = listState
                 ) {
-                    val likeList = this@apply.filter { likeEntities ->
-                        likeEntities.musicName.lowercase().contains(tfSearch.value.lowercase())
+                    val likeList: List<Like> = this@apply.filter {
+                        SearchRepo(model = it, searchedText = tfSearch.value)::search.invoke()
                     }
 
                     item {
@@ -145,8 +146,8 @@ fun Likes(
                                 .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                                 .clickable {
                                     if (connObserver.value == Connection.Status.Available) {
-                                        MusicConstants.playingController.value = false
-                                        MusicConstants.playMusic = PlayMusic(
+                                        MusicController.playingController.value = false
+                                        MusicController.playMusic = PlayMusic(
                                             artistName = likeModel.artistName,
                                             albumName = likeModel.albumName,
                                             musicName = likeModel.musicName,

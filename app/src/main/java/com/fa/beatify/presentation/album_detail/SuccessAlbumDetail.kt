@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fa.beatify.R
 import com.fa.beatify.data.response.BeatifyResponse
-import com.fa.beatify.utils.constants.utils.MusicConstants
+import com.fa.beatify.utils.constants.controller.MusicController
 import com.fa.beatify.data.models.Like
 import com.fa.beatify.domain.models.PlayMusic
 import com.fa.beatify.domain.models.Track
@@ -56,6 +56,7 @@ import com.fa.beatify.presentation.ui.theme.CustomGradient
 import com.fa.beatify.presentation.ui.theme.LtPrimary
 import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.currentColor
+import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessAlbumDetail(
@@ -72,7 +73,7 @@ fun SuccessAlbumDetail(
     val musicServiceService = Intent(context, MusicService::class.java)
 
     val playingController: State<Boolean> =
-        MusicConstants.trackingController.collectAsState(initial = false)
+        MusicController.trackingController.collectAsState(initial = false)
 
     val likeChecked: SnapshotStateList<Int> = remember {
         mutableStateListOf(-1)
@@ -84,13 +85,13 @@ fun SuccessAlbumDetail(
             .background(color = currentColor().screenBg)
     ) {
 
-        albumDetail?.data?.filter { track: Track ->
-            track.title.lowercase().contains(tfSearch.value.lowercase())
+        albumDetail?.data?.filter {
+            SearchRepo(model = it, searchedText = tfSearch.value)::search.invoke()
         }?.let {
-            MusicConstants.trackList = it
+            MusicController.trackList = it
         }
 
-        MusicConstants.trackList.let {
+        MusicController.trackList.let {
             val rowShape = RoundedCornerShape(size = 10.0.dp)
             val gradientColors: Brush = Brush.horizontalGradient(
                 colors = CustomGradient
@@ -111,8 +112,8 @@ fun SuccessAlbumDetail(
                             .padding(top = 15.0.dp, start = 15.0.dp, end = 15.0.dp)
                     )
                 }
-                items(count = MusicConstants.trackList.count()) { pos: Int ->
-                    val trackModel = MusicConstants.trackList[pos]
+                items(count = MusicController.trackList.count()) { pos: Int ->
+                    val trackModel = MusicController.trackList[pos]
 
                     val musicImage: String = viewModel.getImage(md5Image = trackModel.md5Image)
                     val musicDuration: String = viewModel.getDuration(durationInSeconds = trackModel.duration)
@@ -125,8 +126,8 @@ fun SuccessAlbumDetail(
                             .background(color = currentColor().gridArtistBg)
                             .border(width = 1.5.dp, brush = gradientColors, shape = rowShape)
                             .clickable {
-                                MusicConstants.playingController.value = false
-                                MusicConstants.playMusic = PlayMusic(
+                                MusicController.playingController.value = false
+                                MusicController.playMusic = PlayMusic(
                                     artistName = artistName,
                                     albumName = albumName,
                                     musicName = trackModel.title,

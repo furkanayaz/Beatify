@@ -74,12 +74,12 @@ import coil.compose.AsyncImage
 import com.fa.beatify.presentation.album_detail.AlbumDetail
 import com.fa.beatify.presentation.artist_detail.ArtistDetail
 import com.fa.beatify.presentation.artists.Artist
-import com.fa.beatify.utils.constants.utils.MusicConstants
+import com.fa.beatify.utils.constants.controller.MusicController
 import com.fa.beatify.domain.models.PlayMusic
 import com.fa.beatify.presentation.music_categories.MusicCategories
 import com.fa.beatify.presentation.music_likes.Likes
 import com.fa.beatify.R
-import com.fa.beatify.utils.constants.utils.ClearConstants
+import com.fa.beatify.utils.constants.controller.ClearController
 import com.fa.beatify.presentation.album_detail.AlbumDetailVM
 import com.fa.beatify.presentation.artist_detail.ArtistDetailVM
 import com.fa.beatify.presentation.artists.ArtistsVM
@@ -99,9 +99,9 @@ import androidx.compose.foundation.shape.CircleShape
 import com.fa.beatify.presentation.ui.theme.Transparent
 import com.fa.beatify.presentation.ui.theme.White
 import com.fa.beatify.presentation.ui.theme.Black
-import com.fa.beatify.utils.constants.utils.MusicConstants.trackingController
-import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_LIKES
-import com.fa.beatify.utils.constants.controller.BottomBarConstants.SELECT_CATEGORIES
+import com.fa.beatify.utils.constants.controller.MusicController.trackingController
+import com.fa.beatify.utils.constants.controller.BottomBarController.SELECT_LIKES
+import com.fa.beatify.utils.constants.controller.BottomBarController.SELECT_CATEGORIES
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityScope()
@@ -139,7 +139,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     }
 
     private fun clearConstants() {
-        ClearConstants.apply {
+        ClearController.apply {
             clearListConsts()
             clearImageConsts()
         }
@@ -224,8 +224,8 @@ fun NavActivity(
                         navController = navController,
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
-                        tfSearch = tfSearch,
-                        genreId = id
+                        genreId = id,
+                        tfSearch = tfSearch
                     )
                 }
             }
@@ -247,9 +247,9 @@ fun NavActivity(
                         navController = navController,
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
-                        tfSearch = tfSearch,
                         artistId = id,
                         artistName = artistName,
+                        tfSearch = tfSearch
                     )
                 }
             }
@@ -271,10 +271,10 @@ fun NavActivity(
                         viewModel = albumDetailVM,
                         topPadding = values.calculateTopPadding(),
                         bottomPadding = values.calculateBottomPadding(),
-                        tfSearch = tfSearch,
                         artistName = artistName,
                         albumName = albumName,
-                        albumId = id
+                        albumId = id,
+                        tfSearch = tfSearch
                     )
                 }
 
@@ -292,7 +292,7 @@ fun NavActivity(
                     .height(55.0.dp),
                     contentAlignment = Alignment.Center,
                     content = {
-                        MusicConstants.playMusic?.let { playMusic: PlayMusic ->
+                        MusicController.playMusic?.let { playMusic: PlayMusic ->
                             PlayMusicInBottom(
                                 viewModel = mainActivityVM,
                                 artistName = playMusic.artistName,
@@ -558,7 +558,7 @@ fun PlayMusicInBottom(
     musicImage: String
 ) {
     val playingController: State<Boolean> =
-        MusicConstants.playingController.collectAsState(initial = false)
+        MusicController.playingController.collectAsState(initial = false)
 
     AsyncImage(
         modifier = Modifier

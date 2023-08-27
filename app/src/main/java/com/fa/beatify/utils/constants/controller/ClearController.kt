@@ -1,8 +1,8 @@
-package com.fa.beatify.utils.constants.utils
+package com.fa.beatify.utils.constants.controller
 
-import com.fa.beatify.utils.constants.controller.ListState
+import com.fa.beatify.utils.constants.ListState
 
-object ClearConstants {
+object ClearController {
 
     fun clearListConsts() {
         ListState.apply {
@@ -14,7 +14,7 @@ object ClearConstants {
     }
 
     fun clearImageConsts() {
-        ImageConstants.apply {
+        ImageController.apply {
             ARTIST_IMAGE = null
         }
     }
