@@ -96,7 +96,8 @@ dependencies {
 
     // Koin Impls...
     implementation "io.insert-koin:koin-android:${Feat.koin}"
-    implementation "io.insert-koin:koin-androidx-compose:${Feat.koin}"
+    testImplementation "io.insert-koin:koin-test-junit4:${Feat.koin}"
+    implementation "io.insert-koin:koin-androidx-compose:${Feat.koin_comp}"
 
     // Test Impl...
     testImplementation "junit:junit:${TEST.junit}"
