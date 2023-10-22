@@ -16,15 +16,15 @@ ext {
     ]
 
     // AndroidX Dependencies...
-    COMP_VER       = '1.6.0-alpha05'
-    MATERIAL_VER   = "1.1.1"
+    COMP_VER       = '1.6.0-alpha08'
+    MATERIAL_VER   = '1.1.2'
     MEDIA_VER      = "1.6.0"
-    VM_VER         = '2.7.2'
-    ROOM_VER       = "2.5.2"
+    VM_VER         = '2.7.4'
+    ROOM_VER       = '2.6.0'
     KTX_VER        = '1.12.0'
     LFCYC_RUNT_VER = '2.6.2'
-    ACT_COMP_VER   = "1.7.2"
-    BOM_VER        = '2023.09.00'
+    ACT_COMP_VER   = '1.8.0'
+    BOM_VER        = '2023.10.01'
     SPLASH_VER     = "1.0.1"
 
     AndroidX = [
@@ -41,7 +41,7 @@ ext {
     ]
 
     // UInterface Dependencies...
-    ACCOMP_VER = '0.33.1-alpha'
+    ACCOMP_VER = '0.33.2-alpha'
     COIL_VER   = "2.4.0"
 
     UInterface = [
@@ -52,8 +52,8 @@ ext {
     // FEAT Dependencies...
     RETRO_VER = "2.9.0"
     GSON_VER  = "2.10.1"
-    KOIN_VER  = "3.4.3"
-    KOON_COMP_VER  = "3.4.6"
+    KOIN_VER  = '3.5.0'
+    KOON_COMP_VER  = '3.5.0'
 
     Feat = [
             retro: RETRO_VER,
@@ -72,7 +72,7 @@ ext {
     // Android Test Dependencies...
     AND_JUNIT_VER = "1.1.5"
     ESPR_VER      = "3.5.1"
-    BOM_VER       = '2023.09.00'
+    BOM_VER       = '2023.10.01'
 
     ANDTEST = [
             junit: AND_JUNIT_VER,
@@ -81,7 +81,7 @@ ext {
     ]
 
     // Debug Test Dependency...
-    MANI_VER = '1.6.0-alpha05'
+    MANI_VER = '1.6.0-alpha08'
 
     DEBTEST = [
             mani: MANI_VER

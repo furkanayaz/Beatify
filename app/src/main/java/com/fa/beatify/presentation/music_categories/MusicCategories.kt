@@ -6,8 +6,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.fa.beatify.data.response.BeatifyResponse
 import com.fa.beatify.domain.models.Genre
@@ -22,10 +26,13 @@ fun MusicCategories(
     bottomPadding: Dp,
     tfSearch: MutableState<String>
 ) {
+    val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     val genres: State<BeatifyResponse<List<Genre>>?> = viewModel.genres.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.fetchData()
+        lifeCycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.fetchData()
+        }
     }
 
     val oddPaddingValues =
