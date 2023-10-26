@@ -11,9 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.domain.models.Album
-import com.fa.beatify.presentation.FailureMusicCategories
+import com.fa.beatify.presentation.FailurePage
 import com.fa.beatify.presentation.LoadingPage
 
 @Composable
@@ -27,7 +27,7 @@ fun ArtistDetail(
     artistName: String
 ) {
     val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val albums: State<BeatifyResponse<List<Album>>?> = viewModel.albums.collectAsState()
+    val albums: State<Response<List<Album>>?> = viewModel.albums.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         lifeCycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -36,7 +36,7 @@ fun ArtistDetail(
     }
 
     when (albums.value) {
-        is BeatifyResponse.Success -> SuccessArtistDetail(
+        is Response.Success -> SuccessArtistDetail(
             viewModel = viewModel,
             artistDetail = albums.value,
             navController = navController,
@@ -46,11 +46,11 @@ fun ArtistDetail(
             tfSearch = tfSearch
         )
 
-        is BeatifyResponse.Failure -> FailureMusicCategories(
+        is Response.Failure -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding
         )
 
-        is BeatifyResponse.Loading -> LoadingPage(
+        is Response.Loading -> LoadingPage(
             controller = 3,
             topPadding = topPadding,
             bottomPadding = bottomPadding,
@@ -58,7 +58,7 @@ fun ArtistDetail(
             evenPaddingValues = null
         )
 
-        else -> FailureMusicCategories(
+        else -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding
         )
     }

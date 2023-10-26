@@ -2,7 +2,7 @@ package com.fa.beatify.presentation.album_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.data.models.Like
 import com.fa.beatify.domain.local.use_cases.DeleteLikeUseCase
 import com.fa.beatify.domain.local.use_cases.InsertLikeUseCase
@@ -32,8 +32,8 @@ class AlbumDetailVM(
 
     private val connObserver: Flow<Connection.Status> get() = _connObserver!!
 
-    private var _tracks: MutableStateFlow<BeatifyResponse<List<Track>>>? = null
-    val tracks: StateFlow<BeatifyResponse<List<Track>>>
+    private var _tracks: MutableStateFlow<Response<List<Track>>>? = null
+    val tracks: StateFlow<Response<List<Track>>>
         get() = _tracks!!.asStateFlow()
 
     private var getTracksJob: Job? = null
@@ -42,7 +42,7 @@ class AlbumDetailVM(
 
     init {
         _connObserver = networkConnection.observe()
-        _tracks = MutableStateFlow(value = BeatifyResponse.Loading())
+        _tracks = MutableStateFlow(value = Response.Loading)
     }
 
     fun fetchData(albumId: Int) {
@@ -50,8 +50,8 @@ class AlbumDetailVM(
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> getTracks(albumId = albumId)
-                    Connection.Status.Losing -> _tracks?.emit(value = BeatifyResponse.Loading())
-                    Connection.Status.Unavailable, Connection.Status.Lost -> _tracks?.emit(value = BeatifyResponse.Failure(code = 404))
+                    Connection.Status.Losing -> _tracks?.emit(value = Response.Loading)
+                    Connection.Status.Unavailable, Connection.Status.Lost -> _tracks?.emit(value = Response.Failure(code = 404))
                 }
             }
         }
@@ -61,10 +61,10 @@ class AlbumDetailVM(
         getTracksJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allTracksUseCase(albumId = albumId).also { trackList: List<Track> ->
-                    _tracks?.emit(value = BeatifyResponse.Success(data = trackList, code = 200))
+                    _tracks?.emit(value = Response.Success(data = trackList, code = 200))
                 }
             } catch (e: Exception) {
-                _tracks?.emit(value = BeatifyResponse.Failure(code = 404))
+                _tracks?.emit(value = Response.Failure(code = 404))
             }
         }
     }

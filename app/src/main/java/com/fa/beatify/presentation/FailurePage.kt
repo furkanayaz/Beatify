@@ -23,7 +23,7 @@ import com.fa.beatify.R
 import com.fa.beatify.presentation.ui.theme.currentColor
 
 @Composable
-fun FailureMusicCategories(
+fun FailurePage(
     topPadding: Dp, bottomPadding: Dp, code: Int? = 0
 ) {
     Column(

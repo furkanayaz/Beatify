@@ -10,9 +10,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.domain.models.Track
-import com.fa.beatify.presentation.FailureMusicCategories
+import com.fa.beatify.presentation.FailurePage
 import com.fa.beatify.presentation.LoadingPage
 
 @Composable
@@ -26,7 +26,7 @@ fun AlbumDetail(
     albumId: String
 ) {
     val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val tracks: State<BeatifyResponse<List<Track>>?> = viewModel.tracks.collectAsState()
+    val tracks: State<Response<List<Track>>?> = viewModel.tracks.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         lifeCycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -35,7 +35,7 @@ fun AlbumDetail(
     }
 
     when (tracks.value) {
-        is BeatifyResponse.Success -> SuccessAlbumDetail(
+        is Response.Success -> SuccessAlbumDetail(
             viewModel = viewModel,
             albumDetail = tracks.value,
             topPadding = topPadding,
@@ -45,11 +45,11 @@ fun AlbumDetail(
             albumName = albumName
         )
 
-        is BeatifyResponse.Failure -> FailureMusicCategories(
+        is Response.Failure -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding, code = tracks.value?.code
         )
 
-        is BeatifyResponse.Loading -> LoadingPage(
+        is Response.Loading -> LoadingPage(
             controller = 4,
             topPadding = topPadding,
             bottomPadding = bottomPadding,
@@ -57,7 +57,7 @@ fun AlbumDetail(
             evenPaddingValues = null
         )
 
-        else -> FailureMusicCategories(
+        else -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding
         )
     }

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.utils.constants.ListState
 import com.fa.beatify.domain.models.Genre
 import com.fa.beatify.presentation.ui.theme.CustomGradient
@@ -45,7 +45,7 @@ import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessMusicCategories(
-    genres: BeatifyResponse<List<Genre>>?,
+    genres: Response<List<Genre>>?,
     navController: NavHostController,
     topPadding: Dp,
     bottomPadding: Dp,

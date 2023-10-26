@@ -1,89 +1,81 @@
 ext {
 
     // AppConfig Dependencies...
-    COMPILE_SDK  = 34
-    MIN_SDK      = 24
-    TARGET_SDK   = 34
+    COMPILE_SDK = 34
+    MIN_SDK = 24
+    TARGET_SDK = 34
     VERSION_CODE = 6
     VERSION_NAME = "2.4.2"
 
-    AppConfig = [
-            compile_sdk : COMPILE_SDK,
-            min_sdk     : MIN_SDK,
-            target_sdk  : TARGET_SDK,
-            version_code: VERSION_CODE,
-            version_name: VERSION_NAME,
-    ]
+    AppConfig = [compile_sdk : COMPILE_SDK,
+                 min_sdk     : MIN_SDK,
+                 target_sdk  : TARGET_SDK,
+                 version_code: VERSION_CODE,
+                 version_name: VERSION_NAME,]
 
     // AndroidX Dependencies...
-    COMP_VER       = '1.6.0-alpha08'
-    MATERIAL_VER   = '1.1.2'
-    MEDIA_VER      = "1.6.0"
-    VM_VER         = '2.7.4'
-    ROOM_VER       = '2.6.0'
-    KTX_VER        = '1.12.0'
+    COMP_VER = '1.6.0-alpha08'
+    MATERIAL_VER = '1.1.2'
+    MEDIA_VER = "1.6.0"
+    VM_VER = '2.7.4'
+    ROOM_VER = '2.6.0'
+    KTX_VER = '1.12.0'
     LFCYC_RUNT_VER = '2.6.2'
-    ACT_COMP_VER   = '1.8.0'
-    BOM_VER        = '2023.10.01'
-    SPLASH_VER     = "1.0.1"
+    ACT_COMP_VER = '1.8.0'
+    BOM_VER = '2023.10.01'
+    SPLASH_VER = "1.0.1"
 
-    AndroidX = [
-            comp      : COMP_VER,
-            material  : MATERIAL_VER,
-            media     : MEDIA_VER,
-            vm        : VM_VER,
-            room      : ROOM_VER,
-            ktx       : KTX_VER,
-            lfcyc_runt: LFCYC_RUNT_VER,
-            act_comp  : ACT_COMP_VER,
-            bom       : BOM_VER,
-            splash    : SPLASH_VER
-    ]
+    AndroidX = [comp      : COMP_VER,
+                material  : MATERIAL_VER,
+                media     : MEDIA_VER,
+                vm        : VM_VER,
+                room      : ROOM_VER,
+                ktx       : KTX_VER,
+                lfcyc_runt: LFCYC_RUNT_VER,
+                act_comp  : ACT_COMP_VER,
+                bom       : BOM_VER,
+                splash    : SPLASH_VER]
 
     // UInterface Dependencies...
     ACCOMP_VER = '0.33.2-alpha'
-    COIL_VER   = "2.4.0"
+    COIL_VER = "2.4.0"
 
-    UInterface = [
-            accomp: ACCOMP_VER,
-            coil  : COIL_VER
-    ]
+    UInterface = [accomp: ACCOMP_VER,
+                  coil  : COIL_VER]
 
     // FEAT Dependencies...
-    RETRO_VER = "2.9.0"
-    GSON_VER  = "2.10.1"
-    KOIN_VER  = '3.5.0'
-    KOON_COMP_VER  = '3.5.0'
+    COROUTINES = '1.7.3'
+    SERIALIZATION = '1.6.0'
+    KOIN_VER = '3.5.0'
+    KTOR_VER = "2.3.5"
+    KOON_COMP_VER = '3.5.0'
 
-    Feat = [
-            retro: RETRO_VER,
-            gson : GSON_VER,
-            koin : KOIN_VER,
-            koin_comp : KOON_COMP_VER
-    ]
+    Feat = [coroutines         : COROUTINES,
+            serialization      : SERIALIZATION,
+            koin               : KOIN_VER,
+            koin_comp          : KOON_COMP_VER,
+            ktor_android       : KTOR_VER,
+            content_negotiation: KTOR_VER,
+            json               : KTOR_VER,
+            ktor_serialization : KTOR_VER,
+            ktor_logging       : KTOR_VER]
 
     // Test Dependencies...
     JUNIT_VER = "4.13.2"
 
-    TEST = [
-            junit: JUNIT_VER
-    ]
+    TEST = [junit: JUNIT_VER]
 
     // Android Test Dependencies...
     AND_JUNIT_VER = "1.1.5"
-    ESPR_VER      = "3.5.1"
-    BOM_VER       = '2023.10.01'
+    ESPR_VER = "3.5.1"
+    BOM_VER = '2023.10.01'
 
-    ANDTEST = [
-            junit: AND_JUNIT_VER,
-            espr : ESPR_VER,
-            bom  : BOM_VER,
-    ]
+    ANDTEST = [junit: AND_JUNIT_VER,
+               espr : ESPR_VER,
+               bom  : BOM_VER,]
 
     // Debug Test Dependency...
     MANI_VER = '1.6.0-alpha08'
 
-    DEBTEST = [
-            mani: MANI_VER
-    ]
+    DEBTEST = [mani: MANI_VER]
 }

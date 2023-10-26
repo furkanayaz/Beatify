@@ -13,9 +13,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.domain.models.Genre
-import com.fa.beatify.presentation.FailureMusicCategories
+import com.fa.beatify.presentation.FailurePage
 import com.fa.beatify.presentation.LoadingPage
 
 @Composable
@@ -27,7 +27,7 @@ fun MusicCategories(
     tfSearch: MutableState<String>
 ) {
     val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val genres: State<BeatifyResponse<List<Genre>>?> = viewModel.genres.collectAsState()
+    val genres: State<Response<List<Genre>>?> = viewModel.genres.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         lifeCycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
@@ -41,7 +41,7 @@ fun MusicCategories(
         PaddingValues(top = 7.5.dp, bottom = 7.5.dp, end = 15.0.dp, start = 7.5.dp)
 
     when (genres.value) {
-        is BeatifyResponse.Success -> SuccessMusicCategories(
+        is Response.Success -> SuccessMusicCategories(
             genres = genres.value,
             navController = navController,
             topPadding = topPadding,
@@ -51,11 +51,11 @@ fun MusicCategories(
             tfSearch = tfSearch
         )
 
-        is BeatifyResponse.Failure -> FailureMusicCategories(
+        is Response.Failure -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding
         )
 
-        is BeatifyResponse.Loading -> LoadingPage(
+        is Response.Loading -> LoadingPage(
             controller = 1,
             topPadding = topPadding,
             bottomPadding = bottomPadding,
@@ -63,7 +63,7 @@ fun MusicCategories(
             evenPaddingValues = evenPaddingValues
         )
 
-        else -> FailureMusicCategories(
+        else -> FailurePage(
             topPadding = topPadding, bottomPadding = bottomPadding
         )
     }

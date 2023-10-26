@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.utils.constants.controller.MusicController
 import com.fa.beatify.data.models.Like
 import com.fa.beatify.domain.models.PlayMusic
@@ -61,7 +61,7 @@ import com.fa.beatify.utils.repos.SearchRepo
 @Composable
 fun SuccessAlbumDetail(
     viewModel: AlbumDetailVM,
-    albumDetail: BeatifyResponse<List<Track>>?,
+    albumDetail: Response<List<Track>>?,
     topPadding: Dp,
     bottomPadding: Dp,
     tfSearch: MutableState<String>,

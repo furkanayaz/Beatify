@@ -2,7 +2,7 @@ package com.fa.beatify.presentation.artists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.domain.models.Artist
 import com.fa.beatify.domain.remote.use_cases.AllArtistsUseCase
 import com.fa.beatify.utils.network.Connection
@@ -22,15 +22,15 @@ class ArtistsVM(
 
     private val connObserver: Flow<Connection.Status> get() = _connObserver!!
 
-    private var _artists: MutableStateFlow<BeatifyResponse<List<Artist>>>? = null
-    val artists: StateFlow<BeatifyResponse<List<Artist>>>
+    private var _artists: MutableStateFlow<Response<List<Artist>>>? = null
+    val artists: StateFlow<Response<List<Artist>>>
         get() = _artists!!.asStateFlow()
 
     private var allArtistsJob: Job? = null
 
     init {
         _connObserver = networkConnection.observe()
-        _artists = MutableStateFlow(value = BeatifyResponse.Loading())
+        _artists = MutableStateFlow(value = Response.Loading)
     }
 
     fun fetchData(genreId: Int) {
@@ -38,9 +38,9 @@ class ArtistsVM(
             connObserver.collect {
                 when (it) {
                     Connection.Status.Available -> allArtists(genreId = genreId)
-                    Connection.Status.Losing -> _artists?.emit(value = BeatifyResponse.Loading())
+                    Connection.Status.Losing -> _artists?.emit(value = Response.Loading)
                     Connection.Status.Unavailable, Connection.Status.Lost -> _artists?.emit(
-                        value = BeatifyResponse.Failure(code = 404)
+                        value = Response.Failure(code = 404)
                     )
                 }
             }
@@ -51,10 +51,10 @@ class ArtistsVM(
         allArtistsJob = viewModelScope.launch(context = Dispatchers.IO) {
             try {
                 allArtistsUseCase(genreId = genreId).also { artistList: List<Artist> ->
-                    _artists?.emit(value = BeatifyResponse.Success(data = artistList, code = 200))
+                    _artists?.emit(value = Response.Success(data = artistList, code = 200))
                 }
             } catch (e: Exception) {
-                _artists?.emit(value = BeatifyResponse.Failure(code = 404))
+                _artists?.emit(value = Response.Failure(code = 404))
             }
         }
     }

@@ -16,7 +16,7 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 - View Model 📱
 - Flows 🌊
 - Repository 🗄️
-- Retrofit 🌐
+- Ktor 🌐
 - Room 🏠
 - Dependency Injection with Koin 💉
 - Navigation Component 🧭
@@ -32,4 +32,4 @@ Built with **JETPACK COMPOSE** Framework as a based Kotlin! 🤩
 
 App Introduction on YouTube: [Click to Watch!](https://youtu.be/AeIloqi5Oic) 📼
 
-27 Aug 2023 - FURKAN AYAZ :) 🗓️
+27 Oct 2023 - FURKAN AYAZ :) 🗓️

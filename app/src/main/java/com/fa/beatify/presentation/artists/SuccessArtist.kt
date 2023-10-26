@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.fa.beatify.R
-import com.fa.beatify.data.response.BeatifyResponse
+import com.fa.beatify.data.response.Response
 import com.fa.beatify.utils.constants.ListState
 import com.fa.beatify.utils.constants.controller.ImageController
 import com.fa.beatify.domain.models.Artist
@@ -46,7 +46,7 @@ import com.fa.beatify.utils.repos.SearchRepo
 
 @Composable
 fun SuccessArtist(
-    artistDto: BeatifyResponse<List<Artist>>?,
+    artistDto: Response<List<Artist>>?,
     navController: NavHostController,
     topPadding: Dp,
     bottomPadding: Dp,

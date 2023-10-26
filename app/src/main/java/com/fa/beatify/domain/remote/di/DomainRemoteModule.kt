@@ -1,6 +1,6 @@
 package com.fa.beatify.domain.remote.di
 
-import com.fa.beatify.domain.remote.impl.DeezerDataImpl
+import com.fa.beatify.domain.remote.impl.DeezerDataSourceImpl
 import com.fa.beatify.domain.remote.use_cases.AllAlbumsUseCase
 import com.fa.beatify.domain.remote.use_cases.AllArtistsUseCase
 import com.fa.beatify.domain.remote.use_cases.AllGenresUseCase
@@ -11,23 +11,23 @@ import org.koin.dsl.module
 val domainRemoteModule: Module = module {
 
     single {
-        DeezerDataImpl(deezerDataSource = get())
+        DeezerDataSourceImpl(client = get())
     }
 
     single {
-        AllAlbumsUseCase(deezerDataImpl = get())
+        AllAlbumsUseCase(deezerDataSourceImpl = get())
     }
 
     single {
-        AllArtistsUseCase(deezerDataImpl = get())
+        AllArtistsUseCase(deezerDataSourceImpl = get())
     }
 
     single {
-        AllGenresUseCase(deezerDataImpl = get())
+        AllGenresUseCase(deezerDataSourceImpl = get())
     }
 
     single {
-        AllTracksUseCase(deezerDataImpl = get())
+        AllTracksUseCase(deezerDataSourceImpl = get())
     }
 
 }

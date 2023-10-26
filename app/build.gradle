@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -87,17 +88,23 @@ dependencies {
     // Coil Impl...
     implementation "io.coil-kt:coil-compose:${UInterface.coil}"
 
-    // Retrofit Impls...
-    implementation "com.squareup.retrofit2:retrofit:${Feat.retro}"
-    implementation "com.squareup.retrofit2:converter-gson:${Feat.retro}"
+    // Coroutines Impl...
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Feat.coroutines}"
 
-    // Gson Impl...
-    implementation "com.google.code.gson:gson:${Feat.gson}"
+    // Serialization Impl...
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:${Feat.serialization}"
 
     // Koin Impls...
     implementation "io.insert-koin:koin-android:${Feat.koin}"
     testImplementation "io.insert-koin:koin-test-junit4:${Feat.koin}"
     implementation "io.insert-koin:koin-androidx-compose:${Feat.koin_comp}"
+
+    // Ktor Impls...
+    implementation "io.ktor:ktor-client-android:${Feat.ktor_android}"
+    implementation("io.ktor:ktor-serialization-kotlinx-json:${Feat.json}")
+    implementation("io.ktor:ktor-client-content-negotiation:${Feat.content_negotiation}")
+    implementation "io.ktor:ktor-client-serialization:${Feat.ktor_serialization}"
+    implementation "io.ktor:ktor-client-logging-jvm:${Feat.ktor_logging}"
 
     // Test Impl...
     testImplementation "junit:junit:${TEST.junit}"

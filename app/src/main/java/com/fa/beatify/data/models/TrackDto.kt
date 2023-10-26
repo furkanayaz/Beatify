@@ -1,70 +1,32 @@
 package com.fa.beatify.data.models
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TrackDto(
-    @SerializedName("data")
-    @Expose
-    var data: ArrayList<TrackDtoModel>? = null,
-    @SerializedName("total")
-    @Expose
-    var total: Int? = null
+    @SerialName("data") var data: ArrayList<TrackDtoModel>? = null,
+    @SerialName("total") var total: Int? = null
 )
 
+@Serializable
 data class TrackDtoModel(
-    @SerializedName("id")
-    @Expose
-    var id: Int? = null,
-    @SerializedName("readable")
-    @Expose
-    var readable: Boolean? = null,
-    @SerializedName("title")
-    @Expose
-    var title: String? = null,
-    @SerializedName("title_short")
-    @Expose
-    var titleShort: String? = null,
-    @SerializedName("title_version")
-    @Expose
-    var titleVersion: String? = null,
-    @SerializedName("isrc")
-    @Expose
-    var isrc: String? = null,
-    @SerializedName("link")
-    @Expose
-    var link: String? = null,
-    @SerializedName("duration")
-    @Expose
-    var duration: Int? = null,
-    @SerializedName("track_position")
-    @Expose
-    var trackPosition: Int? = null,
-    @SerializedName("disk_number")
-    @Expose
-    var diskNumber: Int? = null,
-    @SerializedName("rank")
-    @Expose
-    var rank: Int? = null,
-    @SerializedName("explicit_lyrics")
-    @Expose
-    var explicitLyrics: Boolean? = null,
-    @SerializedName("explicit_content_lyrics")
-    @Expose
-    var explicitContentLyrics: Int? = null,
-    @SerializedName("explicit_content_cover")
-    @Expose
-    var explicitContentCover: Int? = null,
-    @SerializedName("preview")
-    @Expose
-    var preview: String? = null,
-    @SerializedName("md5_image")
-    @Expose
-    var md5Image: String? = null,
-    @SerializedName("artist")
-    @Expose
-    var artistDto: ArtistDto? = ArtistDto(),
-    @SerializedName("type")
-    @Expose
-    var type: String? = null
+    @SerialName("id") var id: Int? = null,
+    @SerialName("readable") var readable: Boolean? = null,
+    @SerialName("title") var title: String? = null,
+    @SerialName("title_short") var titleShort: String? = null,
+    @SerialName("title_version") var titleVersion: String? = null,
+    @SerialName("isrc") var isrc: String? = null,
+    @SerialName("link") var link: String? = null,
+    @SerialName("duration") var duration: Int? = null,
+    @SerialName("track_position") var trackPosition: Int? = null,
+    @SerialName("disk_number") var diskNumber: Int? = null,
+    @SerialName("rank") var rank: Int? = null,
+    @SerialName("explicit_lyrics") var explicitLyrics: Boolean? = null,
+    @SerialName("explicit_content_lyrics") var explicitContentLyrics: Int? = null,
+    @SerialName("explicit_content_cover") var explicitContentCover: Int? = null,
+    @SerialName("preview") var preview: String? = null,
+    @SerialName("md5_image") var md5Image: String? = null,
+    @SerialName("artist") var artistDto: ArtistDto? = ArtistDto(),
+    @SerialName("type") var type: String? = null
 )
