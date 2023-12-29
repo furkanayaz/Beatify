@@ -4,7 +4,7 @@
 
 ## **Beatify ARCHITECTURE**
 
-![Beatify Architecture](https://github.com/furkanayaz/Beatify/assets/59910223/e5e9f34f-0702-4879-ab78-6cd5f774a1da)
+![Beatify Architecture](https://github.com/furkanayaz/Beatify/assets/59910223/c595dfbe-c36d-4f56-8079-cc56072816f6)
 
 ## **Beatify IN ADDITION**
 
